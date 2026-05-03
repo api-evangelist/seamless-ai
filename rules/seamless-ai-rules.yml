@@ -1,0 +1,68 @@
+extends: spectral:oas
+rules:
+  seamless-ai-operation-ids-camel-case:
+    description: Operation IDs must use camelCase
+    severity: warn
+    given: "$.paths[*][*].operationId"
+    then:
+      function: pattern
+      functionOptions:
+        match: "^[a-z][a-zA-Z0-9]*$"
+
+  seamless-ai-tags-required:
+    description: All operations must have at least one tag
+    severity: error
+    given: "$.paths[*][*]"
+    then:
+      field: tags
+      function: truthy
+
+  seamless-ai-summaries-title-case:
+    description: Operation summaries must use Title Case
+    severity: warn
+    given: "$.paths[*][*].summary"
+    then:
+      function: pattern
+      functionOptions:
+        match: "^[A-Z][a-zA-Z0-9]*(\\s[A-Z][a-zA-Z0-9]*)*$"
+
+  seamless-ai-rate-limit-docs:
+    description: API operations should document rate limiting behavior in description
+    severity: info
+    given: "$.paths[*][post]"
+    then:
+      field: description
+      function: truthy
+
+  seamless-ai-request-body-required:
+    description: POST endpoints must have a requestBody defined
+    severity: error
+    given: "$.paths[*][post]"
+    then:
+      field: requestBody
+      function: truthy
+
+  seamless-ai-response-200-schema:
+    description: Successful responses must define a schema
+    severity: warn
+    given: "$.paths[*][*].responses['200'].content['application/json']"
+    then:
+      field: schema
+      function: truthy
+
+  seamless-ai-security-defined:
+    description: All operations should have security defined
+    severity: error
+    given: "$.paths[*][*]"
+    then:
+      field: security
+      function: truthy
+
+  seamless-ai-api-versioned-paths:
+    description: API paths should include version prefix (/v1/)
+    severity: warn
+    given: "$.paths"
+    then:
+      function: pattern
+      functionOptions:
+        match: "^/v[0-9]+/"

@@ -1,0 +1,73 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/seamless-ai/refs/heads/main/json-schema/seamless-ai-company-schema.json",
+  "title": "Seamless.AI Company",
+  "description": "A company record in the Seamless.AI platform including firmographics, revenue, technology stack, and funding data.",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Unique Seamless.AI company identifier"
+    },
+    "name": {
+      "type": "string",
+      "description": "Company name"
+    },
+    "domain": {
+      "type": "string",
+      "description": "Company website domain"
+    },
+    "description": {
+      "type": "string",
+      "description": "Company description"
+    },
+    "industry": {
+      "type": "string",
+      "description": "Primary industry vertical"
+    },
+    "subIndustry": {
+      "type": "string",
+      "description": "Sub-industry classification"
+    },
+    "employeeCount": {
+      "type": "integer",
+      "description": "Number of employees"
+    },
+    "revenue": {
+      "type": "number",
+      "description": "Annual revenue in USD"
+    },
+    "founded": {
+      "type": "integer",
+      "description": "Year the company was founded"
+    },
+    "headquarters": {
+      "type": "object",
+      "description": "Headquarters location",
+      "properties": {
+        "city": { "type": "string" },
+        "state": { "type": "string" },
+        "country": { "type": "string" }
+      }
+    },
+    "technologies": {
+      "type": "array",
+      "description": "Technology stack",
+      "items": { "type": "string" }
+    },
+    "linkedinUrl": {
+      "type": "string",
+      "format": "uri"
+    },
+    "funding": {
+      "type": "object",
+      "description": "Funding information",
+      "properties": {
+        "totalAmount": { "type": "number" },
+        "lastRound": { "type": "string" },
+        "lastRoundDate": { "type": "string", "format": "date" }
+      }
+    }
+  },
+  "required": ["id", "name"]
+}

@@ -1,0 +1,260 @@
+openapi: 3.0.3
+info:
+  title: Seamless.AI Companies API
+  description: >-
+    The Seamless.AI Companies API enables programmatic search and research of company
+    data including firmographics, revenue, employee count, technology stack, and company
+    intelligence for sales and marketing use cases.
+  version: 1.0.0
+  contact:
+    url: https://docs.seamless.ai/
+servers:
+  - url: https://api.seamless.ai
+    description: Seamless.AI API
+security:
+  - apiKey: []
+paths:
+  /v1/companies/search:
+    post:
+      operationId: searchCompanies
+      summary: Search Companies
+      description: >-
+        Search for companies using criteria such as company name, domain, industry,
+        location, revenue range, employee count, and technology stack. Returns paginated
+        results with company identifiers for further research.
+      tags:
+        - Companies
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CompanySearchRequest'
+      responses:
+        '200':
+          description: Successful company search results
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CompanySearchResponse'
+        '401':
+          description: Unauthorized
+        '429':
+          description: Rate limit exceeded
+  /v1/companies/research:
+    post:
+      operationId: researchCompany
+      summary: Research Company
+      description: >-
+        Research a specific company using a search result ID from /companies/search,
+        or by providing direct identifiers such as domain or company name. Returns
+        comprehensive company profiles including firmographics, technology stack,
+        funding data, and key contacts.
+      tags:
+        - Companies
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CompanyResearchRequest'
+      responses:
+        '200':
+          description: Full company research data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CompanyRecord'
+        '401':
+          description: Unauthorized
+        '429':
+          description: Rate limit exceeded
+  /v1/companies/enrich:
+    post:
+      operationId: enrichCompany
+      summary: Enrich Company
+      description: >-
+        Enrich an existing company record with updated or missing firmographic data.
+        Provide known company identifiers and receive back verified company information
+        including revenue, employee count, industry classification, and technology stack.
+      tags:
+        - Companies
+        - Enrichment
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CompanyEnrichRequest'
+      responses:
+        '200':
+          description: Enriched company data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CompanyRecord'
+        '401':
+          description: Unauthorized
+        '429':
+          description: Rate limit exceeded
+components:
+  securitySchemes:
+    apiKey:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: API key in the format "Bearer {api_key}"
+  schemas:
+    CompanySearchRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Company name or keyword
+        domain:
+          type: string
+          description: Company website domain
+        industry:
+          type: string
+          description: Industry vertical
+        location:
+          type: string
+          description: City, state, or country
+        minEmployees:
+          type: integer
+          description: Minimum employee count
+        maxEmployees:
+          type: integer
+          description: Maximum employee count
+        minRevenue:
+          type: number
+          description: Minimum annual revenue in USD
+        maxRevenue:
+          type: number
+          description: Maximum annual revenue in USD
+        technologies:
+          type: array
+          items:
+            type: string
+          description: Technology stack filters
+        page:
+          type: integer
+          default: 1
+        per_page:
+          type: integer
+          default: 25
+          maximum: 100
+    CompanySearchResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/CompanySearchResult'
+        meta:
+          $ref: '#/components/schemas/PaginationMeta'
+        supplementalData:
+          type: object
+          properties:
+            nextToken:
+              type: string
+    CompanySearchResult:
+      type: object
+      properties:
+        searchResultId:
+          type: string
+          description: Unique identifier for research calls
+        name:
+          type: string
+        domain:
+          type: string
+        industry:
+          type: string
+        location:
+          type: string
+        employeeCount:
+          type: integer
+    CompanyResearchRequest:
+      type: object
+      properties:
+        searchResultId:
+          type: string
+          description: ID from /companies/search
+        domain:
+          type: string
+          description: Company domain for direct lookup
+        companyName:
+          type: string
+          description: Company name for direct lookup
+    CompanyEnrichRequest:
+      type: object
+      properties:
+        domain:
+          type: string
+        companyName:
+          type: string
+        linkedinUrl:
+          type: string
+    CompanyRecord:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        domain:
+          type: string
+        description:
+          type: string
+        industry:
+          type: string
+        subIndustry:
+          type: string
+        employeeCount:
+          type: integer
+        revenue:
+          type: number
+          description: Annual revenue in USD
+        founded:
+          type: integer
+          description: Year founded
+        headquarters:
+          type: object
+          properties:
+            city:
+              type: string
+            state:
+              type: string
+            country:
+              type: string
+        technologies:
+          type: array
+          items:
+            type: string
+        linkedinUrl:
+          type: string
+        twitterUrl:
+          type: string
+        facebookUrl:
+          type: string
+        funding:
+          type: object
+          properties:
+            totalAmount:
+              type: number
+            lastRound:
+              type: string
+            lastRoundDate:
+              type: string
+              format: date
+    PaginationMeta:
+      type: object
+      properties:
+        page:
+          type: integer
+        per_page:
+          type: integer
+        total:
+          type: integer
+        total_pages:
+          type: integer

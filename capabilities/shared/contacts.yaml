@@ -1,0 +1,195 @@
+naftiko: "1.0.0-alpha1"
+
+info:
+  label: "Seamless.AI Contacts API"
+  description: "B2B contact search, enrichment, and job-change intelligence API for sales prospecting."
+  tags:
+    - Contacts
+    - Sales Intelligence
+    - B2B
+    - Prospecting
+  created: "2026-05-02"
+  modified: "2026-05-02"
+
+binds:
+  - namespace: env
+    keys:
+      SEAMLESS_AI_API_KEY: SEAMLESS_AI_API_KEY
+
+capability:
+  consumes:
+    - type: http
+      namespace: seamless-contacts
+      baseUri: https://api.seamless.ai
+      description: "Seamless.AI Contacts API for B2B contact search and enrichment"
+      authentication:
+        type: bearer
+        token: "{{SEAMLESS_AI_API_KEY}}"
+      resources:
+        - name: contact-search
+          path: /v1/contacts/search
+          description: "Search for B2B contacts"
+          operations:
+            - name: search-contacts
+              method: POST
+              description: "Search contacts by name, company, title, and location"
+              body:
+                type: json
+                data:
+                  name: "{{tools.name}}"
+                  company: "{{tools.company}}"
+                  title: "{{tools.title}}"
+                  location: "{{tools.location}}"
+                  page: "{{tools.page}}"
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+
+        - name: contact-research
+          path: /v1/contacts/research
+          description: "Research a specific contact"
+          operations:
+            - name: research-contact
+              method: POST
+              description: "Get full contact profile including emails and phone numbers"
+              body:
+                type: json
+                data:
+                  searchResultId: "{{tools.searchResultId}}"
+                  email: "{{tools.email}}"
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+
+        - name: contact-enrichment
+          path: /v1/contacts/enrich
+          description: "Enrich existing contact records"
+          operations:
+            - name: enrich-contact
+              method: POST
+              description: "Enrich contact with verified emails and phone numbers"
+              body:
+                type: json
+                data:
+                  email: "{{tools.email}}"
+                  name: "{{tools.name}}"
+                  company: "{{tools.company}}"
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+
+        - name: job-changes
+          path: /v1/contacts/job-changes
+          description: "Track contact job changes"
+          operations:
+            - name: list-job-changes
+              method: GET
+              description: "Retrieve contacts that have recently changed jobs"
+              inputParameters:
+                - name: page
+                  in: query
+                  type: integer
+                  required: false
+                  description: "Page number"
+                - name: days
+                  in: query
+                  type: integer
+                  required: false
+                  description: "Days to look back"
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+
+  exposes:
+    - type: rest
+      port: 8100
+      namespace: seamless-contacts-rest
+      resources:
+        - path: /v1/contacts/search
+          name: contact-search
+          description: "Search B2B contacts"
+          operations:
+            - method: POST
+              name: search-contacts
+              description: "Search contacts by name, company, title"
+              call: "seamless-contacts.search-contacts"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+
+        - path: /v1/contacts/enrich
+          name: contact-enrichment
+          description: "Enrich contact records"
+          operations:
+            - method: POST
+              name: enrich-contact
+              description: "Enrich contact with verified data"
+              call: "seamless-contacts.enrich-contact"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+
+        - path: /v1/contacts/job-changes
+          name: job-changes
+          description: "Contact job change intelligence"
+          operations:
+            - method: GET
+              name: list-job-changes
+              description: "List recent job changes"
+              call: "seamless-contacts.list-job-changes"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+
+    - type: mcp
+      port: 9100
+      namespace: seamless-contacts-mcp
+      transport: http
+      tools:
+        - name: search-contacts
+          description: "Search for B2B contacts by name, company, title, or location"
+          hints:
+            readOnly: true
+            openWorld: true
+          call: "seamless-contacts.search-contacts"
+          outputParameters:
+            - type: object
+              mapping: "$."
+
+        - name: research-contact
+          description: "Get full contact profile with verified emails and phone numbers"
+          hints:
+            readOnly: true
+            openWorld: true
+          call: "seamless-contacts.research-contact"
+          outputParameters:
+            - type: object
+              mapping: "$."
+
+        - name: enrich-contact
+          description: "Enrich an existing contact record with missing or outdated data"
+          hints:
+            readOnly: true
+            openWorld: true
+          call: "seamless-contacts.enrich-contact"
+          outputParameters:
+            - type: object
+              mapping: "$."
+
+        - name: list-job-changes
+          description: "Find contacts that have recently changed jobs for warm outreach"
+          hints:
+            readOnly: true
+            openWorld: false
+          call: "seamless-contacts.list-job-changes"
+          outputParameters:
+            - type: object
+              mapping: "$."

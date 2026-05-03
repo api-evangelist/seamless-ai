@@ -1,0 +1,148 @@
+naftiko: "1.0.0-alpha1"
+
+info:
+  label: "Seamless.AI Companies API"
+  description: "B2B company search and enrichment API for firmographic data and company intelligence."
+  tags:
+    - Companies
+    - Firmographics
+    - Sales Intelligence
+    - B2B
+  created: "2026-05-02"
+  modified: "2026-05-02"
+
+binds:
+  - namespace: env
+    keys:
+      SEAMLESS_AI_API_KEY: SEAMLESS_AI_API_KEY
+
+capability:
+  consumes:
+    - type: http
+      namespace: seamless-companies
+      baseUri: https://api.seamless.ai
+      description: "Seamless.AI Companies API for firmographic search and enrichment"
+      authentication:
+        type: bearer
+        token: "{{SEAMLESS_AI_API_KEY}}"
+      resources:
+        - name: company-search
+          path: /v1/companies/search
+          description: "Search for companies"
+          operations:
+            - name: search-companies
+              method: POST
+              description: "Search companies by name, domain, industry, and firmographics"
+              body:
+                type: json
+                data:
+                  name: "{{tools.name}}"
+                  domain: "{{tools.domain}}"
+                  industry: "{{tools.industry}}"
+                  location: "{{tools.location}}"
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+
+        - name: company-research
+          path: /v1/companies/research
+          description: "Research a specific company"
+          operations:
+            - name: research-company
+              method: POST
+              description: "Get full company profile with firmographics and technology stack"
+              body:
+                type: json
+                data:
+                  searchResultId: "{{tools.searchResultId}}"
+                  domain: "{{tools.domain}}"
+                  companyName: "{{tools.companyName}}"
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+
+        - name: company-enrichment
+          path: /v1/companies/enrich
+          description: "Enrich company records"
+          operations:
+            - name: enrich-company
+              method: POST
+              description: "Enrich company with updated firmographic data"
+              body:
+                type: json
+                data:
+                  domain: "{{tools.domain}}"
+                  companyName: "{{tools.companyName}}"
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+
+  exposes:
+    - type: rest
+      port: 8101
+      namespace: seamless-companies-rest
+      resources:
+        - path: /v1/companies/search
+          name: company-search
+          description: "Search companies"
+          operations:
+            - method: POST
+              name: search-companies
+              description: "Search companies by name, domain, industry"
+              call: "seamless-companies.search-companies"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+
+        - path: /v1/companies/enrich
+          name: company-enrichment
+          description: "Enrich company records"
+          operations:
+            - method: POST
+              name: enrich-company
+              description: "Enrich company with firmographic data"
+              call: "seamless-companies.enrich-company"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+
+    - type: mcp
+      port: 9101
+      namespace: seamless-companies-mcp
+      transport: http
+      tools:
+        - name: search-companies
+          description: "Search for companies by name, domain, industry, size, or location"
+          hints:
+            readOnly: true
+            openWorld: true
+          call: "seamless-companies.search-companies"
+          outputParameters:
+            - type: object
+              mapping: "$."
+
+        - name: research-company
+          description: "Get full company profile with firmographics, revenue, and technology stack"
+          hints:
+            readOnly: true
+            openWorld: true
+          call: "seamless-companies.research-company"
+          outputParameters:
+            - type: object
+              mapping: "$."
+
+        - name: enrich-company
+          description: "Enrich a company record with verified firmographic data"
+          hints:
+            readOnly: true
+            openWorld: true
+          call: "seamless-companies.enrich-company"
+          outputParameters:
+            - type: object
+              mapping: "$."

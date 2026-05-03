@@ -1,0 +1,78 @@
+name: Seamless.AI Vocabulary
+description: >-
+  Vocabulary and taxonomy for the Seamless.AI B2B sales intelligence platform covering
+  contact data, company firmographics, prospecting workflows, and data enrichment concepts.
+created: '2026-05-02'
+modified: '2026-05-02'
+terms:
+  - term: Contact
+    definition: >-
+      A professional individual record in the Seamless.AI database including identity,
+      employment, contact information, and social profiles.
+    tags: [Core Entity, B2B]
+
+  - term: Company
+    definition: >-
+      An organizational record in Seamless.AI including firmographics, revenue, employee
+      count, technology stack, and key contact associations.
+    tags: [Core Entity, B2B]
+
+  - term: Search Result ID
+    definition: >-
+      A unique identifier returned by /search/contacts or /search/companies endpoints
+      used to retrieve full contact or company data via research endpoints.
+    tags: [API, Identifier]
+
+  - term: Enrichment
+    definition: >-
+      The process of adding missing or updating outdated data in an existing contact
+      or company record by calling Seamless.AI's verify and research services.
+    tags: [Workflow, Data Quality]
+
+  - term: Job Change Intelligence
+    definition: >-
+      Detection of contacts who have recently changed employers or job titles, enabling
+      timely outreach during role transitions when buying decisions often restart.
+    tags: [Sales Intelligence, Trigger]
+
+  - term: Firmographics
+    definition: >-
+      Structured data describing a company's characteristics including industry, revenue,
+      employee count, funding stage, location, and technology stack.
+    tags: [Company Data, Segmentation]
+
+  - term: API Key
+    definition: >-
+      A long-lived stable authentication credential used to authenticate Seamless.AI
+      API requests, configured in Settings > API Key within the platform.
+    tags: [Authentication, Security]
+
+  - term: Rate Limit
+    definition: >-
+      The maximum number of API requests allowed per endpoint per minute. Seamless.AI
+      enforces 60 requests per minute per endpoint at the organization level.
+    tags: [API, Performance]
+
+  - term: Go-To-Market
+    definition: >-
+      The sales and marketing strategy Seamless.AI helps execute by providing contact
+      and company data for identifying and reaching ideal customers.
+    tags: [Business, Strategy]
+
+  - term: Intent Signal
+    definition: >-
+      Behavioral data indicating that a prospect is actively researching or ready to
+      buy, available through Seamless.AI's buyer behavior intelligence.
+    tags: [Sales Intelligence, Signal]
+
+  - term: CRM Enrichment
+    definition: >-
+      The workflow of using Seamless.AI API to automatically update existing CRM records
+      with fresh, verified contact and company data.
+    tags: [Integration, Workflow]
+
+  - term: Lead Generation
+    definition: >-
+      The process of identifying potential customers using Seamless.AI's contact and
+      company search capabilities to build targeted prospect lists.
+    tags: [Sales, Marketing]

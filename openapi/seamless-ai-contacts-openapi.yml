@@ -1,0 +1,331 @@
+openapi: 3.0.3
+info:
+  title: Seamless.AI Contacts API
+  description: >-
+    The Seamless.AI Contacts API provides programmatic access to B2B contact search,
+    enrichment, and research capabilities. Search for contacts by name, company, title,
+    and location, and enrich existing records with verified emails, phone numbers, and
+    job history using AI-powered data verification.
+  version: 1.0.0
+  contact:
+    url: https://seamless.ai/customers/education/articles/seamless-ai-api-overview
+  termsOfService: https://seamless.ai/legal/terms-of-service
+servers:
+  - url: https://api.seamless.ai
+    description: Seamless.AI API
+security:
+  - apiKey: []
+paths:
+  /v1/contacts/search:
+    post:
+      operationId: searchContacts
+      summary: Search Contacts
+      description: >-
+        Search for B2B contacts using criteria such as name, company, title, location,
+        industry, and other filters. Returns paginated search results with contact
+        identifiers that can be used for enrichment.
+      tags:
+        - Contacts
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ContactSearchRequest'
+      responses:
+        '200':
+          description: Successful contact search results
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContactSearchResponse'
+        '401':
+          description: Unauthorized - invalid or missing API key
+        '429':
+          description: Rate limit exceeded - 60 requests per minute per endpoint
+  /v1/contacts/research:
+    post:
+      operationId: researchContact
+      summary: Research Contact
+      description: >-
+        Research a specific contact using a search result ID from /contacts/search
+        or a direct contact identifier. Returns full contact data including verified
+        email addresses, phone numbers, job history, and social profiles.
+      tags:
+        - Contacts
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ContactResearchRequest'
+      responses:
+        '200':
+          description: Full contact research data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContactRecord'
+        '401':
+          description: Unauthorized
+        '429':
+          description: Rate limit exceeded
+  /v1/contacts/enrich:
+    post:
+      operationId: enrichContact
+      summary: Enrich Contact
+      description: >-
+        Enrich an existing contact record with updated or missing fields. Provide
+        known contact identifiers and receive back verified emails, direct dials,
+        mobile numbers, job titles, and company information.
+      tags:
+        - Contacts
+        - Enrichment
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ContactEnrichRequest'
+      responses:
+        '200':
+          description: Enriched contact data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContactRecord'
+        '401':
+          description: Unauthorized
+        '429':
+          description: Rate limit exceeded
+  /v1/contacts/job-changes:
+    get:
+      operationId: listContactJobChanges
+      summary: List Contact Job Changes
+      description: >-
+        Retrieve contacts that have recently changed jobs within your contact database.
+        Returns job-change intelligence including previous and current roles to help
+        identify warm outreach opportunities.
+      tags:
+        - Contacts
+        - Job Changes
+      parameters:
+        - name: page
+          in: query
+          description: Page number for paginated results
+          schema:
+            type: integer
+            default: 1
+        - name: per_page
+          in: query
+          description: Number of results per page (max 100)
+          schema:
+            type: integer
+            default: 25
+            maximum: 100
+        - name: days
+          in: query
+          description: Number of days to look back for job changes
+          schema:
+            type: integer
+            default: 30
+      responses:
+        '200':
+          description: List of contacts with recent job changes
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JobChangesResponse'
+        '401':
+          description: Unauthorized
+        '429':
+          description: Rate limit exceeded
+components:
+  securitySchemes:
+    apiKey:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: API key in the format "Bearer {api_key}"
+  schemas:
+    ContactSearchRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Contact full name or partial name
+        company:
+          type: string
+          description: Company name to filter contacts
+        title:
+          type: string
+          description: Job title or keyword
+        location:
+          type: string
+          description: City, state, or country
+        industry:
+          type: string
+          description: Industry vertical
+        page:
+          type: integer
+          default: 1
+          description: Page number for pagination
+        per_page:
+          type: integer
+          default: 25
+          maximum: 100
+          description: Results per page
+    ContactSearchResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/ContactSearchResult'
+        meta:
+          $ref: '#/components/schemas/PaginationMeta'
+        supplementalData:
+          type: object
+          properties:
+            nextToken:
+              type: string
+              description: Token for next page of results
+    ContactSearchResult:
+      type: object
+      properties:
+        searchResultId:
+          type: string
+          description: Unique identifier for use in research/enrichment calls
+        name:
+          type: string
+          description: Contact full name
+        company:
+          type: string
+          description: Current employer
+        title:
+          type: string
+          description: Current job title
+        location:
+          type: string
+          description: Geographic location
+    ContactResearchRequest:
+      type: object
+      properties:
+        searchResultId:
+          type: string
+          description: Search result ID from /contacts/search
+        email:
+          type: string
+          description: Known email address for lookup
+        linkedinUrl:
+          type: string
+          description: LinkedIn profile URL
+    ContactEnrichRequest:
+      type: object
+      properties:
+        email:
+          type: string
+          description: Email address to enrich
+        name:
+          type: string
+          description: Contact full name
+        company:
+          type: string
+          description: Company name
+        linkedinUrl:
+          type: string
+          description: LinkedIn profile URL
+    ContactRecord:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique contact identifier
+        name:
+          type: string
+          description: Full name
+        firstName:
+          type: string
+        lastName:
+          type: string
+        title:
+          type: string
+          description: Current job title
+        company:
+          type: string
+          description: Current employer name
+        emails:
+          type: array
+          items:
+            type: object
+            properties:
+              email:
+                type: string
+              type:
+                type: string
+                enum: [work, personal]
+              verified:
+                type: boolean
+        phones:
+          type: array
+          items:
+            type: object
+            properties:
+              number:
+                type: string
+              type:
+                type: string
+                enum: [direct, mobile, office]
+        location:
+          type: string
+        linkedinUrl:
+          type: string
+        jobHistory:
+          type: array
+          items:
+            type: object
+            properties:
+              company:
+                type: string
+              title:
+                type: string
+              startDate:
+                type: string
+              endDate:
+                type: string
+    JobChangesResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            type: object
+            properties:
+              contactId:
+                type: string
+              name:
+                type: string
+              previousCompany:
+                type: string
+              previousTitle:
+                type: string
+              currentCompany:
+                type: string
+              currentTitle:
+                type: string
+              changeDate:
+                type: string
+                format: date
+        meta:
+          $ref: '#/components/schemas/PaginationMeta'
+    PaginationMeta:
+      type: object
+      properties:
+        page:
+          type: integer
+        per_page:
+          type: integer
+        total:
+          type: integer
+        total_pages:
+          type: integer

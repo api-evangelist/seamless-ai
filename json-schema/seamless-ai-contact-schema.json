@@ -1,0 +1,83 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/seamless-ai/refs/heads/main/json-schema/seamless-ai-contact-schema.json",
+  "title": "Seamless.AI Contact",
+  "description": "A B2B contact record in the Seamless.AI platform including identity, employment, contact data, and job history.",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Unique Seamless.AI contact identifier"
+    },
+    "name": {
+      "type": "string",
+      "description": "Full name of the contact"
+    },
+    "firstName": {
+      "type": "string",
+      "description": "First name"
+    },
+    "lastName": {
+      "type": "string",
+      "description": "Last name"
+    },
+    "title": {
+      "type": "string",
+      "description": "Current job title"
+    },
+    "company": {
+      "type": "string",
+      "description": "Current employer name"
+    },
+    "emails": {
+      "type": "array",
+      "description": "Verified email addresses",
+      "items": {
+        "type": "object",
+        "properties": {
+          "email": { "type": "string", "format": "email" },
+          "type": { "type": "string", "enum": ["work", "personal"] },
+          "verified": { "type": "boolean" }
+        }
+      }
+    },
+    "phones": {
+      "type": "array",
+      "description": "Phone numbers",
+      "items": {
+        "type": "object",
+        "properties": {
+          "number": { "type": "string" },
+          "type": { "type": "string", "enum": ["direct", "mobile", "office"] }
+        }
+      }
+    },
+    "location": {
+      "type": "string",
+      "description": "Geographic location"
+    },
+    "linkedinUrl": {
+      "type": "string",
+      "format": "uri",
+      "description": "LinkedIn profile URL"
+    },
+    "industry": {
+      "type": "string",
+      "description": "Industry vertical"
+    },
+    "jobHistory": {
+      "type": "array",
+      "description": "Employment history",
+      "items": {
+        "type": "object",
+        "properties": {
+          "company": { "type": "string" },
+          "title": { "type": "string" },
+          "startDate": { "type": "string" },
+          "endDate": { "type": "string" }
+        }
+      }
+    }
+  },
+  "required": ["id", "name"]
+}

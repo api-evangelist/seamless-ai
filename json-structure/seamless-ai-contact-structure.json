@@ -1,0 +1,39 @@
+{
+  "name": "Seamless.AI Contact Structure",
+  "description": "Structural documentation for the Seamless.AI Contact resource",
+  "properties": {
+    "id": { "type": "string", "description": "Unique contact identifier" },
+    "name": { "type": "string", "description": "Full name" },
+    "firstName": { "type": "string" },
+    "lastName": { "type": "string" },
+    "title": { "type": "string", "description": "Current job title" },
+    "company": { "type": "string", "description": "Current employer" },
+    "emails": {
+      "type": "array",
+      "items": {
+        "email": { "type": "string" },
+        "type": { "type": "string", "enum": ["work", "personal"] },
+        "verified": { "type": "boolean" }
+      }
+    },
+    "phones": {
+      "type": "array",
+      "items": {
+        "number": { "type": "string" },
+        "type": { "type": "string", "enum": ["direct", "mobile", "office"] }
+      }
+    },
+    "location": { "type": "string" },
+    "linkedinUrl": { "type": "string" },
+    "industry": { "type": "string" },
+    "jobHistory": {
+      "type": "array",
+      "items": {
+        "company": { "type": "string" },
+        "title": { "type": "string" },
+        "startDate": { "type": "string" },
+        "endDate": { "type": "string" }
+      }
+    }
+  }
+}

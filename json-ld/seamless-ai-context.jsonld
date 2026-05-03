@@ -1,0 +1,43 @@
+{
+  "@context": {
+    "@version": 1.1,
+    "schema": "https://schema.org/",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "seamless": "https://seamless.ai/vocab/",
+    "Contact": "schema:Person",
+    "Company": "schema:Organization",
+    "id": "@id",
+    "name": "schema:name",
+    "firstName": "schema:givenName",
+    "lastName": "schema:familyName",
+    "title": "schema:jobTitle",
+    "company": "schema:worksFor",
+    "emails": {
+      "@id": "schema:email",
+      "@container": "@set"
+    },
+    "phones": {
+      "@id": "schema:telephone",
+      "@container": "@set"
+    },
+    "location": "schema:addressLocality",
+    "linkedinUrl": "schema:sameAs",
+    "industry": "schema:industry",
+    "jobHistory": {
+      "@id": "seamless:jobHistory",
+      "@container": "@list"
+    },
+    "domain": "schema:url",
+    "employeeCount": "schema:numberOfEmployees",
+    "revenue": "schema:revenue",
+    "founded": "schema:foundingDate",
+    "headquarters": "schema:address",
+    "technologies": {
+      "@id": "seamless:technologies",
+      "@container": "@set"
+    },
+    "funding": "seamless:funding",
+    "searchResultId": "seamless:searchResultId",
+    "verified": "seamless:verified"
+  }
+}
