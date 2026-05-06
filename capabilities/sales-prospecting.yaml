@@ -1,198 +1,325 @@
-naftiko: "1.0.0-alpha1"
-
+naftiko: 1.0.0-alpha2
 info:
-  label: "Seamless.AI Sales Prospecting"
-  description: >-
-    Unified sales prospecting capability combining Seamless.AI contact and company APIs
-    for end-to-end B2B prospecting workflows. Enables sales teams to search and discover
-    target contacts, enrich CRM records, research company firmographics, and track
-    job-change signals for warm outreach opportunities.
+  label: Seamless.AI Sales Prospecting
+  description: Unified sales prospecting capability combining Seamless.AI contact and company APIs for end-to-end B2B prospecting
+    workflows. Enables sales teams to search and discover target contacts, enrich CRM records, research company firmographics,
+    and track job-change signals for warm outreach opportunities.
   tags:
-    - Sales Intelligence
-    - B2B
-    - Prospecting
-    - CRM Enrichment
-    - Lead Generation
-  created: "2026-05-02"
-  modified: "2026-05-02"
-
+  - Sales Intelligence
+  - B2B
+  - Prospecting
+  - CRM Enrichment
+  - Lead Generation
+  created: '2026-05-02'
+  modified: '2026-05-06'
 binds:
-  - namespace: env
-    keys:
-      SEAMLESS_AI_API_KEY: SEAMLESS_AI_API_KEY
-
+- namespace: env
+  keys:
+    SEAMLESS_AI_API_KEY: SEAMLESS_AI_API_KEY
 capability:
   consumes:
-    - import: seamless-contacts
-      location: ./shared/contacts.yaml
-    - import: seamless-companies
-      location: ./shared/companies.yaml
-
+  - type: http
+    namespace: seamless-contacts
+    baseUri: https://api.seamless.ai
+    description: Seamless.AI Contacts API for B2B contact search and enrichment
+    authentication:
+      type: bearer
+      token: '{{SEAMLESS_AI_API_KEY}}'
+    resources:
+    - name: contact-search
+      path: /v1/contacts/search
+      description: Search for B2B contacts
+      operations:
+      - name: search-contacts
+        method: POST
+        description: Search contacts by name, company, title, and location
+        body:
+          type: json
+          data:
+            name: '{{tools.name}}'
+            company: '{{tools.company}}'
+            title: '{{tools.title}}'
+            location: '{{tools.location}}'
+            page: '{{tools.page}}'
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: contact-research
+      path: /v1/contacts/research
+      description: Research a specific contact
+      operations:
+      - name: research-contact
+        method: POST
+        description: Get full contact profile including emails and phone numbers
+        body:
+          type: json
+          data:
+            searchResultId: '{{tools.searchResultId}}'
+            email: '{{tools.email}}'
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: contact-enrichment
+      path: /v1/contacts/enrich
+      description: Enrich existing contact records
+      operations:
+      - name: enrich-contact
+        method: POST
+        description: Enrich contact with verified emails and phone numbers
+        body:
+          type: json
+          data:
+            email: '{{tools.email}}'
+            name: '{{tools.name}}'
+            company: '{{tools.company}}'
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: job-changes
+      path: /v1/contacts/job-changes
+      description: Track contact job changes
+      operations:
+      - name: list-job-changes
+        method: GET
+        description: Retrieve contacts that have recently changed jobs
+        inputParameters:
+        - name: page
+          in: query
+          type: integer
+          required: false
+          description: Page number
+        - name: days
+          in: query
+          type: integer
+          required: false
+          description: Days to look back
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+  - type: http
+    namespace: seamless-companies
+    baseUri: https://api.seamless.ai
+    description: Seamless.AI Companies API for firmographic search and enrichment
+    authentication:
+      type: bearer
+      token: '{{SEAMLESS_AI_API_KEY}}'
+    resources:
+    - name: company-search
+      path: /v1/companies/search
+      description: Search for companies
+      operations:
+      - name: search-companies
+        method: POST
+        description: Search companies by name, domain, industry, and firmographics
+        body:
+          type: json
+          data:
+            name: '{{tools.name}}'
+            domain: '{{tools.domain}}'
+            industry: '{{tools.industry}}'
+            location: '{{tools.location}}'
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: company-research
+      path: /v1/companies/research
+      description: Research a specific company
+      operations:
+      - name: research-company
+        method: POST
+        description: Get full company profile with firmographics and technology stack
+        body:
+          type: json
+          data:
+            searchResultId: '{{tools.searchResultId}}'
+            domain: '{{tools.domain}}'
+            companyName: '{{tools.companyName}}'
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: company-enrichment
+      path: /v1/companies/enrich
+      description: Enrich company records
+      operations:
+      - name: enrich-company
+        method: POST
+        description: Enrich company with updated firmographic data
+        body:
+          type: json
+          data:
+            domain: '{{tools.domain}}'
+            companyName: '{{tools.companyName}}'
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
   exposes:
-    - type: rest
-      port: 8080
-      namespace: sales-prospecting-api
-      description: "Unified REST API for B2B sales prospecting with Seamless.AI."
-      resources:
-        - path: /v1/contacts/search
-          name: contact-search
-          description: "Search for B2B contacts"
-          operations:
-            - method: POST
-              name: search-contacts
-              description: "Search contacts by name, company, title, and location"
-              call: "seamless-contacts.search-contacts"
-              with:
-                name: "rest.name"
-                company: "rest.company"
-                title: "rest.title"
-              outputParameters:
-                - type: object
-                  mapping: "$."
-
-        - path: /v1/contacts/enrich
-          name: contact-enrichment
-          description: "Enrich contact records with verified data"
-          operations:
-            - method: POST
-              name: enrich-contact
-              description: "Enrich contact with emails and phone numbers"
-              call: "seamless-contacts.enrich-contact"
-              outputParameters:
-                - type: object
-                  mapping: "$."
-
-        - path: /v1/contacts/job-changes
-          name: job-changes
-          description: "Job change intelligence for warm outreach"
-          operations:
-            - method: GET
-              name: list-job-changes
-              description: "List contacts with recent job changes"
-              call: "seamless-contacts.list-job-changes"
-              outputParameters:
-                - type: object
-                  mapping: "$."
-
-        - path: /v1/companies/search
-          name: company-search
-          description: "Search for companies"
-          operations:
-            - method: POST
-              name: search-companies
-              description: "Search companies by name, domain, or industry"
-              call: "seamless-companies.search-companies"
-              outputParameters:
-                - type: object
-                  mapping: "$."
-
-        - path: /v1/companies/enrich
-          name: company-enrichment
-          description: "Enrich company records with firmographic data"
-          operations:
-            - method: POST
-              name: enrich-company
-              description: "Enrich company with revenue, employees, and tech stack"
-              call: "seamless-companies.enrich-company"
-              outputParameters:
-                - type: object
-                  mapping: "$."
-
-    - type: mcp
-      port: 9090
-      namespace: sales-prospecting-mcp
-      transport: http
-      description: "MCP server for AI-assisted B2B sales prospecting with Seamless.AI."
-      tools:
-        - name: search-contacts
-          description: "Search for B2B contacts by name, company, title, or location to build prospect lists"
-          hints:
-            readOnly: true
-            openWorld: true
-          call: "seamless-contacts.search-contacts"
-          with:
-            name: "tools.name"
-            company: "tools.company"
-            title: "tools.title"
-            location: "tools.location"
-          outputParameters:
-            - type: object
-              mapping: "$."
-
-        - name: research-contact
-          description: "Get full contact profile with verified emails, direct dials, and job history"
-          hints:
-            readOnly: true
-            openWorld: true
-          call: "seamless-contacts.research-contact"
-          with:
-            searchResultId: "tools.searchResultId"
-          outputParameters:
-            - type: object
-              mapping: "$."
-
-        - name: enrich-contact
-          description: "Enrich an existing contact in your CRM with missing emails, phones, and titles"
-          hints:
-            readOnly: true
-            openWorld: true
-          call: "seamless-contacts.enrich-contact"
-          with:
-            email: "tools.email"
-            name: "tools.name"
-            company: "tools.company"
-          outputParameters:
-            - type: object
-              mapping: "$."
-
-        - name: list-job-changes
-          description: "Identify warm prospects who have recently changed jobs for timely outreach"
-          hints:
-            readOnly: true
-            openWorld: false
-          call: "seamless-contacts.list-job-changes"
-          with:
-            days: "tools.days"
-          outputParameters:
-            - type: object
-              mapping: "$."
-
-        - name: search-companies
-          description: "Search for target companies by name, domain, industry, size, or location"
-          hints:
-            readOnly: true
-            openWorld: true
-          call: "seamless-companies.search-companies"
-          with:
-            name: "tools.name"
-            domain: "tools.domain"
-            industry: "tools.industry"
-          outputParameters:
-            - type: object
-              mapping: "$."
-
-        - name: research-company
-          description: "Get full company profile with firmographics, revenue, employee count, and technology stack"
-          hints:
-            readOnly: true
-            openWorld: true
-          call: "seamless-companies.research-company"
-          with:
-            searchResultId: "tools.searchResultId"
-            domain: "tools.domain"
-          outputParameters:
-            - type: object
-              mapping: "$."
-
-        - name: enrich-company
-          description: "Enrich an existing company record with verified firmographic data"
-          hints:
-            readOnly: true
-            openWorld: true
-          call: "seamless-companies.enrich-company"
-          with:
-            domain: "tools.domain"
-            companyName: "tools.companyName"
-          outputParameters:
-            - type: object
-              mapping: "$."
+  - type: rest
+    port: 8080
+    namespace: sales-prospecting-api
+    description: Unified REST API for B2B sales prospecting with Seamless.AI.
+    resources:
+    - path: /v1/contacts/search
+      name: contact-search
+      description: Search for B2B contacts
+      operations:
+      - method: POST
+        name: search-contacts
+        description: Search contacts by name, company, title, and location
+        call: seamless-contacts.search-contacts
+        with:
+          name: rest.name
+          company: rest.company
+          title: rest.title
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/contacts/enrich
+      name: contact-enrichment
+      description: Enrich contact records with verified data
+      operations:
+      - method: POST
+        name: enrich-contact
+        description: Enrich contact with emails and phone numbers
+        call: seamless-contacts.enrich-contact
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/contacts/job-changes
+      name: job-changes
+      description: Job change intelligence for warm outreach
+      operations:
+      - method: GET
+        name: list-job-changes
+        description: List contacts with recent job changes
+        call: seamless-contacts.list-job-changes
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/companies/search
+      name: company-search
+      description: Search for companies
+      operations:
+      - method: POST
+        name: search-companies
+        description: Search companies by name, domain, or industry
+        call: seamless-companies.search-companies
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/companies/enrich
+      name: company-enrichment
+      description: Enrich company records with firmographic data
+      operations:
+      - method: POST
+        name: enrich-company
+        description: Enrich company with revenue, employees, and tech stack
+        call: seamless-companies.enrich-company
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    port: 9090
+    namespace: sales-prospecting-mcp
+    transport: http
+    description: MCP server for AI-assisted B2B sales prospecting with Seamless.AI.
+    tools:
+    - name: search-contacts
+      description: Search for B2B contacts by name, company, title, or location to build prospect lists
+      hints:
+        readOnly: true
+        openWorld: true
+      call: seamless-contacts.search-contacts
+      with:
+        name: tools.name
+        company: tools.company
+        title: tools.title
+        location: tools.location
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: research-contact
+      description: Get full contact profile with verified emails, direct dials, and job history
+      hints:
+        readOnly: true
+        openWorld: true
+      call: seamless-contacts.research-contact
+      with:
+        searchResultId: tools.searchResultId
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: enrich-contact
+      description: Enrich an existing contact in your CRM with missing emails, phones, and titles
+      hints:
+        readOnly: true
+        openWorld: true
+      call: seamless-contacts.enrich-contact
+      with:
+        email: tools.email
+        name: tools.name
+        company: tools.company
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: list-job-changes
+      description: Identify warm prospects who have recently changed jobs for timely outreach
+      hints:
+        readOnly: true
+        openWorld: false
+      call: seamless-contacts.list-job-changes
+      with:
+        days: tools.days
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: search-companies
+      description: Search for target companies by name, domain, industry, size, or location
+      hints:
+        readOnly: true
+        openWorld: true
+      call: seamless-companies.search-companies
+      with:
+        name: tools.name
+        domain: tools.domain
+        industry: tools.industry
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: research-company
+      description: Get full company profile with firmographics, revenue, employee count, and technology stack
+      hints:
+        readOnly: true
+        openWorld: true
+      call: seamless-companies.research-company
+      with:
+        searchResultId: tools.searchResultId
+        domain: tools.domain
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: enrich-company
+      description: Enrich an existing company record with verified firmographic data
+      hints:
+        readOnly: true
+        openWorld: true
+      call: seamless-companies.enrich-company
+      with:
+        domain: tools.domain
+        companyName: tools.companyName
+      outputParameters:
+      - type: object
+        mapping: $.
