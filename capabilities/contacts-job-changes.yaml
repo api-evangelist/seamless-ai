@@ -1,0 +1,93 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Seamless.AI Contacts API — Job Changes
+  description: 'Seamless.AI Contacts API — Job Changes. 1 operations. Lead operation: List Contact Job Changes. Self-contained
+    Naftiko capability covering one Seamless Ai business surface.'
+  tags:
+  - Seamless Ai
+  - Job Changes
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    SEAMLESS_AI_API_KEY: SEAMLESS_AI_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: contacts-job-changes
+    baseUri: https://api.seamless.ai
+    description: Seamless.AI Contacts API — Job Changes business capability. Self-contained, no shared references.
+    resources:
+    - name: v1-contacts-job-changes
+      path: /v1/contacts/job-changes
+      operations:
+      - name: listcontactjobchanges
+        method: GET
+        description: List Contact Job Changes
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: page
+          in: query
+          type: integer
+          description: Page number for paginated results
+        - name: per_page
+          in: query
+          type: integer
+          description: Number of results per page (max 100)
+        - name: days
+          in: query
+          type: integer
+          description: Number of days to look back for job changes
+    authentication:
+      type: apikey
+      key: Authorization
+      value: '{{env.SEAMLESS_AI_API_KEY}}'
+      placement: header
+  exposes:
+  - type: rest
+    namespace: contacts-job-changes-rest
+    port: 8080
+    description: REST adapter for Seamless.AI Contacts API — Job Changes. One Spectral-compliant resource per consumed operation,
+      prefixed with /v1.
+    resources:
+    - path: /v1/v1/contacts/job-changes
+      name: v1-contacts-job-changes
+      description: REST surface for v1-contacts-job-changes.
+      operations:
+      - method: GET
+        name: listcontactjobchanges
+        description: List Contact Job Changes
+        call: contacts-job-changes.listcontactjobchanges
+        with:
+          page: rest.page
+          per_page: rest.per_page
+          days: rest.days
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: contacts-job-changes-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Seamless.AI Contacts API — Job Changes. One tool per consumed operation, routed inline through
+      this capability's consumes block.
+    tools:
+    - name: list-contact-job-changes
+      description: List Contact Job Changes
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: contacts-job-changes.listcontactjobchanges
+      with:
+        page: tools.page
+        per_page: tools.per_page
+        days: tools.days
+      outputParameters:
+      - type: object
+        mapping: $.

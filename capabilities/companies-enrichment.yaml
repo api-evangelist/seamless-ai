@@ -1,0 +1,82 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Seamless.AI Companies API — Enrichment
+  description: 'Seamless.AI Companies API — Enrichment. 1 operations. Lead operation: Enrich Company. Self-contained Naftiko
+    capability covering one Seamless Ai business surface.'
+  tags:
+  - Seamless Ai
+  - Enrichment
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    SEAMLESS_AI_API_KEY: SEAMLESS_AI_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: companies-enrichment
+    baseUri: https://api.seamless.ai
+    description: Seamless.AI Companies API — Enrichment business capability. Self-contained, no shared references.
+    resources:
+    - name: v1-companies-enrich
+      path: /v1/companies/enrich
+      operations:
+      - name: enrichcompany
+        method: POST
+        description: Enrich Company
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    authentication:
+      type: apikey
+      key: Authorization
+      value: '{{env.SEAMLESS_AI_API_KEY}}'
+      placement: header
+  exposes:
+  - type: rest
+    namespace: companies-enrichment-rest
+    port: 8080
+    description: REST adapter for Seamless.AI Companies API — Enrichment. One Spectral-compliant resource per consumed operation,
+      prefixed with /v1.
+    resources:
+    - path: /v1/v1/companies/enrich
+      name: v1-companies-enrich
+      description: REST surface for v1-companies-enrich.
+      operations:
+      - method: POST
+        name: enrichcompany
+        description: Enrich Company
+        call: companies-enrichment.enrichcompany
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: companies-enrichment-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Seamless.AI Companies API — Enrichment. One tool per consumed operation, routed inline through
+      this capability's consumes block.
+    tools:
+    - name: enrich-company
+      description: Enrich Company
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: companies-enrichment.enrichcompany
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.

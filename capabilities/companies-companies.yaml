@@ -1,0 +1,166 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Seamless.AI Companies API — Companies
+  description: 'Seamless.AI Companies API — Companies. 3 operations. Lead operation: Enrich Company. Self-contained Naftiko
+    capability covering one Seamless Ai business surface.'
+  tags:
+  - Seamless Ai
+  - Companies
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    SEAMLESS_AI_API_KEY: SEAMLESS_AI_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: companies-companies
+    baseUri: https://api.seamless.ai
+    description: Seamless.AI Companies API — Companies business capability. Self-contained, no shared references.
+    resources:
+    - name: v1-companies-enrich
+      path: /v1/companies/enrich
+      operations:
+      - name: enrichcompany
+        method: POST
+        description: Enrich Company
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: v1-companies-research
+      path: /v1/companies/research
+      operations:
+      - name: researchcompany
+        method: POST
+        description: Research Company
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: v1-companies-search
+      path: /v1/companies/search
+      operations:
+      - name: searchcompanies
+        method: POST
+        description: Search Companies
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    authentication:
+      type: apikey
+      key: Authorization
+      value: '{{env.SEAMLESS_AI_API_KEY}}'
+      placement: header
+  exposes:
+  - type: rest
+    namespace: companies-companies-rest
+    port: 8080
+    description: REST adapter for Seamless.AI Companies API — Companies. One Spectral-compliant resource per consumed operation,
+      prefixed with /v1.
+    resources:
+    - path: /v1/v1/companies/enrich
+      name: v1-companies-enrich
+      description: REST surface for v1-companies-enrich.
+      operations:
+      - method: POST
+        name: enrichcompany
+        description: Enrich Company
+        call: companies-companies.enrichcompany
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/companies/research
+      name: v1-companies-research
+      description: REST surface for v1-companies-research.
+      operations:
+      - method: POST
+        name: researchcompany
+        description: Research Company
+        call: companies-companies.researchcompany
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/companies/search
+      name: v1-companies-search
+      description: REST surface for v1-companies-search.
+      operations:
+      - method: POST
+        name: searchcompanies
+        description: Search Companies
+        call: companies-companies.searchcompanies
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: companies-companies-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Seamless.AI Companies API — Companies. One tool per consumed operation, routed inline through
+      this capability's consumes block.
+    tools:
+    - name: enrich-company
+      description: Enrich Company
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: companies-companies.enrichcompany
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: research-company
+      description: Research Company
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: false
+      call: companies-companies.researchcompany
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: search-companies
+      description: Search Companies
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: false
+      call: companies-companies.searchcompanies
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
