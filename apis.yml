@@ -103,3 +103,5 @@ common:
   type: SpectralRuleset
 - url: vocabulary/seamless-ai-vocabulary.yml
   type: Vocabulary
+- type: LLMsTxt
+  url: https://docs.seamless.ai/llms.txt
