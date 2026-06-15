@@ -1,0 +1,1319 @@
+{
+  "item": [
+    {
+      "id": "25471e91-e9cb-4eec-9c03-dd71a9c69a00",
+      "name": "Contacts",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "e6307efd-e64a-4308-8bd4-f22bc100c69d",
+          "name": "Search Contacts",
+          "request": {
+            "name": "Search Contacts",
+            "description": {
+              "content": "Search for B2B contacts using criteria such as name, company, title, location, industry, and other filters. Returns paginated search results with contact identifiers that can be used for enrichment.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "contacts",
+                "search"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"<string>\",\n  \"company\": \"<string>\",\n  \"title\": \"<string>\",\n  \"location\": \"<string>\",\n  \"industry\": \"<string>\",\n  \"page\": 1,\n  \"per_page\": 25\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "19777d9a-4e3b-4278-813e-865963e993bc",
+              "name": "Successful contact search results",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "contacts",
+                    "search"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"company\": \"<string>\",\n  \"title\": \"<string>\",\n  \"location\": \"<string>\",\n  \"industry\": \"<string>\",\n  \"page\": 1,\n  \"per_page\": 25\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"searchResultId\": \"string\",\n      \"name\": \"string\",\n      \"company\": \"string\",\n      \"title\": \"string\",\n      \"location\": \"string\"\n    },\n    {\n      \"searchResultId\": \"string\",\n      \"name\": \"string\",\n      \"company\": \"string\",\n      \"title\": \"string\",\n      \"location\": \"string\"\n    }\n  ],\n  \"meta\": {\n    \"page\": 3020,\n    \"per_page\": 2156,\n    \"total\": 9874,\n    \"total_pages\": 1924\n  },\n  \"supplementalData\": {\n    \"nextToken\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "03cd3b86-f49f-4555-a4a6-98a2b118d727",
+              "name": "Unauthorized - invalid or missing API key",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "contacts",
+                    "search"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"company\": \"<string>\",\n  \"title\": \"<string>\",\n  \"location\": \"<string>\",\n  \"industry\": \"<string>\",\n  \"page\": 1,\n  \"per_page\": 25\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "64c82649-b55b-42b7-b734-c2ba6e77a91e",
+              "name": "Rate limit exceeded - 60 requests per minute per endpoint",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "contacts",
+                    "search"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"company\": \"<string>\",\n  \"title\": \"<string>\",\n  \"location\": \"<string>\",\n  \"industry\": \"<string>\",\n  \"page\": 1,\n  \"per_page\": 25\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "cdee23e4-9218-46be-9f6e-050f75d517e8",
+          "name": "Research Contact",
+          "request": {
+            "name": "Research Contact",
+            "description": {
+              "content": "Research a specific contact using a search result ID from /contacts/search or a direct contact identifier. Returns full contact data including verified email addresses, phone numbers, job history, and social profiles.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "contacts",
+                "research"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"searchResultId\": \"<string>\",\n  \"email\": \"<string>\",\n  \"linkedinUrl\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "2f5a90f5-d91b-43b0-9bc7-51a0a56fd52d",
+              "name": "Full contact research data",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "contacts",
+                    "research"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"searchResultId\": \"<string>\",\n  \"email\": \"<string>\",\n  \"linkedinUrl\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"string\",\n  \"name\": \"string\",\n  \"firstName\": \"string\",\n  \"lastName\": \"string\",\n  \"title\": \"string\",\n  \"company\": \"string\",\n  \"emails\": [\n    {\n      \"email\": \"string\",\n      \"type\": \"work\",\n      \"verified\": true\n    },\n    {\n      \"email\": \"string\",\n      \"type\": \"personal\",\n      \"verified\": true\n    }\n  ],\n  \"phones\": [\n    {\n      \"number\": \"string\",\n      \"type\": \"direct\"\n    },\n    {\n      \"number\": \"string\",\n      \"type\": \"mobile\"\n    }\n  ],\n  \"location\": \"string\",\n  \"linkedinUrl\": \"string\",\n  \"jobHistory\": [\n    {\n      \"company\": \"string\",\n      \"title\": \"string\",\n      \"startDate\": \"string\",\n      \"endDate\": \"string\"\n    },\n    {\n      \"company\": \"string\",\n      \"title\": \"string\",\n      \"startDate\": \"string\",\n      \"endDate\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "7d29cf54-b4b7-4955-bfc4-9b285dd1d106",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "contacts",
+                    "research"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"searchResultId\": \"<string>\",\n  \"email\": \"<string>\",\n  \"linkedinUrl\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "8a0cb7dc-e40d-495f-8292-d06cedb1858e",
+              "name": "Rate limit exceeded",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "contacts",
+                    "research"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"searchResultId\": \"<string>\",\n  \"email\": \"<string>\",\n  \"linkedinUrl\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "a6e0cd77-055c-47f7-a1fe-161c388f7766",
+          "name": "Enrich Contact",
+          "request": {
+            "name": "Enrich Contact",
+            "description": {
+              "content": "Enrich an existing contact record with updated or missing fields. Provide known contact identifiers and receive back verified emails, direct dials, mobile numbers, job titles, and company information.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "contacts",
+                "enrich"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"<string>\",\n  \"name\": \"<string>\",\n  \"company\": \"<string>\",\n  \"linkedinUrl\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "0d90fe27-3cc0-423a-8720-d85764fab184",
+              "name": "Enriched contact data",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "contacts",
+                    "enrich"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"email\": \"<string>\",\n  \"name\": \"<string>\",\n  \"company\": \"<string>\",\n  \"linkedinUrl\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"string\",\n  \"name\": \"string\",\n  \"firstName\": \"string\",\n  \"lastName\": \"string\",\n  \"title\": \"string\",\n  \"company\": \"string\",\n  \"emails\": [\n    {\n      \"email\": \"string\",\n      \"type\": \"work\",\n      \"verified\": true\n    },\n    {\n      \"email\": \"string\",\n      \"type\": \"personal\",\n      \"verified\": true\n    }\n  ],\n  \"phones\": [\n    {\n      \"number\": \"string\",\n      \"type\": \"direct\"\n    },\n    {\n      \"number\": \"string\",\n      \"type\": \"mobile\"\n    }\n  ],\n  \"location\": \"string\",\n  \"linkedinUrl\": \"string\",\n  \"jobHistory\": [\n    {\n      \"company\": \"string\",\n      \"title\": \"string\",\n      \"startDate\": \"string\",\n      \"endDate\": \"string\"\n    },\n    {\n      \"company\": \"string\",\n      \"title\": \"string\",\n      \"startDate\": \"string\",\n      \"endDate\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "91d1d596-e3fd-4d78-b636-483a1cfa3a34",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "contacts",
+                    "enrich"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"email\": \"<string>\",\n  \"name\": \"<string>\",\n  \"company\": \"<string>\",\n  \"linkedinUrl\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "912ebe16-da53-4e0a-ad88-48afd91d8106",
+              "name": "Rate limit exceeded",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "contacts",
+                    "enrich"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"email\": \"<string>\",\n  \"name\": \"<string>\",\n  \"company\": \"<string>\",\n  \"linkedinUrl\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "3ba2bc28-d316-4c27-a2eb-46188ee2f651",
+          "name": "List Contact Job Changes",
+          "request": {
+            "name": "List Contact Job Changes",
+            "description": {
+              "content": "Retrieve contacts that have recently changed jobs within your contact database. Returns job-change intelligence including previous and current roles to help identify warm outreach opportunities.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "contacts",
+                "job-changes"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "1",
+                  "description": "Page number for paginated results"
+                },
+                {
+                  "disabled": false,
+                  "key": "per_page",
+                  "value": "25",
+                  "description": "Number of results per page (max 100)"
+                },
+                {
+                  "disabled": false,
+                  "key": "days",
+                  "value": "30",
+                  "description": "Number of days to look back for job changes"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "e53258a4-018d-402b-a20f-b206c55e011c",
+              "name": "List of contacts with recent job changes",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "contacts",
+                    "job-changes"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "per_page",
+                      "value": "25"
+                    },
+                    {
+                      "key": "days",
+                      "value": "30"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"contactId\": \"string\",\n      \"name\": \"string\",\n      \"previousCompany\": \"string\",\n      \"previousTitle\": \"string\",\n      \"currentCompany\": \"string\",\n      \"currentTitle\": \"string\",\n      \"changeDate\": \"1994-05-30\"\n    },\n    {\n      \"contactId\": \"string\",\n      \"name\": \"string\",\n      \"previousCompany\": \"string\",\n      \"previousTitle\": \"string\",\n      \"currentCompany\": \"string\",\n      \"currentTitle\": \"string\",\n      \"changeDate\": \"2011-02-10\"\n    }\n  ],\n  \"meta\": {\n    \"page\": 3798,\n    \"per_page\": 6289,\n    \"total\": 5595,\n    \"total_pages\": 4284\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "99fede80-7179-4479-8bf4-07618b2e5609",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "contacts",
+                    "job-changes"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "per_page",
+                      "value": "25"
+                    },
+                    {
+                      "key": "days",
+                      "value": "30"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "6fb2d1f1-b471-45ee-914a-bcb64b665ba2",
+              "name": "Rate limit exceeded",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "contacts",
+                    "job-changes"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "per_page",
+                      "value": "25"
+                    },
+                    {
+                      "key": "days",
+                      "value": "30"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    },
+    {
+      "id": "7c3ce928-5655-4c56-bf5e-408ed237ccbd",
+      "name": "Enrichment",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "fc2b059d-8710-481f-b28a-ea4974e3f63d",
+          "name": "Enrich Contact",
+          "request": {
+            "name": "Enrich Contact",
+            "description": {
+              "content": "Enrich an existing contact record with updated or missing fields. Provide known contact identifiers and receive back verified emails, direct dials, mobile numbers, job titles, and company information.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "contacts",
+                "enrich"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"<string>\",\n  \"name\": \"<string>\",\n  \"company\": \"<string>\",\n  \"linkedinUrl\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "243cbee2-9b8a-43bb-ad89-9e5c4d9e2840",
+              "name": "Enriched contact data",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "contacts",
+                    "enrich"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"email\": \"<string>\",\n  \"name\": \"<string>\",\n  \"company\": \"<string>\",\n  \"linkedinUrl\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"string\",\n  \"name\": \"string\",\n  \"firstName\": \"string\",\n  \"lastName\": \"string\",\n  \"title\": \"string\",\n  \"company\": \"string\",\n  \"emails\": [\n    {\n      \"email\": \"string\",\n      \"type\": \"work\",\n      \"verified\": true\n    },\n    {\n      \"email\": \"string\",\n      \"type\": \"work\",\n      \"verified\": false\n    }\n  ],\n  \"phones\": [\n    {\n      \"number\": \"string\",\n      \"type\": \"direct\"\n    },\n    {\n      \"number\": \"string\",\n      \"type\": \"direct\"\n    }\n  ],\n  \"location\": \"string\",\n  \"linkedinUrl\": \"string\",\n  \"jobHistory\": [\n    {\n      \"company\": \"string\",\n      \"title\": \"string\",\n      \"startDate\": \"string\",\n      \"endDate\": \"string\"\n    },\n    {\n      \"company\": \"string\",\n      \"title\": \"string\",\n      \"startDate\": \"string\",\n      \"endDate\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "05679ba4-69cc-48c4-a71e-57bd557a4081",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "contacts",
+                    "enrich"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"email\": \"<string>\",\n  \"name\": \"<string>\",\n  \"company\": \"<string>\",\n  \"linkedinUrl\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "d2b74d0b-76c0-4a0d-a8e6-ef527c328adb",
+              "name": "Rate limit exceeded",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "contacts",
+                    "enrich"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"email\": \"<string>\",\n  \"name\": \"<string>\",\n  \"company\": \"<string>\",\n  \"linkedinUrl\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    },
+    {
+      "id": "aed7d7ad-46e3-402d-b711-dc1c8276899a",
+      "name": "Job Changes",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "f15c9fc1-1e2c-4603-964b-f4a27f64c5e3",
+          "name": "List Contact Job Changes",
+          "request": {
+            "name": "List Contact Job Changes",
+            "description": {
+              "content": "Retrieve contacts that have recently changed jobs within your contact database. Returns job-change intelligence including previous and current roles to help identify warm outreach opportunities.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "contacts",
+                "job-changes"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "1",
+                  "description": "Page number for paginated results"
+                },
+                {
+                  "disabled": false,
+                  "key": "per_page",
+                  "value": "25",
+                  "description": "Number of results per page (max 100)"
+                },
+                {
+                  "disabled": false,
+                  "key": "days",
+                  "value": "30",
+                  "description": "Number of days to look back for job changes"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "74cbfe7b-2790-48d3-ab28-7d541db24138",
+              "name": "List of contacts with recent job changes",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "contacts",
+                    "job-changes"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "per_page",
+                      "value": "25"
+                    },
+                    {
+                      "key": "days",
+                      "value": "30"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"contactId\": \"string\",\n      \"name\": \"string\",\n      \"previousCompany\": \"string\",\n      \"previousTitle\": \"string\",\n      \"currentCompany\": \"string\",\n      \"currentTitle\": \"string\",\n      \"changeDate\": \"1956-12-03\"\n    },\n    {\n      \"contactId\": \"string\",\n      \"name\": \"string\",\n      \"previousCompany\": \"string\",\n      \"previousTitle\": \"string\",\n      \"currentCompany\": \"string\",\n      \"currentTitle\": \"string\",\n      \"changeDate\": \"1996-09-20\"\n    }\n  ],\n  \"meta\": {\n    \"page\": 9950,\n    \"per_page\": 6123,\n    \"total\": 9754,\n    \"total_pages\": 5324\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "54ea27a6-310c-42b0-8891-ea0928ccb84a",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "contacts",
+                    "job-changes"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "per_page",
+                      "value": "25"
+                    },
+                    {
+                      "key": "days",
+                      "value": "30"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "75e82e8c-e988-4f82-9dfb-685e0475caa1",
+              "name": "Rate limit exceeded",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "contacts",
+                    "job-changes"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "per_page",
+                      "value": "25"
+                    },
+                    {
+                      "key": "days",
+                      "value": "30"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.seamless.ai",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      {
+        "key": "key",
+        "value": "Authorization"
+      },
+      {
+        "key": "value",
+        "value": "{{apiKey}}"
+      },
+      {
+        "key": "in",
+        "value": "header"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "110644f8-1799-49fd-9ce6-095a59f54bbb",
+    "name": "Seamless.AI Contacts API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The Seamless.AI Contacts API provides programmatic access to B2B contact search, enrichment, and research capabilities. Search for contacts by name, company, title, and location, and enrich existing records with verified emails, phone numbers, and job history using AI-powered data verification.",
+      "type": "text/plain"
+    }
+  }
+}

@@ -1,0 +1,102 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Seamless.AI Contacts API",
+    "version": "1.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "Authorization",
+      "value": "{{Authorization}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Contacts",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Search Contacts",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.seamless.ai/v1/contacts/search",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Search for B2B contacts using criteria such as name, company, title, location, industry, and other filters. Returns paginated search results with contact identifiers that can be used for enrichment."
+        },
+        {
+          "info": {
+            "name": "Research Contact",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.seamless.ai/v1/contacts/research",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Research a specific contact using a search result ID from /contacts/search or a direct contact identifier. Returns full contact data including verified email addresses, phone numbers, job history, and social profiles."
+        },
+        {
+          "info": {
+            "name": "Enrich Contact",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.seamless.ai/v1/contacts/enrich",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Enrich an existing contact record with updated or missing fields. Provide known contact identifiers and receive back verified emails, direct dials, mobile numbers, job titles, and company information."
+        },
+        {
+          "info": {
+            "name": "List Contact Job Changes",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.seamless.ai/v1/contacts/job-changes",
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Page number for paginated results"
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query",
+                "description": "Number of results per page (max 100)"
+              },
+              {
+                "name": "days",
+                "value": "",
+                "type": "query",
+                "description": "Number of days to look back for job changes"
+              }
+            ]
+          },
+          "docs": "Retrieve contacts that have recently changed jobs within your contact database. Returns job-change intelligence including previous and current roles to help identify warm outreach opportunities."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

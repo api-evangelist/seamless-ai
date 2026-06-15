@@ -1,0 +1,71 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Seamless.AI Companies API",
+    "version": "1.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "Authorization",
+      "value": "{{Authorization}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Companies",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Search Companies",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.seamless.ai/v1/companies/search",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Search for companies using criteria such as company name, domain, industry, location, revenue range, employee count, and technology stack. Returns paginated results with company identifiers for further research."
+        },
+        {
+          "info": {
+            "name": "Research Company",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.seamless.ai/v1/companies/research",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Research a specific company using a search result ID from /companies/search, or by providing direct identifiers such as domain or company name. Returns comprehensive company profiles including firmographics, technology stack, funding data, and key contacts."
+        },
+        {
+          "info": {
+            "name": "Enrich Company",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.seamless.ai/v1/companies/enrich",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Enrich an existing company record with updated or missing firmographic data. Provide known company identifiers and receive back verified company information including revenue, employee count, industry classification, and technology stack."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
