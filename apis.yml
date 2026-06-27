@@ -92,10 +92,10 @@ common:
   - url: json-ld/seamless-ai-context.jsonld
     type: JSONLDContext
   - url: examples/seamless-ai-search-contacts-example.json
-    type: Example
+    type: Examples
   - url: rules/seamless-ai-rules.yml
     type: SpectralRuleset
   - url: vocabulary/seamless-ai-vocabulary.yml
     type: Vocabulary
-  - type: LLMsTxt
+  - type: LlmsText
     url: https://docs.seamless.ai/llms.txt
