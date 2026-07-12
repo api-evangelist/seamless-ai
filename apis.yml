@@ -63,6 +63,10 @@ maintainers:
     email: kin@apievangelist.com
 specificationVersion: '0.19'
 common:
+  - type: DomainSecurity
+    url: security/seamless-ai-domain-security.yml
+  - type: Authentication
+    url: authentication/seamless-ai-authentication.yml
   - type: LinkedIn
     url: https://www.linkedin.com/company/seamlessai
   - name: Website

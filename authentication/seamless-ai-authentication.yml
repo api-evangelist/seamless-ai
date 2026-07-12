@@ -1,0 +1,17 @@
+generated: '2026-07-11'
+method: derived
+source: openapi/seamless-ai-companies-openapi.yml, openapi/seamless-ai-contacts-openapi.yml
+summary:
+  types:
+  - apiKey
+  api_key_in:
+  - header
+schemes:
+- name: apiKey
+  type: apiKey
+  in: header
+  parameter: Authorization
+  description: API key in the format "Bearer {api_key}"
+  sources:
+  - openapi/seamless-ai-companies-openapi.yml
+  - openapi/seamless-ai-contacts-openapi.yml
