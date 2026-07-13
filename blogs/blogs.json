@@ -3,12 +3,13 @@
   "feeds": [
     {
       "source": "https://seamless.ai/news/releases/api",
-      "feed_url": "",
-      "saved": 1,
-      "method": "agent-scrape"
+      "feed_url": "https://seamless.ai/news/releases/api",
+      "title": "",
+      "saved": 0,
+      "method": "none"
     }
   ],
-  "fetched": "2026-06-27T13:08:49Z",
+  "fetched": "2026-07-11T11:50:51Z",
   "post_count": 1,
-  "agent_pulled": "2026-06-27"
+  "note": "single static release page, no new content since last pull"
 }
