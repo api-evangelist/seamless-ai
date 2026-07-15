@@ -63,6 +63,8 @@ maintainers:
     email: kin@apievangelist.com
 specificationVersion: '0.19'
 common:
+  - type: AgenticAccess
+    url: agentic-access/seamless-ai-agentic-access.yml
   - type: DomainSecurity
     url: security/seamless-ai-domain-security.yml
   - type: Authentication
