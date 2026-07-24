@@ -1,29 +1,25 @@
 openapi: 3.0.3
 info:
   title: Seamless.AI Companies API
-  description: >-
-    The Seamless.AI Companies API enables programmatic search and research of company
-    data including firmographics, revenue, employee count, technology stack, and company
-    intelligence for sales and marketing use cases.
+  description: The Seamless.AI Companies API enables programmatic search and research of company data including firmographics, revenue, employee count, technology stack, and company intelligence for sales and marketing use cases.
   version: 1.0.0
   contact:
     url: https://docs.seamless.ai/
 servers:
-  - url: https://api.seamless.ai
-    description: Seamless.AI API
+- url: https://api.seamless.ai
+  description: Seamless.AI API
 security:
-  - apiKey: []
+- apiKey: []
+tags:
+- name: Companies
 paths:
   /v1/companies/search:
     post:
       operationId: searchCompanies
       summary: Search Companies
-      description: >-
-        Search for companies using criteria such as company name, domain, industry,
-        location, revenue range, employee count, and technology stack. Returns paginated
-        results with company identifiers for further research.
+      description: Search for companies using criteria such as company name, domain, industry, location, revenue range, employee count, and technology stack. Returns paginated results with company identifiers for further research.
       tags:
-        - Companies
+      - Companies
       requestBody:
         required: true
         content:
@@ -45,13 +41,9 @@ paths:
     post:
       operationId: researchCompany
       summary: Research Company
-      description: >-
-        Research a specific company using a search result ID from /companies/search,
-        or by providing direct identifiers such as domain or company name. Returns
-        comprehensive company profiles including firmographics, technology stack,
-        funding data, and key contacts.
+      description: Research a specific company using a search result ID from /companies/search, or by providing direct identifiers such as domain or company name. Returns comprehensive company profiles including firmographics, technology stack, funding data, and key contacts.
       tags:
-        - Companies
+      - Companies
       requestBody:
         required: true
         content:
@@ -73,13 +65,9 @@ paths:
     post:
       operationId: enrichCompany
       summary: Enrich Company
-      description: >-
-        Enrich an existing company record with updated or missing firmographic data.
-        Provide known company identifiers and receive back verified company information
-        including revenue, employee count, industry classification, and technology stack.
+      description: Enrich an existing company record with updated or missing firmographic data. Provide known company identifiers and receive back verified company information including revenue, employee count, industry classification, and technology stack.
       tags:
-        - Companies
-        - Enrichment
+      - Companies
       requestBody:
         required: true
         content:
@@ -98,103 +86,7 @@ paths:
         '429':
           description: Rate limit exceeded
 components:
-  securitySchemes:
-    apiKey:
-      type: apiKey
-      in: header
-      name: Authorization
-      description: API key in the format "Bearer {api_key}"
   schemas:
-    CompanySearchRequest:
-      type: object
-      properties:
-        name:
-          type: string
-          description: Company name or keyword
-        domain:
-          type: string
-          description: Company website domain
-        industry:
-          type: string
-          description: Industry vertical
-        location:
-          type: string
-          description: City, state, or country
-        minEmployees:
-          type: integer
-          description: Minimum employee count
-        maxEmployees:
-          type: integer
-          description: Maximum employee count
-        minRevenue:
-          type: number
-          description: Minimum annual revenue in USD
-        maxRevenue:
-          type: number
-          description: Maximum annual revenue in USD
-        technologies:
-          type: array
-          items:
-            type: string
-          description: Technology stack filters
-        page:
-          type: integer
-          default: 1
-        per_page:
-          type: integer
-          default: 25
-          maximum: 100
-    CompanySearchResponse:
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/CompanySearchResult'
-        meta:
-          $ref: '#/components/schemas/PaginationMeta'
-        supplementalData:
-          type: object
-          properties:
-            nextToken:
-              type: string
-    CompanySearchResult:
-      type: object
-      properties:
-        searchResultId:
-          type: string
-          description: Unique identifier for research calls
-        name:
-          type: string
-        domain:
-          type: string
-        industry:
-          type: string
-        location:
-          type: string
-        employeeCount:
-          type: integer
-    CompanyResearchRequest:
-      type: object
-      properties:
-        searchResultId:
-          type: string
-          description: ID from /companies/search
-        domain:
-          type: string
-          description: Company domain for direct lookup
-        companyName:
-          type: string
-          description: Company name for direct lookup
-    CompanyEnrichRequest:
-      type: object
-      properties:
-        domain:
-          type: string
-        companyName:
-          type: string
-        linkedinUrl:
-          type: string
     CompanyRecord:
       type: object
       properties:
@@ -247,6 +139,57 @@ components:
             lastRoundDate:
               type: string
               format: date
+    CompanySearchRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Company name or keyword
+        domain:
+          type: string
+          description: Company website domain
+        industry:
+          type: string
+          description: Industry vertical
+        location:
+          type: string
+          description: City, state, or country
+        minEmployees:
+          type: integer
+          description: Minimum employee count
+        maxEmployees:
+          type: integer
+          description: Maximum employee count
+        minRevenue:
+          type: number
+          description: Minimum annual revenue in USD
+        maxRevenue:
+          type: number
+          description: Maximum annual revenue in USD
+        technologies:
+          type: array
+          items:
+            type: string
+          description: Technology stack filters
+        page:
+          type: integer
+          default: 1
+        per_page:
+          type: integer
+          default: 25
+          maximum: 100
+    CompanyResearchRequest:
+      type: object
+      properties:
+        searchResultId:
+          type: string
+          description: ID from /companies/search
+        domain:
+          type: string
+          description: Company domain for direct lookup
+        companyName:
+          type: string
+          description: Company name for direct lookup
     PaginationMeta:
       type: object
       properties:
@@ -258,3 +201,48 @@ components:
           type: integer
         total_pages:
           type: integer
+    CompanySearchResult:
+      type: object
+      properties:
+        searchResultId:
+          type: string
+          description: Unique identifier for research calls
+        name:
+          type: string
+        domain:
+          type: string
+        industry:
+          type: string
+        location:
+          type: string
+        employeeCount:
+          type: integer
+    CompanyEnrichRequest:
+      type: object
+      properties:
+        domain:
+          type: string
+        companyName:
+          type: string
+        linkedinUrl:
+          type: string
+    CompanySearchResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/CompanySearchResult'
+        meta:
+          $ref: '#/components/schemas/PaginationMeta'
+        supplementalData:
+          type: object
+          properties:
+            nextToken:
+              type: string
+  securitySchemes:
+    apiKey:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: API key in the format "Bearer {api_key}"
