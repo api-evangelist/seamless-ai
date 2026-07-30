@@ -1,43 +1,54 @@
 aid: seamless-ai
 url: https://raw.githubusercontent.com/api-evangelist/seamless-ai/refs/heads/main/apis.yml
 apis:
-  - aid: seamless-ai:seamless-ai-contacts-api
-    name: Seamless.AI Contacts API
-    tags:
-      - Contacts
-      - Sales Intelligence
-      - B2B
-      - Prospecting
-    humanURL: https://docs.seamless.ai/
-    baseURL: https://api.seamless.ai
-    properties:
-      - url: openapi/seamless-ai-contacts-openapi.yml
-        type: OpenAPI
-      - url: https://docs.seamless.ai/
-        type: Documentation
-    description: >-
-      The Seamless.AI Contacts API provides programmatic access to contact search, enrichment, and research
-      capabilities. Search for B2B contacts by name, company, title, and location. Enrich existing contact records with
-      emails, phone numbers, and job history. Access job-change intelligence to identify contacts that have recently
-      changed roles.
-  - aid: seamless-ai:seamless-ai-companies-api
-    name: Seamless.AI Companies API
-    tags:
-      - Companies
-      - Firmographics
-      - Sales Intelligence
-      - B2B
-    humanURL: https://docs.seamless.ai/
-    baseURL: https://api.seamless.ai
-    properties:
-      - url: openapi/seamless-ai-companies-openapi.yml
-        type: OpenAPI
-      - url: https://docs.seamless.ai/
-        type: Documentation
-    description: >-
-      The Seamless.AI Companies API enables programmatic search and research of company data including firmographics,
-      revenue, employee count, technology stack, and company intelligence. Use company search result IDs or direct
-      identifiers such as domain or company name to retrieve comprehensive company profiles.
+- aid: seamless-ai:seamless-ai-companies-api
+  name: Seamless.AI Companies API
+  description: The Companies API from Seamless.AI — 3 operation(s) for companies.
+  humanURL: https://docs.seamless.ai/
+  baseURL: https://api.seamless.ai
+  tags:
+  - Companies
+  properties:
+  - type: OpenAPI
+    url: openapi/seamless-ai-companies-api-openapi.yml
+  - type: Documentation
+    url: https://docs.seamless.ai/
+- aid: seamless-ai:seamless-ai-contacts-api
+  name: Seamless.AI Contacts API
+  description: The Contacts API from Seamless.AI — 4 operation(s) for contacts.
+  humanURL: https://docs.seamless.ai/
+  baseURL: https://api.seamless.ai
+  tags:
+  - Contacts
+  properties:
+  - type: OpenAPI
+    url: openapi/seamless-ai-contacts-api-openapi.yml
+  - type: Documentation
+    url: https://docs.seamless.ai/
+- aid: seamless-ai:seamless-ai-enrichment-api
+  name: Seamless.AI Enrichment API
+  description: The Enrichment API from Seamless.AI — 2 operation(s) for enrichment.
+  humanURL: https://docs.seamless.ai/
+  baseURL: https://api.seamless.ai
+  tags:
+  - Enrichment
+  properties:
+  - type: OpenAPI
+    url: openapi/seamless-ai-enrichment-api-openapi.yml
+  - type: Documentation
+    url: https://docs.seamless.ai/
+- aid: seamless-ai:seamless-ai-job-changes-api
+  name: Seamless.AI Job Changes API
+  description: The Job Changes API from Seamless.AI — 1 operation(s) for job changes.
+  humanURL: https://docs.seamless.ai/
+  baseURL: https://api.seamless.ai
+  tags:
+  - Job Changes
+  properties:
+  - type: OpenAPI
+    url: openapi/seamless-ai-job-changes-api-openapi.yml
+  - type: Documentation
+    url: https://docs.seamless.ai/
 name: Seamless.AI
 tags:
   - B2B
@@ -47,7 +58,20 @@ tags:
   - Lead Generation
   - CRM Enrichment
 type: Index
-image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+accessModel:
+  pricing: freemium
+  onboarding: self-serve
+  trial: false
+  try_now: true
+  public: false
+  label: Freemium · Self-serve signup
+  confidence: high
+  source:
+  - plans
+  - authentication
+  generated: '2026-07-22'
+  method: derived
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/seamless-ai.png
 access: 3rd-Party
 created: '2026-05-02'
 modified: '2026-05-19'
