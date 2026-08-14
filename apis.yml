@@ -1,55 +1,23 @@
 aid: seamless-ai
 url: https://raw.githubusercontent.com/api-evangelist/seamless-ai/refs/heads/main/apis.yml
-apis:
-- aid: seamless-ai:seamless-ai-companies-api
-  name: Seamless.AI Companies API
-  description: The Companies API from Seamless.AI — 3 operation(s) for companies.
-  humanURL: https://docs.seamless.ai/
-  baseURL: https://api.seamless.ai
-  tags:
-  - Companies
-  properties:
-  - type: OpenAPI
-    url: openapi/seamless-ai-companies-api-openapi.yml
-  - type: Documentation
-    url: https://docs.seamless.ai/
-- aid: seamless-ai:seamless-ai-contacts-api
-  name: Seamless.AI Contacts API
-  description: The Contacts API from Seamless.AI — 4 operation(s) for contacts.
-  humanURL: https://docs.seamless.ai/
-  baseURL: https://api.seamless.ai
-  tags:
-  - Contacts
-  properties:
-  - type: OpenAPI
-    url: openapi/seamless-ai-contacts-api-openapi.yml
-  - type: Documentation
-    url: https://docs.seamless.ai/
-- aid: seamless-ai:seamless-ai-enrichment-api
-  name: Seamless.AI Enrichment API
-  description: The Enrichment API from Seamless.AI — 2 operation(s) for enrichment.
-  humanURL: https://docs.seamless.ai/
-  baseURL: https://api.seamless.ai
-  tags:
-  - Enrichment
-  properties:
-  - type: OpenAPI
-    url: openapi/seamless-ai-enrichment-api-openapi.yml
-  - type: Documentation
-    url: https://docs.seamless.ai/
-- aid: seamless-ai:seamless-ai-job-changes-api
-  name: Seamless.AI Job Changes API
-  description: The Job Changes API from Seamless.AI — 1 operation(s) for job changes.
-  humanURL: https://docs.seamless.ai/
-  baseURL: https://api.seamless.ai
-  tags:
-  - Job Changes
-  properties:
-  - type: OpenAPI
-    url: openapi/seamless-ai-job-changes-api-openapi.yml
-  - type: Documentation
-    url: https://docs.seamless.ai/
 name: Seamless.AI
+type: Index
+specificationVersion: '0.19'
+description: >-
+  Seamless.AI is a B2B sales intelligence platform that provides real-time contact and company data
+  to help sales teams find and connect with their ideal customers. The platform uses artificial
+  intelligence to continuously verify and update contact information including emails, direct dials
+  and mobile numbers. Its Public API v1 is a three-hop enrichment pipeline — search, research, then
+  collect by polling or webhook — secured with an API key in a Token header or OAuth 2.0, and
+  metered in research credits rather than API calls. Alongside the nine-operation REST API,
+  Seamless.AI operates a hosted Model Context Protocol server exposing 54 tools across search,
+  research, lists, saved searches, campaigns, templates, email, calls, tasks and activity, secured
+  with OAuth 2.1, dynamic client registration and published per-tool risk tiers.
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/seamless-ai.png
+access: 3rd-Party
+position: Consuming
+created: '2026-05-02'
+modified: '2026-08-14'
 tags:
   - B2B
   - Contact Data
@@ -57,75 +25,251 @@ tags:
   - Prospecting
   - Lead Generation
   - CRM Enrichment
-type: Index
-accessModel:
-  pricing: freemium
-  onboarding: self-serve
-  trial: false
-  try_now: true
-  public: false
-  label: Freemium · Self-serve signup
-  confidence: high
-  source:
-  - plans
-  - authentication
-  generated: '2026-07-22'
-  method: derived
-image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/seamless-ai.png
-access: 3rd-Party
-created: '2026-05-02'
-modified: '2026-05-19'
-position: Consuming
-description: >-
-  Seamless.AI is a B2B sales intelligence platform that provides real-time contact and company data to help sales teams
-  find and connect with their ideal customers. The platform uses artificial intelligence to continuously verify and
-  update contact information including emails, direct dials, and mobile numbers. Seamless.AI offers a RESTful API
-  secured with OAuth 2.0 and API key authentication, enabling developers to integrate contact search, company search,
-  enrichment, and job-change intelligence directly into CRM systems, marketing platforms, and internal sales tools.
+  - Data Enrichment
+  - MCP
+  - Agents
+  - Sales Automation
 maintainers:
   - FN: Kin Lane
     email: kin@apievangelist.com
-specificationVersion: '0.19'
+accessModel:
+  pricing: freemium
+  onboarding: sales-assisted
+  trial: true
+  try_now: false
+  public: false
+  label: Freemium platform · API gated behind a Public API license
+  confidence: high
+  source:
+    - plans
+    - authentication
+    - https://seamless.ai/pricing
+    - https://docs.seamless.ai/api-http-status-codes
+  generated: '2026-08-14'
+  method: searched
+  note: >-
+    The platform has a self-serve free tier, but the API itself is not self-serve: an account
+    without an active Public API license receives HTTP 422 missingLicense, and the paid tiers are
+    quoted by sales rather than priced on the page.
+apis:
+  - aid: seamless-ai:seamless-ai-public-api
+    name: Seamless.AI Public API
+    description: >-
+      The Seamless.AI Public API v1 — nine operations covering contact and company search,
+      asynchronous enrichment (research), result polling, org-data retrieval and the OAuth token
+      exchange. Search and org-data reads are free; only the research operations spend credits.
+    humanURL: https://docs.seamless.ai/
+    baseURL: https://api.seamless.ai/api/client/v1
+    tags:
+      - Contacts
+      - Companies
+      - Search
+      - Enrichment
+      - Job Changes
+    properties:
+      - type: OpenAPI
+        url: openapi/_original/seamless-ai-public-api-openapi-original.json
+      - type: OpenAPI
+        name: Contact Search
+        url: openapi/seamless-ai-contact-search-api-openapi.yml
+      - type: OpenAPI
+        name: Company Search
+        url: openapi/seamless-ai-company-search-api-openapi.yml
+      - type: OpenAPI
+        name: Contact Research
+        url: openapi/seamless-ai-contact-research-api-openapi.yml
+      - type: OpenAPI
+        name: Company Research
+        url: openapi/seamless-ai-company-research-api-openapi.yml
+      - type: OpenAPI
+        name: Org Contacts
+        url: openapi/seamless-ai-org-contacts-api-openapi.yml
+      - type: OpenAPI
+        name: Org Companies
+        url: openapi/seamless-ai-org-companies-api-openapi.yml
+      - type: OpenAPI
+        name: OAuth
+        url: openapi/seamless-ai-oauth-api-openapi.yml
+      - type: Documentation
+        url: https://docs.seamless.ai/
+      - type: APIReference
+        url: https://docs.seamless.ai/searchcontacts
+      - type: GettingStarted
+        url: https://docs.seamless.ai/authenticate-and-make-your-first-request
+  - aid: seamless-ai:seamless-ai-mcp-server
+    name: Seamless.AI MCP Server
+    description: >-
+      Hosted Model Context Protocol server exposing 54 tools across 11 domains — search, research,
+      user, lists, saved searches, campaigns, templates, email, calls, tasks and activity — plus
+      seven read-only seamless:// resources. Secured with OAuth 2.1 (PKCE S256, dynamic client
+      registration, scope mcp.all). Covers Connect products the REST API does not expose at all.
+    humanURL: https://docs.seamless.ai/mcp-docs
+    baseURL: https://mcp.seamless.ai
+    tags:
+      - MCP
+      - Agents
+      - Sales Automation
+    properties:
+      - type: MCPServer
+        url: mcp/seamless-ai-mcp.yml
+      - type: ToolCrosswalk
+        url: mcp/seamless-ai-tool-crosswalk.yml
+      - type: OpenAPI
+        url: openapi/_original/seamless-ai-mcp-server-openapi-original.yaml
+      - type: Documentation
+        url: https://docs.seamless.ai/mcp-docs
+      - type: GettingStarted
+        url: https://docs.seamless.ai/mcp/quickstart
 common:
-  - type: AgenticAccess
-    url: agentic-access/seamless-ai-agentic-access.yml
-  - type: DomainSecurity
-    url: security/seamless-ai-domain-security.yml
-  - type: Authentication
-    url: authentication/seamless-ai-authentication.yml
-  - type: LinkedIn
-    url: https://www.linkedin.com/company/seamlessai
+  # --- identity + link properties ---
   - name: Website
     url: https://seamless.ai
     type: Website
+  - name: Developer Portal
+    url: https://docs.seamless.ai/
+    type: DeveloperPortal
   - name: API Documentation
     url: https://docs.seamless.ai/
     type: Documentation
+  - name: API Reference
+    url: https://docs.seamless.ai/searchcontacts
+    type: APIReference
+  - name: Getting Started
+    url: https://docs.seamless.ai/authenticate-and-make-your-first-request
+    type: GettingStarted
   - name: API Overview
     url: https://seamless.ai/products/api
     type: Overview
-  - name: Getting Started
-    url: https://seamless.ai/customers/education/articles/seamless-ai-api-overview
-    type: GettingStarted
+  - name: Support
+    url: https://seamless.ai/customers/education
+    type: Support
+  - name: Blog
+    url: https://seamless.ai/customers/blog
+    type: Blog
+  - name: Pricing
+    url: https://seamless.ai/pricing
+    type: Pricing
+  - name: Sign Up
+    url: https://login.seamless.ai/register
+    type: SignUp
+  - name: Login
+    url: https://login.seamless.ai/login
+    type: Login
+  - name: Terms of Use
+    url: https://seamless.ai/policies/terms-of-use
+    type: TermsOfService
+  - name: Privacy Policy
+    url: https://seamless.ai/policies/privacy-policy
+    type: PrivacyPolicy
+  - name: GitHub Organization
+    url: https://github.com/SeamlessAI
+    type: GitHubOrganization
   - name: API Terms Glossary
     url: https://seamless.ai/customers/education/articles/api-terms-glossary
     type: Glossary
-  - name: CRM Enrichment
+  - name: API Launch Announcement
     url: https://seamless.ai/news/releases/api
-    type: Blog
+    type: Announcement
+  - type: LinkedIn
+    url: https://www.linkedin.com/company/seamlessai
+  # --- agent surfaces ---
+  - name: A2A Agent Card
+    url: a2a/seamless-ai-a2a.yml
+    type: AgentCard
+  - name: Agent Skills
+    url: skills/_index.yml
+    type: AgentSkill
+  - name: llms.txt
+    url: llms/seamless-ai-llms.txt
+    type: LLMsTxt
+  - type: LlmsText
+    url: https://docs.seamless.ai/llms.txt
+  - type: AgenticAccess
+    url: agentic-access/seamless-ai-agentic-access.yml
+  - name: Well-Known Discovery
+    url: well-known/seamless-ai-well-known.yml
+    type: WellKnown
+  # --- contract + runtime semantics ---
+  - type: Authentication
+    url: authentication/seamless-ai-authentication.yml
+  - type: OAuthScopes
+    url: scopes/seamless-ai-scopes.yml
+  - type: Conventions
+    url: conventions/seamless-ai-conventions.yml
+  - type: ErrorCatalog
+    url: errors/seamless-ai-problem-types.yml
+  - type: RateLimits
+    url: rate-limits/seamless-ai-rate-limits.yml
+  - type: Plans
+    url: plans/seamless-ai-plans-pricing.yml
+  - type: Lifecycle
+    url: lifecycle/seamless-ai-lifecycle.yml
+  - type: Conformance
+    url: conformance/seamless-ai-conformance.yml
+  - type: DataModel
+    url: data-model/seamless-ai-data-model.yml
+  - type: Packages
+    url: packages/seamless-ai-packages.yml
+  - type: Webhooks
+    url: asyncapi/seamless-ai-webhooks.yml
+  # --- security ---
+  - type: DomainSecurity
+    url: security/seamless-ai-domain-security.yml
+  - type: TrustCenter
+    url: security/seamless-ai-trust-center.yml
+  - name: Trust Center
+    url: https://trust.seamless.ai/
+    type: Compliance
+  # --- specs + derived data ---
+  - name: Contact Search Overlay
+    url: overlays/seamless-ai-contact-search-overlay.yaml
+    type: Overlay
+  - name: Company Search Overlay
+    url: overlays/seamless-ai-company-search-overlay.yaml
+    type: Overlay
+  - name: Contact Research Overlay
+    url: overlays/seamless-ai-contact-research-overlay.yaml
+    type: Overlay
+  - name: Company Research Overlay
+    url: overlays/seamless-ai-company-research-overlay.yaml
+    type: Overlay
+  - name: Org Contacts Overlay
+    url: overlays/seamless-ai-org-contacts-overlay.yaml
+    type: Overlay
+  - name: Org Companies Overlay
+    url: overlays/seamless-ai-org-companies-overlay.yaml
+    type: Overlay
+  - name: OAuth Overlay
+    url: overlays/seamless-ai-oauth-overlay.yaml
+    type: Overlay
   - url: json-schema/seamless-ai-contact-schema.json
     type: JSONSchema
   - url: json-schema/seamless-ai-company-schema.json
     type: JSONSchema
   - url: json-structure/seamless-ai-contact-structure.json
     type: JSONStructure
+  - url: json-structure/seamless-ai-company-structure.json
+    type: JSONStructure
   - url: json-ld/seamless-ai-context.jsonld
     type: JSONLDContext
   - url: examples/seamless-ai-search-contacts-example.json
+    type: Examples
+  - url: examples/seamless-ai-research-contacts-example.json
+    type: Examples
+  - url: examples/seamless-ai-poll-contacts-research-results-example.json
     type: Examples
   - url: rules/seamless-ai-rules.yml
     type: SpectralRuleset
   - url: vocabulary/seamless-ai-vocabulary.yml
     type: Vocabulary
-  - type: LlmsText
-    url: https://docs.seamless.ai/llms.txt
+  - name: Contact Search Postman Collection
+    url: collections/seamless-ai-contact-search-api.postman_collection.json
+    type: PostmanCollection
+  - name: Company Search Postman Collection
+    url: collections/seamless-ai-company-search-api.postman_collection.json
+    type: PostmanCollection
+x-enrichment:
+  date: '2026-08-14'
+  status: enriched
+  artifacts_added: 24
+  pass: local-v1
