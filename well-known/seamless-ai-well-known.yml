@@ -1,0 +1,116 @@
+generated: '2026-08-14'
+method: probed
+source: live GET of /.well-known/* on every Seamless.AI host named in apis.yml and in the
+  provider-published OpenAPI servers[] blocks
+note: >-
+  Seamless.AI serves a real RFC 8414 / RFC 9728 discovery surface on the MCP host
+  (mcp.seamless.ai) and an A2A agent card on the docs host (docs.seamless.ai). The
+  marketing host (seamless.ai) answers every /.well-known/* path with an HTML
+  "Invalid .well-known request" page at HTTP 404 — recorded as a miss. The API host
+  (api.seamless.ai) returns 403 with an empty body for every /.well-known/* path, and
+  login.seamless.ai returns a Cloudflare 403 challenge; neither is evidence of a served
+  document. No security.txt is published on any host, so no SecurityTxt pointer is emitted.
+hosts:
+  - host: https://mcp.seamless.ai
+    documents:
+      - path: /.well-known/oauth-authorization-server
+        status: 200
+        content_type: application/json
+        file: seamless-ai-oauth-authorization-server.json
+        spec: RFC 8414
+      - path: /.well-known/oauth-protected-resource
+        status: 200
+        content_type: application/json
+        file: seamless-ai-oauth-protected-resource.json
+        spec: RFC 9728
+      - path: /.well-known/openid-configuration
+        status: 200
+        content_type: application/json
+        file: seamless-ai-openid-configuration.json
+        note: >-
+          Byte-identical to the RFC 8414 authorization-server document. It carries no
+          jwks_uri, no userinfo_endpoint and no id_token signing algorithms, so this is an
+          OAuth 2.1 authorization-server metadata document served at the OIDC path, not an
+          OpenID Provider configuration. Do not read it as OIDC support.
+      - path: /.well-known/security.txt
+        status: 404
+      - path: /.well-known/api-catalog
+        status: 404
+      - path: /.well-known/ai-plugin.json
+        status: 404
+      - path: /.well-known/agent-card.json
+        status: 404
+      - path: /.well-known/agent.json
+        status: 404
+  - host: https://docs.seamless.ai
+    documents:
+      - path: /.well-known/agent-card.json
+        status: 200
+        content_type: application/json
+        file: ../a2a/seamless-ai-agent-card.json
+        spec: A2A
+        note: Captured and graded in a2a/seamless-ai-a2a.yml.
+      - path: /.well-known/agent-skills/seamless/skill.md
+        status: 200
+        content_type: text/markdown
+        file: ../skills/seamless-ai-provider-published-skill.md
+        note: Referenced from the agent card's skills[0].url. Saved verbatim.
+      - path: /.well-known/security.txt
+        status: 404
+      - path: /.well-known/openid-configuration
+        status: 404
+      - path: /.well-known/oauth-authorization-server
+        status: 404
+      - path: /.well-known/oauth-protected-resource
+        status: 404
+      - path: /.well-known/api-catalog
+        status: 404
+      - path: /.well-known/ai-plugin.json
+        status: 404
+      - path: /.well-known/agent.json
+        status: 404
+  - host: https://seamless.ai
+    documents:
+      - path: /.well-known/security.txt
+        status: 404
+      - path: /.well-known/openid-configuration
+        status: 404
+      - path: /.well-known/oauth-authorization-server
+        status: 404
+      - path: /.well-known/oauth-protected-resource
+        status: 404
+      - path: /.well-known/api-catalog
+        status: 404
+      - path: /.well-known/ai-plugin.json
+        status: 404
+      - path: /.well-known/agent-card.json
+        status: 404
+      - path: /.well-known/agent.json
+        status: 404
+  - host: https://api.seamless.ai
+    note: Every /.well-known/* path returns HTTP 403 with a zero-byte body. Not a document.
+    documents:
+      - path: /.well-known/security.txt
+        status: 403
+      - path: /.well-known/oauth-authorization-server
+        status: 403
+      - path: /.well-known/oauth-protected-resource
+        status: 403
+      - path: /.well-known/agent-card.json
+        status: 403
+  - host: https://login.seamless.ai
+    note: Cloudflare bot challenge (403 HTML) on every path. Our probe was blocked; this says
+      nothing about what the host serves to a browser.
+    documents:
+      - path: /.well-known/security.txt
+        status: 403
+      - path: /.well-known/oauth-authorization-server
+        status: 403
+      - path: /.well-known/agent-card.json
+        status: 403
+summary:
+  paths_probed: 37
+  documents_served: 4
+  hosts_with_documents: 2
+  security_txt: false
+  api_catalog: false

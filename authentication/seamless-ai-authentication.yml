@@ -1,17 +1,123 @@
-generated: '2026-07-11'
-method: derived
-source: openapi/seamless-ai-companies-openapi.yml, openapi/seamless-ai-contacts-openapi.yml
+generated: '2026-08-14'
+method: searched
+source: openapi/seamless-ai-company-research-api-openapi.yml, openapi/seamless-ai-company-search-api-openapi.yml,
+  openapi/seamless-ai-contact-research-api-openapi.yml, openapi/seamless-ai-contact-search-api-openapi.yml,
+  openapi/seamless-ai-oauth-api-openapi.yml, openapi/seamless-ai-org-companies-api-openapi.yml, openapi/seamless-ai-org-contacts-api-openapi.yml
 summary:
   types:
   - apiKey
+  - oauth2
   api_key_in:
   - header
+  oauth2_flows:
+  - authorizationCode
+  oauth2_scopes:
+  - publicAPI.v1.all
+  - mcp.all
+  surfaces:
+  - rest
+  - mcp
 schemes:
-- name: apiKey
+- name: OAuth2
+  type: oauth2
+  flows:
+  - flow: authorizationCode
+    authorizationUrl: https://login.seamless.ai/oauth/authorize
+    tokenUrl: https://api.seamless.ai/api/client/v1/oauth/accessToken
+    scopes: 0
+  sources:
+  - openapi/seamless-ai-company-research-api-openapi.yml
+  - openapi/seamless-ai-company-search-api-openapi.yml
+  - openapi/seamless-ai-contact-research-api-openapi.yml
+  - openapi/seamless-ai-contact-search-api-openapi.yml
+  - openapi/seamless-ai-oauth-api-openapi.yml
+  - openapi/seamless-ai-org-companies-api-openapi.yml
+  - openapi/seamless-ai-org-contacts-api-openapi.yml
+  docs: https://docs.seamless.ai/authentication/oauth
+  scopes_in_spec: 0
+  real_scope: publicAPI.v1.all
+  scope_note: 'The spec declares scopes: {} . The real scope, publicAPI.v1.all, is published only in prose.
+    See scopes/seamless-ai-scopes.yml.'
+  client_authentication: client_secret
+  pkce: false
+  token_response_fields:
+  - access_token
+  - refresh_token
+  - expires_at
+- name: ApiKeyAuth
   type: apiKey
   in: header
-  parameter: Authorization
-  description: API key in the format "Bearer {api_key}"
+  parameter: Token
+  description: API key passed via the Token header.
   sources:
-  - openapi/seamless-ai-companies-openapi.yml
-  - openapi/seamless-ai-contacts-openapi.yml
+  - openapi/seamless-ai-company-research-api-openapi.yml
+  - openapi/seamless-ai-company-search-api-openapi.yml
+  - openapi/seamless-ai-contact-research-api-openapi.yml
+  - openapi/seamless-ai-contact-search-api-openapi.yml
+  - openapi/seamless-ai-oauth-api-openapi.yml
+  - openapi/seamless-ai-org-companies-api-openapi.yml
+  - openapi/seamless-ai-org-contacts-api-openapi.yml
+  header_value: the raw API key, with no scheme prefix
+  created_at: https://login.seamless.ai/settings/public-api
+  docs: https://docs.seamless.ai/authentication/api-keys
+  also_valid_on_mcp: true
+- name: webhookSecret
+  type: apiKey
+  in: header
+  parameter: x-seamless-webhook-secret
+  description: Webhook secret that you can use to validate the request is originated by Seamless
+  sources:
+  - openapi/seamless-ai-company-research-api-openapi.yml
+  - openapi/seamless-ai-company-search-api-openapi.yml
+  - openapi/seamless-ai-contact-research-api-openapi.yml
+  - openapi/seamless-ai-contact-search-api-openapi.yml
+  - openapi/seamless-ai-oauth-api-openapi.yml
+  - openapi/seamless-ai-org-companies-api-openapi.yml
+  - openapi/seamless-ai-org-contacts-api-openapi.yml
+  direction: inbound
+  role: Shared secret Seamless.AI sends on webhook deliveries so the receiver can verify origin.
+  hmac: false
+  see_also: asyncapi/seamless-ai-webhooks.yml
+docs: https://docs.seamless.ai/authentication/api-keys
+sources:
+- https://docs.seamless.ai/authentication/api-keys
+- https://docs.seamless.ai/authentication/oauth
+- https://docs.seamless.ai/mcp/authentication
+- https://mcp.seamless.ai/.well-known/oauth-authorization-server
+- openapi/_original/seamless-ai-public-api-openapi-original.json
+note: 'Upgraded from derived to searched against the provider''s own authentication pages. Seamless.AI
+  runs TWO independent auth surfaces: the REST Public API v1 (API key in a `Token` header, or OAuth 2.0
+  authorization-code with a client_secret against login.seamless.ai) and the MCP server (OAuth 2.1 with
+  PKCE S256, dynamic client registration, no client_secret, against mcp.seamless.ai). The same API key
+  also works on MCP. The docs warn explicitly that the API key header (`Token`) and the OAuth header (`Authorization:
+  Bearer`) must not be mixed on one request. `webhookSecret` is not a caller credential -- it is the inbound
+  shared secret Seamless sends to YOUR endpoint on a webhook delivery.'
+mcp_authentication:
+  surface: https://mcp.seamless.ai/mcp
+  protocol: OAuth 2.1
+  authorization_endpoint: https://mcp.seamless.ai/mcp/authorize
+  token_endpoint: https://mcp.seamless.ai/mcp/token
+  registration_endpoint: https://mcp.seamless.ai/mcp/register
+  revocation_endpoint: https://mcp.seamless.ai/mcp/revoke
+  grant_types:
+  - authorization_code
+  - refresh_token
+  code_challenge_methods:
+  - S256
+  token_endpoint_auth_methods:
+  - none
+  dynamic_client_registration: true
+  scopes:
+  - mcp.all
+  discovery:
+  - /.well-known/oauth-authorization-server
+  - /.well-known/oauth-protected-resource
+  alternate: API key via the Token header
+  verified: Anonymous POST to https://mcp.seamless.ai/mcp returned HTTP 401 with a WWW-Authenticate Bearer
+    challenge carrying resource_metadata and scope="mcp.all" (2026-08-14).
+entitlement_gate:
+  rest: HTTP 422 code=missingLicense when the org has no active Public API license.
+  mcp: '"MCP Server access is not enabled for your account"; per-domain tool visibility further filtered
+    by the Connect license.'
+  note: Authentication succeeding does not mean authorization succeeds. Both surfaces gate on a license
+    separate from the credential.

@@ -1,0 +1,42 @@
+{
+  "generated": "2026-08-14",
+  "method": "derived",
+  "source": "openapi/_original/seamless-ai-public-api-openapi-original.json",
+  "provenance": "Assembled from example values published in the provider's own OpenAPI (https://docs.seamless.ai/openapi.json). No values invented; the API key is a fake placeholder.",
+  "operationId": "pollCompanyResearchResults",
+  "summary": "Poll Company Research",
+  "request": {
+    "method": "GET",
+    "url": "https://api.seamless.ai/api/client/v1/companies/research/poll",
+    "headers": {
+      "Token": "REDACTED_SEAMLESS_API_KEY",
+      "Content-Type": "application/json"
+    },
+    "query": {
+      "requestIds": "1,2,3,4,5"
+    }
+  },
+  "response": {
+    "status": 200,
+    "description": "Poll Results",
+    "body": {
+      "success": true,
+      "data": [
+        {
+          "requestId": "8T7LmzqW2Q6hA19",
+          "status": "researching"
+        },
+        {
+          "requestId": "Ka2nQ9L3pR4vD1F",
+          "status": "done",
+          "company": {
+            "companyId": "12938475",
+            "apiResearchId": "Ka2nQ9L3pR4vD1F",
+            "name": "Seamless.AI",
+            "domain": "seamless.ai"
+          }
+        }
+      ]
+    }
+  }
+}

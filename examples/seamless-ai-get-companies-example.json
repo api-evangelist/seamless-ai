@@ -1,0 +1,94 @@
+{
+  "generated": "2026-08-14",
+  "method": "derived",
+  "source": "openapi/_original/seamless-ai-public-api-openapi-original.json",
+  "provenance": "Assembled from example values published in the provider's own OpenAPI (https://docs.seamless.ai/openapi.json). No values invented; the API key is a fake placeholder.",
+  "operationId": "getCompanies",
+  "summary": "Get Org Companies",
+  "request": {
+    "method": "GET",
+    "url": "https://api.seamless.ai/api/client/v1/companies",
+    "headers": {
+      "Token": "REDACTED_SEAMLESS_API_KEY",
+      "Content-Type": "application/json"
+    },
+    "query": {
+      "page": 1,
+      "limit": 100,
+      "startDate": "2020-01-01T10:00:00Z",
+      "endDate": "2020-01-01T11:00:00Z"
+    }
+  },
+  "response": {
+    "status": 200,
+    "description": "Company Results",
+    "body": {
+      "data": [
+        {
+          "advertisingIntelligenceUrl": "https://intel.example.com/company/12938475/advertising",
+          "alexaScoreUrl": "https://intel.example.com/company/12938475/alexa",
+          "annualRevenue": "1000000001",
+          "apiResearchId": "research-123",
+          "phones": "+1-650-555-0100,+1-650-555-0101",
+          "phonesAiScores": "98,86",
+          "createdAt": "2024-04-21T14:30:00.000Z",
+          "description": "Seamless.AI is a sales intelligence platform.",
+          "domain": "seamless.ai",
+          "employeeReviewsUrl": "https://intel.example.com/company/12938475/employee-reviews",
+          "foundedOn": "2015-01-01",
+          "googleFinanceUrl": "https://www.google.com/finance/quote/EXAMPLE:NASDAQ",
+          "googleResearchUrl": "https://www.google.com/search?q=seamless.ai",
+          "industries": "Information Technology and Services,Computer Software",
+          "intelUrl": "https://intel.example.com/company/12938475/overview",
+          "jobPostingsUrl": "https://intel.example.com/company/12938475/jobs",
+          "linkedInProfileUrl": "https://www.linkedin.com/company/seamless-ai/",
+          "linkedInId": "1234567",
+          "localSportsTeamsUrl": "https://intel.example.com/company/12938475/local-sports",
+          "localWeatherUrl": "https://intel.example.com/company/12938475/local-weather",
+          "location": {
+            "street1": "800 W El Camino Real",
+            "city": "Mountain View",
+            "state": "CA",
+            "postCode": "94040",
+            "country": "United States",
+            "countryAbbr": "US",
+            "countryAlpha2": "US",
+            "countryAlpha3": "USA",
+            "fullString": "800 W El Camino Real, Mountain View, CA 94040, United States"
+          },
+          "name": "Seamless.AI",
+          "newsUrl": "https://intel.example.com/company/12938475/news",
+          "paidSearchIntelligenceUrl": "https://intel.example.com/company/12938475/paid-search",
+          "paidSearchKeywordsIntelligenceUrl": "https://intel.example.com/company/12938475/paid-search-keywords",
+          "revenueRange": "$1B+",
+          "searchMarketingIntelligenceUrl": "https://intel.example.com/company/12938475/search-marketing",
+          "secFilingsUrl": "https://www.sec.gov/edgar/browse/?CIK=0000000",
+          "seoResearchUrl": "https://intel.example.com/company/12938475/seo",
+          "sicCode": "4832",
+          "similarWebsitesUrl": "https://intel.example.com/company/12938475/similar-sites",
+          "socialMediaMentionsUrl": "https://intel.example.com/company/12938475/social-mentions",
+          "socialMediaPostsUrl": "https://intel.example.com/company/12938475/social-posts",
+          "socialPostsUrl": "https://intel.example.com/company/12938475/posts",
+          "staffCount": "750",
+          "staffCountRange": "501 - 1,000",
+          "topTechnologies": "Adobe SiteCatalyst,Adobe Tag Manager,Akamai",
+          "updatedAt": "2024-04-21T14:30:00.000Z",
+          "webTechnologiesUrl": "https://intel.example.com/company/12938475/web-technologies",
+          "websiteAuditUrl": "https://intel.example.com/company/12938475/website-audit",
+          "websiteAudit2Url": "https://intel.example.com/company/12938475/website-audit-2",
+          "websiteGraderUrl": "https://intel.example.com/company/12938475/website-grader",
+          "whoisUrl": "https://who.is/whois/seamless.ai",
+          "wikipediaUrl": "https://en.wikipedia.org/wiki/Example_Company",
+          "yahooFinanceUrl": "https://finance.yahoo.com/quote/EXAMPLE",
+          "fundingTotal": "100000",
+          "latestFundingDate": "2023-08-12",
+          "latestFundingClassifications": [
+            "Series D"
+          ],
+          "companyType": "Public",
+          "stockTicker": "AAPL"
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,93 @@
+generated: '2026-08-14'
+method: searched
+source: >-
+  npm registry (registry.npmjs.org), PyPI, RubyGems, crates.io, GitHub org github.com/SeamlessAI,
+  and the Seamless.AI documentation site
+note: >-
+  Seamless.AI ships NO general-purpose client SDK in any language. Searched npm (seamless-ai,
+  seamlessai, @seamlessai/*, @seamless-ai/*), PyPI (seamless-ai, seamlessai, seamless-api),
+  RubyGems, crates.io and the docs — all miss. The documented integration path is raw HTTP: the
+  docs give curl and Python `requests` snippets and an "Explore with Postman" page that tells you
+  to import the OpenAPI. The one first-party published package is an n8n community node, which is
+  a workflow-tool integration rather than an SDK, so it is recorded here as `sdk: false` and NO
+  `SDKs` pointer is emitted in apis.yml.
+
+sdk_count: 0
+package_count: 1
+
+packages:
+  - language: typescript
+    registry: npm
+    name: '@seamless-oss/n8n-nodes-seamless'
+    url: https://www.npmjs.com/package/@seamless-oss/n8n-nodes-seamless
+    install: npm install @seamless-oss/n8n-nodes-seamless
+    version: 0.6.7
+    published: '2026-08-13'
+    versions_published: 13
+    license: MIT
+    official: true
+    sdk: false
+    kind: n8n-community-node
+    repository: https://github.com/SeamlessAI/n8n-nodes-seamless
+    author: Seamless Engineering <devs@seamlesscontacts.com>
+    description: >-
+      n8n community nodes for Seamless — search contacts and companies, research leads, manage
+      campaigns, and automate engagement workflows directly from n8n.
+    official_evidence: >-
+      Published from the SeamlessAI GitHub organization (github.com/SeamlessAI), authored by
+      "Seamless Engineering" at a seamlesscontacts.com address. First-party.
+    currency: >-
+      Actively maintained. Latest release 0.6.7 published 2026-08-13, one day before this harvest;
+      repository created 2026-03-11 and last pushed 2026-08-13. 13 versions in five months. This
+      is the freshest first-party artifact Seamless.AI publishes.
+
+repositories:
+  - name: SeamlessAI/n8n-nodes-seamless
+    url: https://github.com/SeamlessAI/n8n-nodes-seamless
+    language: TypeScript
+    license: MIT
+    created: '2026-03-11'
+    last_push: '2026-08-13'
+    archived: false
+    first_party: true
+  - name: SeamlessAI/activepieces
+    url: https://github.com/SeamlessAI/activepieces
+    language: TypeScript
+    first_party: false
+    note: >-
+      A fork of the upstream Activepieces automation project, not a Seamless.AI client library.
+      Listed for completeness; not a package and not counted.
+
+registries_probed:
+  - registry: npm
+    queries: [seamless-ai, seamlessai, '@seamlessai/sdk', '@seamless-ai/sdk', '@seamless-oss/n8n-nodes-seamless']
+    hits: 1
+    note: >-
+      The unscoped `seamless` package on npm exists but is an unrelated third-party library, not
+      a Seamless.AI client. Not recorded.
+  - registry: pypi
+    queries: [seamless-ai, seamlessai, seamless-api]
+    hits: 0
+  - registry: rubygems
+    hits: 0
+  - registry: crates.io
+    hits: 0
+  - registry: maven-central
+    hits: 0
+  - registry: nuget
+    hits: 0
+  - registry: pkg.go.dev
+    hits: 0
+
+integration_paths_without_an_sdk:
+  - name: Postman
+    url: https://docs.seamless.ai/explore-with-postman
+    note: The docs instruct importing https://docs.seamless.ai/openapi.json into Postman. Seamless
+      publishes no public Postman workspace of its own.
+  - name: MCP server
+    url: https://mcp.seamless.ai/mcp
+    note: >-
+      The richest client surface Seamless.AI ships is the MCP server, not a library. 54 tools
+      versus 9 REST operations. See mcp/seamless-ai-mcp.yml.
+  - name: Chrome extension
+    note: End-user browser extension, not a developer package.

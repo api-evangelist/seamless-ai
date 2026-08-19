@@ -1,13 +1,11 @@
 {
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://raw.githubusercontent.com/api-evangelist/seamless-ai/refs/heads/main/json-schema/seamless-ai-company-schema.json",
-  "title": "Seamless.AI Company",
-  "description": "",
-  "x-generated": "2026-08-14",
-  "x-method": "derived",
-  "x-source": "openapi/_original/seamless-ai-public-api-openapi-original.json#/paths/~1companys/get/responses/200",
-  "x-provenance": "Derived from the provider-published OpenAPI at https://docs.seamless.ai/openapi.json (harvested 2026-08-14); field names, descriptions and examples are carried verbatim from that spec.",
-  "type": "object",
+  "name": "Seamless.AI Company Structure",
+  "description": "Structural inventory of the Seamless.AI Company record as returned by the Public API.",
+  "generated": "2026-08-14",
+  "method": "derived",
+  "source": "openapi/_original/seamless-ai-public-api-openapi-original.json",
+  "provenance": "Derived from the provider-published OpenAPI at https://docs.seamless.ai/openapi.json (harvested 2026-08-14); field names, descriptions and examples are carried verbatim from that spec.",
+  "fieldCount": 51,
   "properties": {
     "advertisingIntelligenceUrl": {
       "type": "string",
@@ -61,8 +59,8 @@
     },
     "foundedOn": {
       "type": "string",
-      "description": "Company founding date, when available.",
       "format": "date",
+      "description": "Company founding date, when available.",
       "example": "2015-01-01"
     },
     "googleFinanceUrl": {
@@ -111,54 +109,7 @@
       "example": "https://intel.example.com/company/12938475/local-weather"
     },
     "location": {
-      "type": "object",
-      "properties": {
-        "street1": {
-          "type": "string",
-          "description": "Primary street line of the company location.",
-          "example": "800 W El Camino Real"
-        },
-        "city": {
-          "type": "string",
-          "description": "City of the company location.",
-          "example": "Mountain View"
-        },
-        "state": {
-          "type": "string",
-          "description": "State or region of the company location.",
-          "example": "CA"
-        },
-        "postCode": {
-          "type": "string",
-          "description": "Postal or zip code of the company location.",
-          "example": "94040"
-        },
-        "country": {
-          "type": "string",
-          "description": "Country name of the company location.",
-          "example": "United States"
-        },
-        "countryAbbr": {
-          "type": "string",
-          "description": "Abbreviated country code used in location metadata.",
-          "example": "US"
-        },
-        "countryAlpha2": {
-          "type": "string",
-          "description": "ISO 3166-1 alpha-2 country code.",
-          "example": "US"
-        },
-        "countryAlpha3": {
-          "type": "string",
-          "description": "ISO 3166-1 alpha-3 country code.",
-          "example": "USA"
-        },
-        "fullString": {
-          "type": "string",
-          "description": "Full formatted location string.",
-          "example": "800 W El Camino Real, Mountain View, CA 94040, United States"
-        }
-      }
+      "type": "object"
     },
     "name": {
       "type": "string",
@@ -282,29 +233,7 @@
     },
     "newsAndEvents": {
       "type": "array",
-      "description": "Recent news articles related to the company.",
-      "items": {
-        "type": "object",
-        "properties": {
-          "title": {
-            "description": "The headline of the news article.",
-            "type": "string"
-          },
-          "url": {
-            "description": "The URL to the full news article.",
-            "type": "string"
-          },
-          "date": {
-            "description": "The date the news article was published.",
-            "type": "string",
-            "format": "date-time"
-          },
-          "type": {
-            "description": "The type of news article (e.g., \"Acquisition\").",
-            "type": "string"
-          }
-        }
-      }
+      "description": "Recent news articles related to the company."
     },
     "fundingTotal": {
       "type": "string",
@@ -322,24 +251,15 @@
       "description": "The classifications of the latest funding round for the company (e.g., \"Series A\", \"Pre-Seed\", etc.).",
       "example": [
         "Series D"
-      ],
-      "items": {
-        "type": "string"
-      }
+      ]
     },
     "companyType": {
       "type": "string",
-      "nullable": true,
       "description": "Company type \u2014 \"Public\" or \"Private\" when determined.",
-      "enum": [
-        "Public",
-        "Private"
-      ],
       "example": "Public"
     },
     "stockTicker": {
       "type": "string",
-      "nullable": true,
       "description": "Stock ticker symbol of the company, if publicly traded.",
       "example": "AAPL"
     }

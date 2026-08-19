@@ -1,0 +1,76 @@
+# Seamless
+
+> API & MCP for B2B Sales Automation
+
+## Docs
+
+- [Seamless API: Search and enrich company and contact data](https://docs.seamless.ai/introduction.md): Seamless' B2B data API helps you find & enrich companies and contacts. Authenticate with OAuth or an API key, then get results via webhooks or polling.
+- [API keys](https://docs.seamless.ai/authentication/api-keys.md): Create an API key in Seamless and authenticate REST API requests with the Token header.
+- [OAuth 2.0](https://docs.seamless.ai/authentication/oauth.md): Register an OAuth client, obtain access and refresh tokens, and call the Seamless API with Bearer authentication.
+- [Authenticate and make your first Seamless API call](https://docs.seamless.ai/authenticate-and-make-your-first-request.md): Authenticate with an API key, search for a company or contact, submit a research request, and retrieve enriched results using polling — in three steps.
+- [Explore with Postman](https://docs.seamless.ai/explore-with-postman.md): Import the Seamless OpenAPI spec into Postman, set your API key, and run search and research requests interactively.
+- [Understand identifiers and request flow](https://docs.seamless.ai/understand-identifiers-and-request-flow.md)
+- [Research without search](https://docs.seamless.ai/research-without-search.md): Enrich companies and contacts by passing identifiers directly to the research endpoints — no searchResultId required.
+- [Choose the right workflow](https://docs.seamless.ai/choose-the-right-workflow.md)
+- [Rate limits and credits](https://docs.seamless.ai/rate-limits-and-credits.md): Organization-level rate limits, response headers, 429 handling, and credit balance headers on the Seamless API.
+- [Use cases](https://docs.seamless.ai/use-cases.md): Common Seamless API integration patterns for enrichment, CRM sync, webhooks, and AI sales automation.
+- [Enrich a lead list](https://docs.seamless.ai/use-cases/enrich-a-lead-list.md): Search and research multiple contacts with pagination, polling, and a runnable Python script.
+- [Sync researched contacts to CRM](https://docs.seamless.ai/use-cases/sync-researched-contacts-to-crm.md): Research contacts via the API, then export org contacts for CRM or warehouse sync without spending extra credits.
+- [Real-time enrichment with webhooks](https://docs.seamless.ai/use-cases/real-time-enrichment-with-webhooks.md): Submit research via the API and process completed records in your app using company-researched and contact-researched webhooks.
+- [AI sales automation](https://docs.seamless.ai/use-cases/ai-sales-automation.md): Combine the Seamless REST API and MCP for vibe-coder workflows: research in agents, automate pipelines in code.
+- [End to end company workflow](https://docs.seamless.ai/end-to-end-company-workflow.md)
+- [End to end contact workflow](https://docs.seamless.ai/end-to-end-contact-workflow.md)
+- [Receive research results with webhooks](https://docs.seamless.ai/receive-research-results-with-webhooks.md)
+- [Related resources](https://docs.seamless.ai/related-resources.md): Hand-picked Seamless product education articles to use alongside the public API.
+- [Build a deterministic agent workflow with Seamless](https://docs.seamless.ai/build-a-deterministic-agent-workflow.md): Build a repeatable AI agent workflow that covers authentication, search, research, and result retrieval with clear branching rules and stop conditions.
+- [Troubleshoot Seamless API authentication and requests](https://docs.seamless.ai/troubleshoot-authentication-and-request-failures.md): Fix authentication, endpoint sequencing, identifier, and webhook issues with the Seamless API. Each section covers the cause and steps to resolve the failure.
+- [API HTTP status codes](https://docs.seamless.ai/api-http-status-codes.md): Reference for HTTP status codes returned by the Seamless v1 API, including authentication, rate limit, credit, and license errors.
+- [Get an access token](https://docs.seamless.ai/reference/getaccesstoken.md)
+- [Search companies](https://docs.seamless.ai/searchcompanies.md)
+- [Search contacts](https://docs.seamless.ai/searchcontacts.md)
+- [Research companies](https://docs.seamless.ai/researchcompanies.md): Research companies by search result IDs from `/search/companies` and/or direct company identifiers (`domain`, `companyName`).
+- [Poll Company Research](https://docs.seamless.ai/pollcompanyresearchresults.md): Get the results/status of a company research
+- [Get Org Companies](https://docs.seamless.ai/getcompanies.md): Get a list of companies from your orgs
+- [Research contacts](https://docs.seamless.ai/researchcontacts.md): Research contacts by searchResultId from contact search results or Contact enrich
+- [Poll Contact Research](https://docs.seamless.ai/pollcontactsresearchresults.md): Get the results/status of a contact research request
+- [Get Org Contacts](https://docs.seamless.ai/getcontacts.md): Get a list of contacts from your orgs
+- [MCP Transport](https://docs.seamless.ai/reference/mcp-transport.md)
+- [Overview](https://docs.seamless.ai/mcp-docs.md): Connect AI agents to Seamless.AI with 54 MCP tools across search, research, campaigns, and outreach.
+- [Quickstart](https://docs.seamless.ai/mcp/quickstart.md): Connect the Seamless MCP server from Claude Desktop in 60 seconds.
+- [Cursor](https://docs.seamless.ai/mcp/install/cursor.md): Connect Seamless MCP in Cursor.
+- [VS Code](https://docs.seamless.ai/mcp/install/vs-code.md): Connect Seamless MCP in VS Code.
+- [Claude Code](https://docs.seamless.ai/mcp/install/claude-code.md): Connect Seamless MCP in Claude Code.
+- [Claude Desktop](https://docs.seamless.ai/mcp/install/claude-desktop.md): Connect Seamless MCP in Claude Desktop.
+- [ChatGPT](https://docs.seamless.ai/mcp/install/chatgpt.md): Connect Seamless MCP in ChatGPT.
+- [Windsurf](https://docs.seamless.ai/mcp/install/windsurf.md): Connect Seamless MCP in Windsurf.
+- [Gemini CLI](https://docs.seamless.ai/mcp/install/gemini-cli.md): Connect Seamless MCP in Gemini CLI.
+- [Cline](https://docs.seamless.ai/mcp/install/cline.md): Connect Seamless MCP in Cline.
+- [Amazon Bedrock](https://docs.seamless.ai/mcp/install/amazon-bedrock.md): Connect Seamless MCP from Amazon Bedrock AgentCore.
+- [Amazon Q](https://docs.seamless.ai/mcp/install/amazon-q.md): Connect Seamless MCP in Amazon Q Developer.
+- [BoltAI](https://docs.seamless.ai/mcp/install/boltai.md): Connect Seamless MCP in BoltAI.
+- [Other clients](https://docs.seamless.ai/mcp/install/other-clients.md): Connect Seamless MCP from any MCP-compatible client.
+- [Authentication](https://docs.seamless.ai/mcp/authentication.md): Authenticate to the Seamless MCP server with OAuth 2.1 or an API key.
+- [Risk tiers](https://docs.seamless.ai/mcp/risk-tiers.md): Understand read, write, and destructive MCP tool labels and how to configure client confirmations.
+- [Access control](https://docs.seamless.ai/mcp/access-control.md): License requirements for each MCP tool domain.
+- [Resources](https://docs.seamless.ai/mcp/resources.md): Read-only seamless:// URIs for credits, templates, email accounts, and Connect config.
+- [Search](https://docs.seamless.ai/mcp/tools/search.md): search_contacts and search_companies MCP tools.
+- [Research](https://docs.seamless.ai/mcp/tools/research.md): research_contacts, research_companies, and poll tools.
+- [User](https://docs.seamless.ai/mcp/tools/user.md): get_credits, get_my_contacts, and get_my_companies MCP tools.
+- [Lists](https://docs.seamless.ai/mcp/tools/lists.md): Contact list CRUD MCP tools.
+- [Saved searches](https://docs.seamless.ai/mcp/tools/saved-searches.md): Saved search CRUD MCP tools.
+- [Campaigns](https://docs.seamless.ai/mcp/tools/campaigns.md): Campaign and step management MCP tools. Requires Connect access.
+- [Templates](https://docs.seamless.ai/mcp/tools/templates.md): Email template CRUD MCP tools. Requires Connect access.
+- [Email](https://docs.seamless.ai/mcp/tools/email.md): Email accounts, drafts, send, and bulk email MCP tools.
+- [Calls](https://docs.seamless.ai/mcp/tools/calls.md): log_call and disposition MCP tools. Requires Connect access.
+- [Tasks](https://docs.seamless.ai/mcp/tools/tasks.md): Task management MCP tools. Requires Connect access.
+- [Activity](https://docs.seamless.ai/mcp/tools/activity.md): Activity feed and Connect config MCP tools.
+- [Workflows](https://docs.seamless.ai/mcp/workflows.md): Reference MCP workflows for prospecting, campaigns, activity digests, and job-change outreach.
+- [Prospect to meeting](https://docs.seamless.ai/mcp/workflows/prospect-to-meeting.md): Search, research, resolve a saved contact ID, and email a prospect.
+- [Bulk enrich and campaign](https://docs.seamless.ai/mcp/workflows/bulk-enrich-and-campaign.md): Research contacts, resolve saved IDs, and create a campaign with an email step.
+- [Daily activity digest](https://docs.seamless.ai/mcp/workflows/daily-activity-digest.md): Pull the activity feed, summarize, and post to Slack.
+- [Job change trigger](https://docs.seamless.ai/mcp/workflows/job-change-trigger.md): Detect a job change, research the new role, and send outbound.
+
+## OpenAPI Specs
+
+- [openapi](https://docs.seamless.ai/openapi.json)
+- [mcp-openapi](https://docs.seamless.ai/mcp-openapi.yaml)

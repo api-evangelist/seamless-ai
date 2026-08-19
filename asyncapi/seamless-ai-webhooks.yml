@@ -1,0 +1,85 @@
+generated: '2026-08-14'
+method: searched
+source: https://docs.seamless.ai/receive-research-results-with-webhooks
+spec_type: none
+asyncapi_published: false
+asyncapi_note: >-
+  Seamless.AI publishes no AsyncAPI document. Probed /asyncapi.yaml and /asyncapi.json on
+  docs.seamless.ai and api.seamless.ai and checked the SeamlessAI GitHub org (2 public repos,
+  neither an event spec). The provider does document a real webhook surface, captured below as a
+  Webhooks catalog. No AsyncAPI is fabricated.
+
+description: >-
+  Seamless.AI delivers completed enrichment results by webhook as the push alternative to polling
+  the research endpoints. Subscriptions are configured in the app, not by API.
+
+transport: https
+delivery: at-least-once
+delivery_note: >-
+  A non-2xx response is treated as a delivery failure and "may" be retried. The provider does not
+  publish a retry schedule, a maximum attempt count, or a dead-letter behaviour.
+
+subscription:
+  managed_by: dashboard
+  url: https://login.seamless.ai/settings/webhooks
+  api_manageable: false
+  note: >-
+    There is no REST or MCP operation to create, list or delete a webhook. Endpoints and the
+    shared secret are configured by a human in Settings -> Webhooks.
+
+requirements:
+  - Endpoint must be publicly reachable over HTTPS. Localhost and private IPs cannot receive deliveries.
+  - Endpoint must accept POST with a JSON body.
+  - Endpoint must return a 2xx status after processing.
+
+security:
+  scheme: shared-secret-header
+  header: x-seamless-webhook-secret
+  signature: false
+  hmac: false
+  timestamp: false
+  replay_protection: false
+  declared_in_openapi: true
+  openapi_scheme_name: webhookSecret
+  note: >-
+    Verification is a plain equality check against a secret configured in the dashboard. There is
+    no HMAC over the payload and no timestamp, so a receiver cannot detect replay and the secret
+    is exposed to anyone who can read the request. Compare in constant time and treat the secret
+    as a bearer credential.
+
+event_count: 2
+events:
+  - name: company-researched
+    fires_when: Company research completes.
+    payload: Company object, matching the Company Research response in the public API reference.
+    correlation_field: apiResearchId
+    correlation_note: >-
+      apiResearchId on the payload equals the requestId returned by POST /companies/research.
+      Use it to match a delivery to an in-flight job.
+    example_fields: [name, domain, apiResearchId, phones, staffCountRange, revenueRange, linkedInProfileUrl]
+    triggered_by: researchCompanies
+    schema: json-schema/seamless-ai-company-schema.json
+  - name: contact-researched
+    fires_when: Contact research completes.
+    payload: Contact object, matching the Contact Research response in the public API reference.
+    correlation_field: apiResearchId
+    example_fields: [fullName, title, company, email, apiResearchId, phones, linkedInProfileUrl]
+    triggered_by: researchContacts
+    schema: json-schema/seamless-ai-contact-schema.json
+
+receiver_examples:
+  languages: [javascript, python]
+  source: https://docs.seamless.ai/receive-research-results-with-webhooks
+
+related:
+  - https://docs.seamless.ai/use-cases/real-time-enrichment-with-webhooks
+  - conventions/seamless-ai-conventions.yml
+  - errors/seamless-ai-problem-types.yml
+
+x-evidence:
+  - url: https://docs.seamless.ai/receive-research-results-with-webhooks.md
+    http_status: 200
+    fetched: '2026-08-14'
+  - url: https://docs.seamless.ai/asyncapi.yaml
+    http_status: 404
+    fetched: '2026-08-14'

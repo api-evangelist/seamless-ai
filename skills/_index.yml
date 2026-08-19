@@ -1,0 +1,49 @@
+generated: '2026-08-14'
+method: searched
+note: >-
+  Seamless.AI publishes its own Agent Skill, discovered via the skills[0].url on its A2A agent card
+  and saved verbatim. The two API Evangelist skills below are generated and cover the REST pipeline
+  operation-by-operation, grounded in operationIds verified present in the provider's OpenAPI.
+skills:
+  - file: seamless-ai-provider-published-skill.md
+    name: Seamless
+    method: searched
+    source: https://docs.seamless.ai/.well-known/agent-skills/seamless/skill.md
+    http_status: 200
+    fetched: '2026-08-14'
+    first_party: true
+    discovered_via: a2a/seamless-ai-agent-card.json (skills[0].url)
+    description: >-
+      Provider-authored skill covering the full product: authentication, the search → research →
+      retrieve flow, poll status values, rate limits and credits, the 54-tool MCP surface, decision
+      guidance (search vs research-without-search, webhooks vs polling, org-data vs research), 11
+      common gotchas and a verification checklist. Saved verbatim; not edited.
+  - file: seamless-ai-enrich-contacts.md
+    name: Enrich contacts with Seamless.AI
+    method: generated
+    api: openapi/_original/seamless-ai-public-api-openapi-original.json
+    operations: [searchContacts, researchContacts, pollContactsResearchResults]
+    description: >-
+      Search contacts by filter, submit for enrichment, and collect verified emails and phones by
+      polling — with the credit, rate-limit and poll-status rules an agent needs to not burn credits.
+  - file: seamless-ai-enrich-companies.md
+    name: Enrich companies with Seamless.AI
+    method: generated
+    api: openapi/_original/seamless-ai-public-api-openapi-original.json
+    operations: [searchCompanies, researchCompanies, pollCompanyResearchResults, getCompanies]
+    description: >-
+      Search companies by firmographics, funding and news signals, enrich them, and pull already-
+      researched accounts back for free with getCompanies.
+grounding:
+  spec: openapi/_original/seamless-ai-public-api-openapi-original.json
+  verified_operation_ids:
+    - searchContacts
+    - searchCompanies
+    - researchContacts
+    - researchCompanies
+    - pollContactsResearchResults
+    - pollCompanyResearchResults
+    - getContacts
+    - getCompanies
+    - getAccessToken
+  note: All nine operationIds in the published spec; no skill step references an invented operation.

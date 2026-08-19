@@ -1,0 +1,128 @@
+openapi: 3.0.0
+info:
+  title: Seamless.AI OAuth API
+  description: The OAuth surface of the Seamless.AI Public API. Operations carried verbatim from the provider-published OpenAPI
+    at https://docs.seamless.ai/openapi.json; only the tag split and the title are API Evangelist additions.
+  version: 1.0.0
+  termsOfService: https://seamless.ai/policies/terms-of-use
+  contact:
+    url: https://docs.seamless.ai/
+servers:
+- url: https://api.seamless.ai/api/client/v1
+  description: Seamless API
+security:
+- OAuth2: []
+- ApiKeyAuth: []
+tags:
+- name: OAuth
+paths:
+  /oauth/accessToken:
+    post:
+      summary: Get an access token
+      operationId: getAccessToken
+      tags:
+      - OAuth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                client_id:
+                  type: string
+                client_secret:
+                  type: string
+                redirect_uri:
+                  type: string
+                grant_type:
+                  type: string
+                  enum:
+                  - authorization_code
+                  - refresh_token
+                code:
+                  type: string
+                  description: Required if grant_type is authorization_code
+                refresh_token:
+                  type: string
+                  description: Required if grant_type is refresh_token
+              required:
+              - client_id
+              - client_secret
+              - redirect_uri
+              - grant_type
+      responses:
+        '200':
+          description: The access token
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  access_token:
+                    type: string
+                  expires_at:
+                    type: integer
+                  refresh_token:
+                    type: string
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - message
+                properties:
+                  message:
+                    description: A human readable error message
+                    type: string
+        '422':
+          description: Insufficient credits or missing license
+          content:
+            application/json:
+              schema:
+                description: Insufficient credits or missing license
+                type: object
+                properties:
+                  msg:
+                    type: string
+                  code:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      productCategory:
+                        type: string
+                      additionalCreditsNeeded:
+                        type: integer
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - message
+                properties:
+                  message:
+                    description: A human readable error message
+                    type: string
+components:
+  securitySchemes:
+    OAuth2:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://login.seamless.ai/oauth/authorize
+          tokenUrl: https://api.seamless.ai/api/client/v1/oauth/accessToken
+          scopes: {}
+    ApiKeyAuth:
+      type: apiKey
+      name: Token
+      in: header
+      description: API key passed via the Token header.
+    webhookSecret:
+      type: apiKey
+      description: Webhook secret that you can use to validate the request is originated by Seamless
+      name: x-seamless-webhook-secret
+      in: header

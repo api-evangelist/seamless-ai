@@ -1,40 +1,120 @@
 {
+  "generated": "2026-08-14",
+  "method": "derived",
+  "source": "openapi/_original/seamless-ai-public-api-openapi-original.json",
+  "provenance": "Assembled from example values published in the provider's own OpenAPI (https://docs.seamless.ai/openapi.json). No values invented; the API key is a fake placeholder.",
+  "operationId": "searchContacts",
+  "summary": "Search contacts",
   "request": {
     "method": "POST",
-    "url": "https://api.seamless.ai/v1/contacts/search",
+    "url": "https://api.seamless.ai/api/client/v1/search/contacts",
     "headers": {
-      "Authorization": "Bearer {api_key}",
+      "Token": "REDACTED_SEAMLESS_API_KEY",
       "Content-Type": "application/json"
     },
     "body": {
-      "name": "Jane Smith",
-      "company": "Acme Corporation",
-      "title": "VP of Engineering",
-      "location": "San Francisco, CA",
-      "page": 1,
-      "per_page": 25
+      "nextToken": null,
+      "limit": 50,
+      "contactCountry": [
+        "United States"
+      ],
+      "contactZipCode": [
+        "10001"
+      ],
+      "locationType": "bothOR",
+      "department": [
+        "IT",
+        "Engineering"
+      ],
+      "industry": [
+        "Software Development"
+      ],
+      "jobTitle": [
+        "Chief Technology Officer"
+      ],
+      "seniority": [
+        "C-Level",
+        "VP"
+      ],
+      "companyFoundedOn": [
+        "Last 4-10 Years"
+      ],
+      "companySize": [
+        "201 - 500"
+      ],
+      "companyRevenue": [
+        "$5M - $20M"
+      ],
+      "technologies": [
+        "Salesforce"
+      ],
+      "technologiesIsOr": true,
+      "lastModifiedAfter": "2025-09-01T11:00:00Z"
     }
   },
   "response": {
     "status": 200,
+    "description": "Contact Search Results",
     "body": {
       "data": [
         {
-          "searchResultId": "sr_abc123xyz",
-          "name": "Jane Smith",
-          "company": "Acme Corporation",
-          "title": "VP of Engineering",
-          "location": "San Francisco, CA"
+          "searchResultId": "708dbb34-3849-3c06-abd1-238b9a0295b3",
+          "name": "Taylor Gonsalves",
+          "company": "Seamless",
+          "title": "Customer Success Manager, Mid Market Accounts",
+          "department": "Sales",
+          "seniority": "Manager",
+          "domain": "seamless.ai",
+          "city": "Jacksonville",
+          "state": "Florida",
+          "country": "United States",
+          "companyCity": "Columbus",
+          "companyState": "Ohio",
+          "companyCountry": "United States",
+          "liUrl": "https://www.linkedin.com/in/taylor-gonsalves-b9b18b196",
+          "companyLIProfileUrl": "https://linkedin.com/company/seamlessai",
+          "sicCode": "7389",
+          "industries": [
+            "Software Development",
+            "Computer Software"
+          ],
+          "startedAtCurrentCompany": "2024-04-01",
+          "titleStartedAt": "2024-04-01",
+          "timeAtRole": "1 Yr 2 Mo",
+          "timeAtCompany": "1 Yr 2 Mo",
+          "companyFoundedOn": "2018-01-01",
+          "lastModifiedAt": "2026-03-03 12:34:07",
+          "companyRevenue": "$5M - $20M",
+          "employeeSizeRange": "201 - 500",
+          "timezone": "Eastern (EST)",
+          "firstName": "Taylor",
+          "middleName": "James",
+          "lastName": "Gonsalves",
+          "companyDomainAlias": "seamless.com",
+          "contactLIRecruiterUrl": "https://www.linkedin.com/talent/search/profile/AEMAAC3xxOcBgZ5bzU1FB2g9fsiZ04QNuvnv51k",
+          "contactLISalesNavUrl": "https://www.linkedin.com/sales/lead/ACoAAC3xxOcB-G4e6iCxOPRDtiJ5RKGoeWMqfFI,NAME_SEARCH",
+          "contactXUrl": "https://twitter.com/taylorgonsalves",
+          "companyGRURL": "https://www.google.com/search?q=Taylor%20Gonsalves%20Seamless",
+          "contactCurrentCompanyYears": "2",
+          "contactFBUrl": "https://www.facebook.com/public/Taylor+Gonsalves",
+          "contactGURL": "https://www.google.com/search?q=Taylor+Gonsalves",
+          "companyXUrl": "https://twitter.com/search?q=Seamless",
+          "companyFBUrl": "https://www.facebook.com/search/top/?q=Seamless",
+          "companyFundingTotal": "135000000",
+          "companyLatestFundingDate": "2018-01-01",
+          "companyLatestFundingClassifications": [
+            "Series D"
+          ],
+          "jobChangeAlert": "New Hire",
+          "companyType": "Public",
+          "stockTicker": "AAPL"
         }
       ],
-      "meta": {
-        "page": 1,
-        "per_page": 25,
-        "total": 1,
-        "total_pages": 1
-      },
       "supplementalData": {
-        "nextToken": null
+        "isMore": true,
+        "total": 150,
+        "perPage": 5,
+        "nextToken": "eyJwYWdlIjoyLCJzZWFyY2hJZCI6ImFiYzEyMyJ9"
       }
     }
   }

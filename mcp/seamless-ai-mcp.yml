@@ -1,0 +1,362 @@
+generated: '2026-08-14'
+method: searched
+status: published
+source: https://docs.seamless.ai/mcp-docs
+sources:
+  - https://docs.seamless.ai/mcp-docs
+  - https://docs.seamless.ai/mcp/quickstart
+  - https://docs.seamless.ai/mcp/authentication
+  - https://docs.seamless.ai/mcp/access-control
+  - https://docs.seamless.ai/mcp/risk-tiers
+  - https://docs.seamless.ai/mcp/resources
+  - https://docs.seamless.ai/mcp-openapi.yaml
+  - https://mcp.seamless.ai/.well-known/oauth-protected-resource
+
+deployment:
+  mode: remote
+  endpoint: https://mcp.seamless.ai/mcp
+  auth: oauth
+  verified: probed
+  note: >-
+    Seamless.AI ships a HOSTED, agent-reachable MCP server. There is no npx/stdio package —
+    every client install in the provider's docs (Cursor, VS Code, Claude Code, Claude Desktop,
+    ChatGPT, Windsurf, Gemini CLI, Cline, Amazon Bedrock AgentCore, Amazon Q, BoltAI) configures
+    the same remote URL. Verified 2026-08-14 by POSTing an anonymous tools/list to
+    https://mcp.seamless.ai/mcp: HTTP 401 with
+    `WWW-Authenticate: Bearer resource_metadata="https://mcp.seamless.ai/.well-known/oauth-protected-resource", scope="mcp.all"`.
+    The 401 is the proof the endpoint is live and OAuth-protected; it is not a failed probe.
+
+server:
+  name: seamless
+  transport: http
+  url: https://mcp.seamless.ai/mcp
+  spec: https://docs.seamless.ai/mcp-openapi.yaml
+  openapi: openapi/_original/seamless-ai-mcp-server-openapi-original.yaml
+  operation: mcp_transport
+
+authentication:
+  primary: oauth2.1
+  authorization_server: https://mcp.seamless.ai
+  authorization_endpoint: https://mcp.seamless.ai/mcp/authorize
+  token_endpoint: https://mcp.seamless.ai/mcp/token
+  registration_endpoint: https://mcp.seamless.ai/mcp/register
+  revocation_endpoint: https://mcp.seamless.ai/mcp/revoke
+  dynamic_client_registration: true
+  pkce: [S256]
+  scopes: [mcp.all]
+  alternate: API key via the `Token` header (same key as the REST API)
+  gating: >-
+    MCP must be enabled on the account. Clients that are not entitled receive
+    "MCP Server access is not enabled for your account". Per-tool visibility is further
+    filtered by license (see access_control below).
+
+introspection:
+  tools_list: gated
+  http_status: 401
+  probed: '2026-08-14'
+  note: >-
+    Anonymous tools/list returns 401, so live inputSchema values could not be captured. The tool
+    inventory below is transcribed from the provider's own per-domain tool reference pages, which
+    publish each tool's name, description and risk tier. Input schemas require authenticated
+    introspection.
+
+risk_tiers:
+  read: 'Read-only; no data changes. Exposed to clients as `readOnlyHint: true`.'
+  write: Creates or modifies data.
+  destructive: 'Permanent deletion. Exposed as `destructiveHint: true`.'
+  open_world: >-
+    `openWorldHint: true` is set when a tool touches unbounded external data — the global
+    search graph, or sending email to the public internet.
+
+access_control:
+  all_users: [search, research, user, saved-searches, lists]
+  connect: [templates, email-accounts, email, calls, activity, connect-config]
+  connect_full: [campaigns, tasks]
+  note: >-
+    "Connect" is the Seamless engagement product. A client only lists tools the org is licensed
+    for, so the effective tool count is smaller than 54 for accounts without Connect.
+
+tool_count: 54
+tools:
+  # --- Search (all users) ---
+  - name: search_contacts
+    domain: search
+    tier: read
+    description: Search contacts by company, job title, seniority, location, industry, and more. Returns a paginated table.
+  - name: search_companies
+    domain: search
+    tier: read
+    description: Search companies by name, domain, industry, size, revenue, and more. Returns a paginated table.
+  # --- Research (all users) ---
+  - name: research_contacts
+    domain: research
+    tier: write
+    description: Enrich contacts for verified email and phone. Pass searchResultIds or contacts. Set waitForResults true to auto-poll.
+  - name: poll_contact_research
+    domain: research
+    tier: read
+    description: Poll contact research with requestIds from research_contacts.
+  - name: research_companies
+    domain: research
+    tier: write
+    description: Enrich companies for revenue, size, technologies, etc.
+  - name: poll_company_research
+    domain: research
+    tier: read
+    description: Poll company research with requestIds from research_companies.
+  # --- User (all users) ---
+  - name: get_credits
+    domain: user
+    tier: read
+    description: Current credit balance and usage.
+  - name: get_my_contacts
+    domain: user
+    tier: read
+    description: Saved/researched contacts within a date range (max 30 days).
+  - name: get_my_companies
+    domain: user
+    tier: read
+    description: Saved/researched companies within a date range (max 30 days).
+  # --- Lists (all users) ---
+  - name: get_lists
+    domain: lists
+    tier: read
+    description: List all contact lists, or get one by ID.
+  - name: create_list
+    domain: lists
+    tier: write
+    description: Create a new contact list.
+  - name: update_list
+    domain: lists
+    tier: write
+    description: Rename an existing list.
+  - name: delete_list
+    domain: lists
+    tier: destructive
+    description: Permanently delete a list (not the contacts).
+  # --- Saved searches (all users) ---
+  - name: list_saved_searches
+    domain: saved-searches
+    tier: read
+    description: List all saved searches, or get one by ID.
+  - name: create_saved_search
+    domain: saved-searches
+    tier: write
+    description: Save search filter values as a named saved search.
+  - name: update_saved_search
+    domain: saved-searches
+    tier: write
+    description: Update name, values, or sort options.
+  - name: delete_saved_search
+    domain: saved-searches
+    tier: destructive
+    description: Permanently delete a saved search.
+  # --- Campaigns (Connect full) ---
+  - name: list_campaigns
+    domain: campaigns
+    tier: read
+    description: List campaigns or get one by ID.
+  - name: create_campaign
+    domain: campaigns
+    tier: write
+    description: Create a campaign; optional inline steps and contactIds.
+  - name: update_campaign
+    domain: campaigns
+    tier: write
+    description: Update name, visibility, or linked email accounts.
+  - name: delete_campaign
+    domain: campaigns
+    tier: destructive
+    description: Delete campaign and all steps/tasks.
+  - name: clone_campaign
+    domain: campaigns
+    tier: write
+    description: Copy campaign (steps, not contacts).
+  - name: add_contacts_to_campaign
+    domain: campaigns
+    tier: write
+    description: Add saved contacts.
+  - name: remove_contacts_from_campaign
+    domain: campaigns
+    tier: write
+    description: Remove contacts.
+  - name: list_campaign_contacts
+    domain: campaigns
+    tier: read
+    description: List contacts with engagement status.
+  - name: list_campaign_steps
+    domain: campaigns
+    tier: read
+    description: List steps with type, status, delay.
+  - name: create_campaign_step
+    domain: campaigns
+    tier: write
+    description: Add email, call, or task step.
+  - name: update_campaign_step
+    domain: campaigns
+    tier: write
+    description: Update step content or position.
+  - name: delete_campaign_step
+    domain: campaigns
+    tier: destructive
+    description: Delete a step.
+  - name: execute_campaign_action
+    domain: campaigns
+    tier: write
+    description: start, pause, resume, complete, archive, etc.
+  - name: execute_campaign_step_action
+    domain: campaigns
+    tier: write
+    description: Pause, resume, or skip a step.
+  - name: get_campaign_metrics
+    domain: campaigns
+    tier: read
+    description: Per-step engagement metrics.
+  # --- Templates (Connect) ---
+  - name: list_templates
+    domain: templates
+    tier: read
+    description: List templates or get one by ID.
+  - name: create_template
+    domain: templates
+    tier: write
+    description: Create template with subject and body.
+  - name: update_template
+    domain: templates
+    tier: write
+    description: Update name, subject, or body.
+  - name: delete_template
+    domain: templates
+    tier: destructive
+    description: Permanently delete a template.
+  # --- Email (Connect) ---
+  - name: list_email_accounts
+    domain: email
+    tier: read
+    description: List connected sender addresses.
+  - name: create_email_draft
+    domain: email
+    tier: write
+    description: Create draft (not sent).
+  - name: get_email_draft
+    domain: email
+    tier: read
+    description: Retrieve a draft.
+  - name: update_email_draft
+    domain: email
+    tier: write
+    description: Update draft content.
+  - name: send_email_draft
+    domain: email
+    tier: write
+    description: Send a saved draft.
+  - name: send_email
+    domain: email
+    tier: write
+    description: Send in one step.
+  - name: send_bulk_email
+    domain: email
+    tier: write
+    description: Send to contacts matching filters.
+  # --- Calls (Connect) ---
+  - name: log_call
+    domain: calls
+    tier: write
+    description: Log call outcome for a contact.
+  - name: list_call_dispositions
+    domain: calls
+    tier: read
+    description: List disposition options (e.g. "Left Voicemail").
+  - name: list_call_sentiments
+    domain: calls
+    tier: read
+    description: List sentiment options (e.g. "Positive").
+  # --- Tasks (Connect full) ---
+  - name: list_tasks
+    domain: tasks
+    tier: read
+    description: List tasks or get one by ID.
+  - name: create_task
+    domain: tasks
+    tier: write
+    description: Create email, call, or custom task.
+  - name: update_task
+    domain: tasks
+    tier: write
+    description: Update name, due date, priority, status.
+  - name: delete_task
+    domain: tasks
+    tier: destructive
+    description: Permanently delete a task.
+  - name: execute_task_action
+    domain: tasks
+    tier: write
+    description: pause, reschedule, complete, cancel, etc.
+  # --- Activity / Connect config (Connect) ---
+  - name: get_activity_feed
+    domain: activity
+    tier: read
+    description: 'Engagement feed: opens, replies, bounces, calls.'
+  - name: list_email_footers
+    domain: activity
+    tier: read
+    description: List email footers for campaigns and templates.
+  - name: send_email_preview
+    domain: activity
+    tier: write
+    description: Send preview to yourself before launch.
+
+resources:
+  - uri: seamless://me
+    name: user-info
+    access: all-users
+    description: User profile, About Me context, org company profile, account capabilities.
+  - uri: seamless://credits
+    name: credits
+    access: all-users
+    description: Credit balance and usage.
+  - uri: seamless://campaigns/{campaignId}
+    name: campaign-details
+    access: connect-full
+    description: Campaign steps, schedule, status.
+  - uri: seamless://templates
+    name: templates
+    access: connect
+    description: Email templates for the authenticated user.
+  - uri: seamless://templates/variables
+    name: template-variables
+    access: connect
+    description: Merge tags for personalization.
+  - uri: seamless://email-accounts
+    name: email-accounts
+    access: connect
+    description: Connected sender addresses.
+  - uri: seamless://connect/config
+    name: connect-config
+    access: connect
+    description: Contact statuses, engagement statuses, Connect settings.
+
+prompt_injection_guidance: >-
+  The provider explicitly instructs agents to treat all resource and tool response fields as
+  untrusted data and not to follow instructions embedded in contact names, templates, or campaign
+  content. Source: https://docs.seamless.ai/mcp/resources
+
+published_workflows:
+  - https://docs.seamless.ai/mcp/workflows/prospect-to-meeting
+  - https://docs.seamless.ai/mcp/workflows/bulk-enrich-and-campaign
+  - https://docs.seamless.ai/mcp/workflows/daily-activity-digest
+  - https://docs.seamless.ai/mcp/workflows/job-change-trigger
+
+x-evidence:
+  - url: https://mcp.seamless.ai/mcp
+    method: POST
+    body: '{"jsonrpc":"2.0","id":1,"method":"tools/list"}'
+    http_status: 401
+    www_authenticate: Bearer resource_metadata="https://mcp.seamless.ai/.well-known/oauth-protected-resource", scope="mcp.all"
+    fetched: '2026-08-14'
+  - url: https://mcp.seamless.ai/.well-known/oauth-protected-resource
+    http_status: 200
+    fetched: '2026-08-14'
+  - url: https://docs.seamless.ai/mcp-openapi.yaml
+    http_status: 200
+    fetched: '2026-08-14'

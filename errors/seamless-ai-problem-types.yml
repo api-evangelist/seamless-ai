@@ -1,0 +1,118 @@
+generated: '2026-08-14'
+method: searched
+source: https://docs.seamless.ai/api-http-status-codes
+sources:
+  - https://docs.seamless.ai/api-http-status-codes
+  - https://docs.seamless.ai/rate-limits-and-credits
+  - https://docs.seamless.ai/troubleshoot-authentication-and-request-failures
+  - openapi/_original/seamless-ai-public-api-openapi-original.json
+format: proprietary-json
+rfc9457: false
+content_type: application/json
+envelope:
+  fields:
+    code: Machine-readable error slug. Present on the documented 422 and 429 bodies.
+    msg: Human-readable message. The 429 example in the docs spells this `message` instead.
+  note: >-
+    Seamless.AI does not use application/problem+json. There is no `type` URI, no `title` and no
+    `instance`; a client keys off `code` plus the HTTP status.
+
+problems:
+  - status: 400
+    code: null
+    title: Bad request
+    cause: Invalid or missing parameters in the request body or query string.
+    remediation: Fix the request payload and compare against the endpoint reference.
+    source_operations: [searchContacts, searchCompanies, researchContacts, researchCompanies]
+  - status: 401
+    code: null
+    title: Unauthorized
+    cause: Missing, invalid, expired, or revoked API key or access token.
+    remediation: >-
+      Confirm the `Token` header (API key) or `Authorization: Bearer` header (OAuth). Rotate the
+      key or refresh the token.
+    docs: https://docs.seamless.ai/authentication/api-keys
+    source_operations: [getCompanies, getContacts, getAccessToken, searchCompanies, searchContacts, researchCompanies, pollCompanyResearchResults, researchContacts, pollContactsResearchResults]
+    in_openapi: true
+  - status: 403
+    code: insufficientScope
+    title: Forbidden
+    cause: The OAuth connection lacks the required permission.
+    remediation: Re-authorize with scope `publicAPI.v1.all`.
+    docs: https://docs.seamless.ai/authentication/oauth
+    in_openapi: false
+    note: Documented on the status-code page but not declared as a response in the OpenAPI.
+  - status: 404
+    code: null
+    title: Not found
+    cause: Wrong URL or path.
+    remediation: Confirm the base URL https://api.seamless.ai/api/client/v1 and the endpoint path.
+    in_openapi: false
+  - status: 422
+    code: insufficientCredits
+    title: Insufficient research credits
+    cause: The organization does not have enough research credits for this request.
+    remediation: >-
+      Check Settings -> Billing or the X-PublicAPI-Credits response header; reduce batch size or
+      add credits.
+    example_body: '{"code": "insufficientCredits", "msg": "Insufficient credit amount."}'
+    source_operations: [getCompanies, getContacts, getAccessToken, searchCompanies, searchContacts, researchCompanies, pollCompanyResearchResults, researchContacts, pollContactsResearchResults]
+    in_openapi: true
+  - status: 422
+    code: missingLicense
+    title: Missing Public API license
+    cause: The account does not have an active Public API license.
+    remediation: Contact the Seamless administrator or support to enable Public API access.
+    example_body: '{"code": "missingLicense", "msg": "Public API requires an active license."}'
+    in_openapi: true
+    note: >-
+      422 is overloaded — it carries both the billing failure and the entitlement failure. The
+      `code` field is the only way to tell them apart, so a client must parse the body and cannot
+      branch on status alone.
+  - status: 429
+    code: rateLimitExceeded
+    title: Rate limit exceeded
+    cause: More than the org's per-endpoint per-minute limit (default 60/min).
+    remediation: >-
+      Read X-RateLimit-Reset (epoch seconds) and wait until that timestamp before retrying the
+      same endpoint. No Retry-After header is sent.
+    example_body: '{"code": "rateLimitExceeded", "message": "Rate limit exceeded. Please wait and try again."}'
+    in_openapi: false
+    note: Documented on the status-code page but not declared as a response in the OpenAPI.
+  - status: 500
+    code: null
+    title: Server error
+    cause: Unexpected platform error.
+    remediation: Retry with backoff; contact support if it persists.
+    source_operations: [getCompanies, getContacts, getAccessToken, searchCompanies, searchContacts, researchCompanies, pollCompanyResearchResults, researchContacts, pollContactsResearchResults]
+    in_openapi: true
+
+non_http_statuses:
+  note: >-
+    Research outcomes are NOT signalled by HTTP status. A poll returns HTTP 200 and carries the
+    outcome in the body `status` field. Treating a 200 as success is the single most common
+    failure mode on this API.
+  poll_statuses:
+    - status: researching
+      meaning: Still processing.
+      action: Poll again in 2-5 seconds.
+    - status: done
+      meaning: Complete.
+      action: Extract the enriched record.
+    - status: missing
+      meaning: No result found; the record is not in the database.
+      action: Surface to the caller. Do not retry.
+    - status: error
+      meaning: Processing failed, typically insufficient credits or a license restriction.
+      action: Check credits and license. Do not auto-retry.
+    - status: duplicate
+      meaning: Already researched (contacts only); the existing result is returned.
+      action: Use the existing result. Do not resubmit.
+
+coverage:
+  openapi_declared_statuses: [200, 202, 401, 422, 500]
+  docs_only_statuses: [400, 403, 404, 429]
+  gap_note: >-
+    The published OpenAPI declares only 401/422/500 on the error side. 400, 403, 404 and 429 are
+    real and documented in prose but absent from the machine-readable contract, so a generated
+    client will not model them.

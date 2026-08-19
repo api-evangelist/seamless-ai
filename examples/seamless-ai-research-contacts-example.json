@@ -1,0 +1,46 @@
+{
+  "generated": "2026-08-14",
+  "method": "derived",
+  "source": "openapi/_original/seamless-ai-public-api-openapi-original.json",
+  "provenance": "Assembled from example values published in the provider's own OpenAPI (https://docs.seamless.ai/openapi.json). No values invented; the API key is a fake placeholder.",
+  "operationId": "researchContacts",
+  "summary": "Research contacts",
+  "request": {
+    "method": "POST",
+    "url": "https://api.seamless.ai/api/client/v1/contacts/research",
+    "headers": {
+      "Token": "REDACTED_SEAMLESS_API_KEY",
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "searchResultIds": [
+        "11ad7a1c-9a63-30e0-a1de-cd9a766805ca",
+        "22bd8b2d-0b74-41f1-b2ef-de0ab877916db"
+      ],
+      "isJobChange": false,
+      "contacts": [
+        {
+          "contactName": "John Doe",
+          "companyName": "Acme Corp",
+          "title": "Software Engineer",
+          "domain": "acme.com",
+          "email": "john.doe@acme.com",
+          "liProfileUrl": "https://www.linkedin.com/in/johndoe",
+          "liSalesNavUrl": "https://www.linkedin.com/sales/lead/ACoAAA...",
+          "liRecruiterUrl": "https://www.linkedin.com/talent/search/profile/AEMAA..."
+        }
+      ],
+      "skipDeduplicationCheck": false
+    }
+  },
+  "response": {
+    "status": 202,
+    "description": "The request IDs for research",
+    "body": {
+      "success": true,
+      "requestIds": [
+        "6Ei5iKuSHzJXvqjVPWiZ_"
+      ]
+    }
+  }
+}

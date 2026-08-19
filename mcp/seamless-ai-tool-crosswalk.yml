@@ -1,0 +1,199 @@
+generated: '2026-08-14'
+method: derived
+source: mcp/seamless-ai-mcp.yml + openapi/_original/seamless-ai-public-api-openapi-original.json
+note: >-
+  Binds each published Seamless.AI MCP tool to the REST operation(s) that back it. The MCP
+  tools/list endpoint is OAuth-gated (401 anonymous), so tool names, descriptions and risk tiers
+  come from the provider's own per-domain reference pages and the mapping below is by
+  name/semantics against verified REST operationIds. Confidence is recorded honestly per row.
+  The headline finding is the size of the divergence: the MCP server exposes 54 tools, the public
+  REST API exposes 9 operations, and 44 of those tools have no public REST equivalent at all.
+  Everything Seamless calls "Connect" — campaigns, email, calls, tasks, templates, activity — is
+  agent-reachable only through MCP.
+
+surfaces:
+  openapi:
+    file: openapi/_original/seamless-ai-public-api-openapi-original.json
+    source: https://docs.seamless.ai/openapi.json
+    server: https://api.seamless.ai/api/client/v1
+    operations: 9
+    gated: false
+  mcp:
+    url: https://mcp.seamless.ai/mcp
+    spec: https://docs.seamless.ai/mcp-openapi.yaml
+    tools: 54
+    gated: true
+    gate: OAuth 2.1 (scope mcp.all); anonymous tools/list returns 401
+  graphql:
+    present: false
+
+crosswalk:
+  - tool: search_contacts
+    category: search
+    rest: [searchContacts]
+    binding: rest
+    confidence: high
+    note: Same filter vocabulary as POST /search/contacts; returns searchResultId values.
+  - tool: search_companies
+    category: search
+    rest: [searchCompanies]
+    binding: rest
+    confidence: high
+  - tool: research_contacts
+    category: research
+    rest: [researchContacts, pollContactsResearchResults]
+    binding: rest
+    confidence: high
+    note: >-
+      Fans out to two REST operations. The tool's `waitForResults: true` option folds the poll
+      loop server-side, which the REST API does not offer — REST callers must poll themselves.
+  - tool: poll_contact_research
+    category: research
+    rest: [pollContactsResearchResults]
+    binding: rest
+    confidence: high
+  - tool: research_companies
+    category: research
+    rest: [researchCompanies, pollCompanyResearchResults]
+    binding: rest
+    confidence: high
+  - tool: poll_company_research
+    category: research
+    rest: [pollCompanyResearchResults]
+    binding: rest
+    confidence: high
+  - tool: get_my_contacts
+    category: user
+    rest: [getContacts]
+    binding: rest
+    confidence: high
+    note: GET /contacts takes required startDate/endDate; the tool's documented 30-day ceiling
+      matches that window.
+  - tool: get_my_companies
+    category: user
+    rest: [getCompanies]
+    binding: rest
+    confidence: high
+  - tool: get_credits
+    category: user
+    rest: []
+    binding: none
+    confidence: high
+    note: >-
+      No REST operation returns a credit balance. The docs state plainly there is no dedicated v1
+      credits endpoint — REST callers must read the X-PublicAPI-Credits response header. The MCP
+      tool and the seamless://credits resource are the only first-class credit reads.
+
+mcp_only:
+  - tool: get_credits
+    reason: No v1 REST endpoint; REST exposes credits only as a response header.
+  - tool: get_lists
+    reason: Contact lists are not on the public REST surface.
+  - tool: create_list
+    reason: Contact lists are not on the public REST surface.
+  - tool: update_list
+    reason: Contact lists are not on the public REST surface.
+  - tool: delete_list
+    reason: Contact lists are not on the public REST surface.
+  - tool: list_saved_searches
+    reason: Saved searches are not on the public REST surface.
+  - tool: create_saved_search
+    reason: Saved searches are not on the public REST surface.
+  - tool: update_saved_search
+    reason: Saved searches are not on the public REST surface.
+  - tool: delete_saved_search
+    reason: Saved searches are not on the public REST surface.
+  - tool: list_campaigns
+    reason: Connect (campaigns) has no public REST surface.
+  - tool: create_campaign
+    reason: Connect (campaigns) has no public REST surface.
+  - tool: update_campaign
+    reason: Connect (campaigns) has no public REST surface.
+  - tool: delete_campaign
+    reason: Connect (campaigns) has no public REST surface.
+  - tool: clone_campaign
+    reason: Connect (campaigns) has no public REST surface.
+  - tool: add_contacts_to_campaign
+    reason: Connect (campaigns) has no public REST surface.
+  - tool: remove_contacts_from_campaign
+    reason: Connect (campaigns) has no public REST surface.
+  - tool: list_campaign_contacts
+    reason: Connect (campaigns) has no public REST surface.
+  - tool: list_campaign_steps
+    reason: Connect (campaigns) has no public REST surface.
+  - tool: create_campaign_step
+    reason: Connect (campaigns) has no public REST surface.
+  - tool: update_campaign_step
+    reason: Connect (campaigns) has no public REST surface.
+  - tool: delete_campaign_step
+    reason: Connect (campaigns) has no public REST surface.
+  - tool: execute_campaign_action
+    reason: Connect (campaigns) has no public REST surface.
+  - tool: execute_campaign_step_action
+    reason: Connect (campaigns) has no public REST surface.
+  - tool: get_campaign_metrics
+    reason: Connect (campaigns) has no public REST surface.
+  - tool: list_templates
+    reason: Connect (templates) has no public REST surface.
+  - tool: create_template
+    reason: Connect (templates) has no public REST surface.
+  - tool: update_template
+    reason: Connect (templates) has no public REST surface.
+  - tool: delete_template
+    reason: Connect (templates) has no public REST surface.
+  - tool: list_email_accounts
+    reason: Connect (email) has no public REST surface.
+  - tool: create_email_draft
+    reason: Connect (email) has no public REST surface.
+  - tool: get_email_draft
+    reason: Connect (email) has no public REST surface.
+  - tool: update_email_draft
+    reason: Connect (email) has no public REST surface.
+  - tool: send_email_draft
+    reason: Connect (email) has no public REST surface.
+  - tool: send_email
+    reason: Connect (email) has no public REST surface.
+  - tool: send_bulk_email
+    reason: Connect (email) has no public REST surface.
+  - tool: log_call
+    reason: Connect (calls) has no public REST surface.
+  - tool: list_call_dispositions
+    reason: Connect (calls) has no public REST surface.
+  - tool: list_call_sentiments
+    reason: Connect (calls) has no public REST surface.
+  - tool: list_tasks
+    reason: Connect (tasks) has no public REST surface.
+  - tool: create_task
+    reason: Connect (tasks) has no public REST surface.
+  - tool: update_task
+    reason: Connect (tasks) has no public REST surface.
+  - tool: delete_task
+    reason: Connect (tasks) has no public REST surface.
+  - tool: execute_task_action
+    reason: Connect (tasks) has no public REST surface.
+  - tool: get_activity_feed
+    reason: Connect (activity) has no public REST surface.
+  - tool: list_email_footers
+    reason: Connect config has no public REST surface.
+  - tool: send_email_preview
+    reason: Connect config has no public REST surface.
+
+rest_only:
+  - operations: [getAccessToken]
+    capability: OAuth token exchange
+    reason: >-
+      POST /oauth/accessToken is the REST OAuth 2.0 authorization-code exchange. The MCP server
+      runs its own OAuth 2.1 authorization server at mcp.seamless.ai with dynamic client
+      registration, so the REST token endpoint has no tool equivalent by design.
+
+coverage:
+  tools_named: 54
+  tools_bound_to_rest: 8
+  tools_mcp_only: 46
+  rest_operations_total: 9
+  rest_operations_with_a_tool: 8
+  rest_operations_without_a_tool: 1
+  divergence_note: >-
+    46 of 54 tools (85%) are MCP-only. An integrator choosing REST over MCP gets search, research,
+    polling and org-data reads — and nothing else. Lists, saved searches, campaigns, templates,
+    email, calls, tasks and the activity feed exist for agents only.

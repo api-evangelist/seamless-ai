@@ -1,0 +1,566 @@
+openapi: 3.0.0
+info:
+  title: Seamless.AI Company Research API
+  description: The Company Research surface of the Seamless.AI Public API. Operations carried verbatim from the provider-published
+    OpenAPI at https://docs.seamless.ai/openapi.json; only the tag split and the title are API Evangelist additions.
+  version: 1.0.0
+  termsOfService: https://seamless.ai/policies/terms-of-use
+  contact:
+    url: https://docs.seamless.ai/
+servers:
+- url: https://api.seamless.ai/api/client/v1
+  description: Seamless API
+security:
+- OAuth2: []
+- ApiKeyAuth: []
+tags:
+- name: Company Research
+paths:
+  /companies/research:
+    post:
+      summary: Research companies
+      description: Research companies by search result IDs from `/search/companies` and/or direct company identifiers (`domain`,
+        `companyName`).
+      operationId: researchCompanies
+      tags:
+      - Company Research
+      security:
+      - OAuth2: []
+      - ApiKeyAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            examples:
+              requestPayload:
+                summary: Research companies request payload
+                value:
+                  searchResultIds:
+                  - cmp_sr_01J8YQ4FXZQ6N5G2T3A7BC9D1E
+                  - cmp_sr_01J8YQ5F95Y0M4R7J8N1P2Q3R4
+                  companies:
+                  - domain: seamless.ai
+                    companyName: Seamless.AI
+                  - domain: openai.com
+              searchResultIdsOnly:
+                summary: Research companies from company search results only
+                value:
+                  searchResultIds:
+                  - cmp_sr_01J8YQ4FXZQ6N5G2T3A7BC9D1E
+              companiesOnly:
+                summary: Research companies directly by domain/name only
+                value:
+                  companies:
+                  - domain: seamless.ai
+                    companyName: Seamless.AI
+            schema:
+              type: object
+              properties:
+                searchResultIds:
+                  description: Company search result IDs returned from `/search/companies` that you want to enrich.
+                  type: array
+                  maxItems: 100
+                  example:
+                  - cmp_sr_01J8YQ4FXZQ6N5G2T3A7BC9D1E
+                  items:
+                    type: string
+                companies:
+                  description: 'Companies to enrich directly without running search first.
+
+                    Each item must include at least one identifier:
+
+                    - `domain`
+
+                    - `companyName`
+
+                    '
+                  type: array
+                  maxItems: 100
+                  example:
+                  - domain: seamless.ai
+                    companyName: Seamless.AI
+                  items:
+                    type: object
+                    properties:
+                      domain:
+                        type: string
+                        description: Company website domain used to identify the company.
+                        example: seamless.ai
+                      companyName:
+                        type: string
+                        description: Company legal or common name used to identify the company.
+                        example: Seamless.AI
+                skipDeduplicationCheck:
+                  type: boolean
+                  description: When true, research will not check for duplicate records that you already researched recently,
+                    and perform a research (which can result in credit usage)
+                  default: false
+      responses:
+        '202':
+          description: The request IDs for research
+          content:
+            application/json:
+              examples:
+                accepted:
+                  summary: Accepted research request
+                  description: Response returned immediately after request is queued for async research.
+                  value:
+                    success: true
+                    requestIds:
+                    - 8T7LmzqW2Q6hA19
+                    - Ka2nQ9L3pR4vD1F
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    description: Indicates whether the request was accepted successfully.
+                    example: true
+                  requestIds:
+                    description: Request identifiers for each submitted company research job.
+                    type: array
+                    example:
+                    - 8T7LmzqW2Q6hA19
+                    - Ka2nQ9L3pR4vD1F
+                    items:
+                      type: string
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - message
+                properties:
+                  message:
+                    description: A human readable error message
+                    type: string
+        '422':
+          description: Insufficient credits or missing license
+          content:
+            application/json:
+              schema:
+                description: Insufficient credits or missing license
+                type: object
+                properties:
+                  msg:
+                    type: string
+                  code:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      productCategory:
+                        type: string
+                      additionalCreditsNeeded:
+                        type: integer
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - message
+                properties:
+                  message:
+                    description: A human readable error message
+                    type: string
+  /companies/research/poll:
+    get:
+      summary: Poll Company Research
+      description: Get the results/status of a company research
+      operationId: pollCompanyResearchResults
+      tags:
+      - Company Research
+      security:
+      - OAuth2: []
+      - ApiKeyAuth: []
+      parameters:
+      - name: requestIds
+        required: true
+        in: query
+        description: One or more research request IDs returned from `/companies/research`.
+        style: form
+        explode: false
+        example: 1,2,3,4,5
+        schema:
+          type: array
+          minItems: 1
+          maxItems: 100
+          items:
+            type: string
+      responses:
+        '200':
+          description: Poll Results
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    description: Indicates whether the poll request executed successfully.
+                    example: true
+                  data:
+                    type: array
+                    description: Poll status entries for each requested research ID.
+                    items:
+                      type: object
+                      properties:
+                        requestId:
+                          type: string
+                          description: Research request ID that was polled.
+                          example: 8T7LmzqW2Q6hA19
+                        status:
+                          type: string
+                          description: Current state of the research request.
+                          enum:
+                          - missing
+                          - researching
+                          - done
+                          - error
+                          example: done
+                        company:
+                          description: Enriched company payload. Present when `status` is `done`.
+                          allOf:
+                          - type: object
+                            properties:
+                              advertisingIntelligenceUrl:
+                                type: string
+                                description: URL to advertising intelligence data for the company.
+                                example: https://intel.example.com/company/12938475/advertising
+                              alexaScoreUrl:
+                                type: string
+                                description: URL to Alexa score and rank details.
+                                example: https://intel.example.com/company/12938475/alexa
+                              annualRevenue:
+                                type: string
+                                description: Estimated annual revenue value.
+                                example: '1000000001'
+                              apiResearchId:
+                                type: string
+                                description: The API research identifier for companies created through API research
+                                example: research-123
+                              phones:
+                                type: string
+                                description: Comma-separated company phone numbers.
+                                example: +1-650-555-0100,+1-650-555-0101
+                              phonesAiScores:
+                                type: string
+                                description: Comma-separated AI confidence scores for each phone number in `phones`.
+                                example: 98,86
+                              createdAt:
+                                type: string
+                                description: Timestamp when this company record was created.
+                                example: '2024-04-21T14:30:00.000Z'
+                              description:
+                                type: string
+                                description: Company profile description text.
+                                example: Seamless.AI is a sales intelligence platform.
+                              domain:
+                                type: string
+                                description: Primary website domain of the company.
+                                example: seamless.ai
+                              employeeReviewsUrl:
+                                type: string
+                                description: URL to employee reviews intelligence.
+                                example: https://intel.example.com/company/12938475/employee-reviews
+                              foundedOn:
+                                type: string
+                                description: Company founding date, when available.
+                                format: date
+                                example: '2015-01-01'
+                              googleFinanceUrl:
+                                type: string
+                                description: URL to Google Finance data for the company.
+                                example: https://www.google.com/finance/quote/EXAMPLE:NASDAQ
+                              googleResearchUrl:
+                                type: string
+                                description: URL to Google research/profile results for the company.
+                                example: https://www.google.com/search?q=seamless.ai
+                              industries:
+                                type: string
+                                description: Comma-separated industry labels for the company.
+                                example: Information Technology and Services,Computer Software
+                              intelUrl:
+                                type: string
+                                description: URL to general company intelligence overview.
+                                example: https://intel.example.com/company/12938475/overview
+                              jobPostingsUrl:
+                                type: string
+                                description: URL to job posting intelligence for the company.
+                                example: https://intel.example.com/company/12938475/jobs
+                              linkedInProfileUrl:
+                                type: string
+                                description: LinkedIn company profile URL.
+                                example: https://www.linkedin.com/company/seamless-ai/
+                              linkedInId:
+                                type: string
+                                description: LinkedIn company identifier.
+                                example: '1234567'
+                              localSportsTeamsUrl:
+                                type: string
+                                description: URL to local sports context for the company location.
+                                example: https://intel.example.com/company/12938475/local-sports
+                              localWeatherUrl:
+                                type: string
+                                description: URL to local weather context for the company location.
+                                example: https://intel.example.com/company/12938475/local-weather
+                              location:
+                                type: object
+                                properties:
+                                  street1:
+                                    type: string
+                                    description: Primary street line of the company location.
+                                    example: 800 W El Camino Real
+                                  city:
+                                    type: string
+                                    description: City of the company location.
+                                    example: Mountain View
+                                  state:
+                                    type: string
+                                    description: State or region of the company location.
+                                    example: CA
+                                  postCode:
+                                    type: string
+                                    description: Postal or zip code of the company location.
+                                    example: '94040'
+                                  country:
+                                    type: string
+                                    description: Country name of the company location.
+                                    example: United States
+                                  countryAbbr:
+                                    type: string
+                                    description: Abbreviated country code used in location metadata.
+                                    example: US
+                                  countryAlpha2:
+                                    type: string
+                                    description: ISO 3166-1 alpha-2 country code.
+                                    example: US
+                                  countryAlpha3:
+                                    type: string
+                                    description: ISO 3166-1 alpha-3 country code.
+                                    example: USA
+                                  fullString:
+                                    type: string
+                                    description: Full formatted location string.
+                                    example: 800 W El Camino Real, Mountain View, CA 94040, United States
+                              name:
+                                type: string
+                                description: Canonical company name.
+                                example: Seamless.AI
+                              newsUrl:
+                                type: string
+                                description: URL to aggregated company news.
+                                example: https://intel.example.com/company/12938475/news
+                              paidSearchIntelligenceUrl:
+                                type: string
+                                description: URL to paid search intelligence details.
+                                example: https://intel.example.com/company/12938475/paid-search
+                              paidSearchKeywordsIntelligenceUrl:
+                                type: string
+                                description: URL to paid search keyword intelligence details.
+                                example: https://intel.example.com/company/12938475/paid-search-keywords
+                              revenueRange:
+                                type: string
+                                description: Revenue range bucket for the company.
+                                example: $1B+
+                              searchMarketingIntelligenceUrl:
+                                type: string
+                                description: URL to search marketing intelligence details.
+                                example: https://intel.example.com/company/12938475/search-marketing
+                              secFilingsUrl:
+                                type: string
+                                description: URL to SEC filings and regulatory disclosures.
+                                example: https://www.sec.gov/edgar/browse/?CIK=0000000
+                              seoResearchUrl:
+                                type: string
+                                description: URL to SEO research and metrics.
+                                example: https://intel.example.com/company/12938475/seo
+                              sicCode:
+                                type: string
+                                description: Standard Industrial Classification (SIC) code.
+                                example: '4832'
+                              similarWebsitesUrl:
+                                type: string
+                                description: URL to similar websites intelligence.
+                                example: https://intel.example.com/company/12938475/similar-sites
+                              socialMediaMentionsUrl:
+                                type: string
+                                description: URL to social media mentions analytics.
+                                example: https://intel.example.com/company/12938475/social-mentions
+                              socialMediaPostsUrl:
+                                type: string
+                                description: URL to social media posts analytics.
+                                example: https://intel.example.com/company/12938475/social-posts
+                              socialPostsUrl:
+                                type: string
+                                description: URL to general social posts aggregation.
+                                example: https://intel.example.com/company/12938475/posts
+                              staffCount:
+                                type: string
+                                description: Estimated staff count value.
+                                example: '750'
+                              staffCountRange:
+                                type: string
+                                description: Staff count range bucket.
+                                example: 501 - 1,000
+                              topTechnologies:
+                                type: string
+                                description: Comma-separated list of top detected technologies.
+                                example: Adobe SiteCatalyst,Adobe Tag Manager,Akamai
+                              updatedAt:
+                                type: string
+                                description: Timestamp when this company record was last updated.
+                                example: '2024-04-21T14:30:00.000Z'
+                              webTechnologiesUrl:
+                                type: string
+                                description: URL to web technologies intelligence.
+                                example: https://intel.example.com/company/12938475/web-technologies
+                              websiteAuditUrl:
+                                type: string
+                                description: URL to website audit results.
+                                example: https://intel.example.com/company/12938475/website-audit
+                              websiteAudit2Url:
+                                type: string
+                                description: URL to secondary website audit data.
+                                example: https://intel.example.com/company/12938475/website-audit-2
+                              websiteGraderUrl:
+                                type: string
+                                description: URL to website grader report.
+                                example: https://intel.example.com/company/12938475/website-grader
+                              whoisUrl:
+                                type: string
+                                description: URL to WHOIS domain registration details.
+                                example: https://who.is/whois/seamless.ai
+                              wikipediaUrl:
+                                type: string
+                                description: URL to the company Wikipedia page, when available.
+                                example: https://en.wikipedia.org/wiki/Example_Company
+                              yahooFinanceUrl:
+                                type: string
+                                description: URL to Yahoo Finance profile/data.
+                                example: https://finance.yahoo.com/quote/EXAMPLE
+                              newsAndEvents:
+                                type: array
+                                description: Recent news articles related to the company.
+                                items:
+                                  type: object
+                                  properties:
+                                    title:
+                                      description: The headline of the news article.
+                                      type: string
+                                    url:
+                                      description: The URL to the full news article.
+                                      type: string
+                                    date:
+                                      description: The date the news article was published.
+                                      type: string
+                                      format: date-time
+                                    type:
+                                      description: The type of news article (e.g., "Acquisition").
+                                      type: string
+                              fundingTotal:
+                                type: string
+                                description: The latest total funding amount for the company.
+                                example: '100000'
+                              latestFundingDate:
+                                type: string
+                                format: date
+                                description: The date of the latest funding round for the company (formatted as "YYYY-MM-DD").
+                                example: '2023-08-12'
+                              latestFundingClassifications:
+                                type: array
+                                description: The classifications of the latest funding round for the company (e.g., "Series
+                                  A", "Pre-Seed", etc.).
+                                example:
+                                - Series D
+                                items:
+                                  type: string
+                              companyType:
+                                type: string
+                                nullable: true
+                                description: Company type — "Public" or "Private" when determined.
+                                enum:
+                                - Public
+                                - Private
+                                example: Public
+                              stockTicker:
+                                type: string
+                                nullable: true
+                                description: Stock ticker symbol of the company, if publicly traded.
+                                example: AAPL
+                    example:
+                    - requestId: 8T7LmzqW2Q6hA19
+                      status: researching
+                    - requestId: Ka2nQ9L3pR4vD1F
+                      status: done
+                      company:
+                        companyId: '12938475'
+                        apiResearchId: Ka2nQ9L3pR4vD1F
+                        name: Seamless.AI
+                        domain: seamless.ai
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - message
+                properties:
+                  message:
+                    description: A human readable error message
+                    type: string
+        '422':
+          description: Insufficient credits or missing license
+          content:
+            application/json:
+              schema:
+                description: Insufficient credits or missing license
+                type: object
+                properties:
+                  msg:
+                    type: string
+                  code:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      productCategory:
+                        type: string
+                      additionalCreditsNeeded:
+                        type: integer
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - message
+                properties:
+                  message:
+                    description: A human readable error message
+                    type: string
+components:
+  securitySchemes:
+    OAuth2:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://login.seamless.ai/oauth/authorize
+          tokenUrl: https://api.seamless.ai/api/client/v1/oauth/accessToken
+          scopes: {}
+    ApiKeyAuth:
+      type: apiKey
+      name: Token
+      in: header
+      description: API key passed via the Token header.
+    webhookSecret:
+      type: apiKey
+      description: Webhook secret that you can use to validate the request is originated by Seamless
+      name: x-seamless-webhook-secret
+      in: header

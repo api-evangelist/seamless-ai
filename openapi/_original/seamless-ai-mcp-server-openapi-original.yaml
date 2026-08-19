@@ -1,0 +1,586 @@
+openapi: 3.0.3
+info:
+  title: Seamless.AI MCP Server
+  version: 1.0.0
+  x-logo:
+    url: https://s3.amazonaws.com/seamless.ai-public/logos/logo-full-dark.svg
+    altText: Seamless logo
+    href: https://login.seamless.ai
+  description: |
+    Let your AI agents interact with Seamless.AI by using our MCP server.
+
+    The Seamless.AI [Model Context Protocol (MCP)](https://modelcontextprotocol.io/) server provides a set of tools that AI agents can use to search contacts, enrich data, manage lists, run campaigns, send emails, log calls, and more — all from within your IDE or AI assistant.
+
+    # Connect to the Seamless.AI MCP Server
+
+    > **Note:** MCP access must be enabled on your account. If you receive the error *"MCP Server access is not enabled for your account"*, contact your administrator or Seamless.AI support to request access.
+
+    The Seamless.AI MCP server supports **OAuth 2.1** authentication. Most modern MCP clients handle the OAuth flow automatically — just provide the server URL and your client will prompt you to log in via your browser.
+
+    ## Cursor
+
+    Add the following to your `~/.cursor/mcp.json` file. To learn more, see the Cursor [documentation](https://docs.cursor.com/context/model-context-protocol).
+
+    ```json
+    {
+      "mcpServers": {
+        "seamless": {
+          "url": "https://mcp.seamless.ai/mcp"
+        }
+      }
+    }
+    ```
+
+    When you connect for the first time, Cursor will open a browser window where you can log in to Seamless.AI and authorize access.
+
+    ## VS Code
+
+    Add the following to your `.vscode/mcp.json` file in your workspace. To learn more, see the VS Code [documentation](https://code.visualstudio.com/docs/copilot/chat/mcp-servers).
+
+    ```json
+    {
+      "servers": {
+        "seamless": {
+          "type": "http",
+          "url": "https://mcp.seamless.ai/mcp"
+        }
+      }
+    }
+    ```
+
+    ## Claude Code
+
+    To add the Seamless MCP to Claude Code, run the following command. To learn more, see the Claude Code [documentation](https://docs.anthropic.com/en/docs/claude-code/mcp#configure-mcp-servers).
+
+    ```bash
+    claude mcp add --transport http seamless https://mcp.seamless.ai/mcp
+    ```
+
+    ## Windsurf
+
+    Add the following to your `~/.codeium/windsurf/mcp_config.json` file. To learn more, see the Windsurf [documentation](https://docs.windsurf.com/windsurf/cascade/mcp).
+
+    ```json
+    {
+      "mcpServers": {
+        "seamless": {
+          "url": "https://mcp.seamless.ai/mcp"
+        }
+      }
+    }
+    ```
+
+    ## ChatGPT
+
+    You can enable MCP servers on ChatGPT if you have a Pro, Plus, Business, Enterprise, or Education account. Follow the [OpenAI documentation](https://platform.openai.com/docs/guides/developer-mode) for instructions. Use `https://mcp.seamless.ai/mcp` as the server URL. ChatGPT handles the OAuth flow automatically.
+
+    ## Gemini CLI
+
+    Add the following to the `mcpServers` object in your `settings.json` file. To learn more, see the Gemini CLI [documentation](https://google-gemini.github.io/gemini-cli/docs/tools/mcp-server.html).
+
+    ```json
+    {
+      "mcpServers": {
+        "seamless": {
+          "httpUrl": "https://mcp.seamless.ai/mcp"
+        }
+      }
+    }
+    ```
+
+    Gemini CLI supports automatic OAuth discovery — it will detect the authentication requirement and open a browser window to complete the login.
+
+    ## Cline
+
+    Add the following to your `cline_mcp_settings.json` file. You can open this file from the MCP Servers icon in Cline's top navigation bar. To learn more, see the Cline [documentation](https://docs.cline.bot/mcp/connecting-to-a-remote-server).
+
+    ```json
+    {
+      "mcpServers": {
+        "seamless": {
+          "url": "https://mcp.seamless.ai/mcp"
+        }
+      }
+    }
+    ```
+
+    ## Poke
+
+    Add the Seamless.AI MCP server as an integration in your Poke settings. Go to **Settings > Connections > Integrations > New** and enter the server URL `https://mcp.seamless.ai/mcp`. To learn more, see the Poke [documentation](https://interaction.co/mcp).
+
+    ## Amazon Bedrock
+
+    You can connect to the Seamless.AI MCP server from Amazon Bedrock AgentCore by adding it as a gateway target. Use `https://mcp.seamless.ai/mcp` as the MCP server endpoint URL. To learn more, see the Amazon Bedrock AgentCore [documentation](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/runtime-mcp.html).
+
+    ## Amazon Q Developer
+
+    To add the Seamless MCP to Amazon Q Developer CLI, run the following command. To learn more, see the Amazon Q Developer [documentation](https://docs.aws.amazon.com/amazonq/latest/qdeveloper-ug/qdev-mcp.html).
+
+    ```bash
+    qchat mcp add --name seamless --type http --url https://mcp.seamless.ai/mcp
+    ```
+
+    Or add the following to your `.amazonq/mcp.json` file for IDE use:
+
+    ```json
+    {
+      "mcpServers": {
+        "seamless": {
+          "type": "http",
+          "url": "https://mcp.seamless.ai/mcp"
+        }
+      }
+    }
+    ```
+
+    Amazon Q Developer supports OAuth for remote MCP servers. Use the `/mcp` command to begin authentication after adding the server.
+
+    ## BoltAI
+
+    Add the following to your `~/.boltai/mcp.json` file, or go to **Settings > Plugins** and add the server from the UI. To learn more, see the BoltAI [documentation](https://boltai.com/docs/plugins/mcp-servers).
+
+    ```json
+    {
+      "mcpServers": {
+        "seamless": {
+          "url": "https://mcp.seamless.ai/mcp"
+        }
+      }
+    }
+    ```
+
+    ## Other Clients
+
+    MCP is an open protocol supported by many clients. Use the server URL `https://mcp.seamless.ai/mcp`. Clients that support the MCP OAuth specification will handle authentication automatically. For example:
+
+    ```json
+    {
+      "mcpServers": {
+        "seamless": {
+          "url": "https://mcp.seamless.ai/mcp"
+        }
+      }
+    }
+    ```
+
+    # Authentication
+
+    The Seamless.AI MCP server supports two authentication methods: **OAuth 2.1** (recommended) and **API Key** (legacy).
+
+    ## OAuth 2.1 (Recommended)
+
+    OAuth is the primary authentication method. MCP clients that support the [MCP authorization specification](https://modelcontextprotocol.io/specification/2025-03-26/basic/authorization) handle the entire flow automatically:
+
+    1. **Discovery** — Your MCP client fetches `https://mcp.seamless.ai/.well-known/oauth-authorization-server` to discover OAuth endpoints.
+    2. **Authorization** — The client opens a browser window where you log in to Seamless.AI and authorize MCP access.
+    3. **Token exchange** — The client exchanges the authorization code for an access token using PKCE (S256).
+    4. **Automatic refresh** — The client automatically refreshes the token when it expires.
+
+    All requests are authenticated via the `Authorization: Bearer <token>` header.
+
+    ### Client Identification
+
+    The MCP server supports two ways for clients to identify themselves during the OAuth flow:
+
+    - **Auto-discovery (CIMD / DCR)** — Most MCP clients use [Client ID Metadata Document (CIMD)](https://modelcontextprotocol.io/specification/2025-03-26/basic/authorization#2-3-client-registration) or [Dynamic Client Registration (DCR)](https://modelcontextprotocol.io/specification/2025-03-26/basic/authorization#2-3-client-registration) to automatically register with the server. No additional configuration is needed — just provide the server URL and the client handles everything.
+    - **Explicit Client ID** — If your MCP client supports specifying a `client_id`, you can use the OAuth Client ID from the connection you created in **Settings > Public API Connections > OAuth Connection** in the Seamless app. This ties the OAuth session directly to your organization's configured connection.
+
+    ### OAuth Details
+
+    | Parameter | Value |
+    |---|---|
+    | Authorization endpoint | `https://mcp.seamless.ai/mcp/authorize` |
+    | Token endpoint | `https://mcp.seamless.ai/mcp/token` |
+    | Registration endpoint | `https://mcp.seamless.ai/mcp/register` |
+    | Revocation endpoint | `https://mcp.seamless.ai/mcp/revoke` |
+    | Grant types | `authorization_code`, `refresh_token` |
+    | Code challenge method | `S256` (PKCE required) |
+    | Scope | `mcp.all` |
+
+    ### Setup
+
+    Before connecting with OAuth, your organization must have an MCP-enabled OAuth connection:
+
+    1. Go to **Settings > Public API Connections > OAuth Connection** tab in the [Seamless app](https://login.seamless.ai/settings/public-api)
+    2. Click **+ Create New Connection**
+    3. Select **OAuth Connection** as the Connection Type
+    4. Enter a **Connection Name** (e.g. "MCP Access") and an optional **Description**
+    5. Under **Scopes**, check the **MCP** checkbox (you can also check **Public API v1** if you need REST API access)
+    6. Choose the **Group** that should have access to this connection (e.g. "Entire Organization")
+    7. Click **Save Connection**
+
+    After saving, you will receive a **Client ID**. Most MCP clients do not require it (they use auto-discovery), but you can provide it if your client supports specifying a `client_id`.
+
+    > **Note:** MCP access must be enabled on your account. Contact your administrator or Seamless.AI support if you receive an *"organization has not enabled MCP access"* error.
+
+    ## API Key
+
+    For clients that do not support MCP OAuth, you can authenticate with an API key passed via the `Token` header.
+
+    1. Go to **Settings > Public API Connections > API Key** tab in the [Seamless app](https://login.seamless.ai/settings/public-api)
+    2. Click **+ Create New Connection**
+    3. Enter a **Connection Name** and an optional **Description**
+    4. Under **Scopes**, check the **MCP** checkbox to enable MCP access for this key
+    5. Choose the **Group** that should have access and click **Save Connection**
+    6. Copy the generated API key value
+    7. Pass it in the `Token` header of every request to `https://mcp.seamless.ai/mcp`
+
+    ### Client Configuration with API Key
+
+    If your MCP client does not support OAuth, add a `headers` block with your API key:
+
+    ```json
+    {
+      "mcpServers": {
+        "seamless": {
+          "url": "https://mcp.seamless.ai/mcp",
+          "headers": {
+            "Token": "<YOUR_API_KEY>"
+          }
+        }
+      }
+    }
+    ```
+
+    You can also call the MCP server directly via curl for testing:
+
+    ```bash
+    curl https://mcp.seamless.ai/mcp \
+      -H "Content-Type: application/json" \
+      -H "Token: <YOUR_API_KEY>" \
+      -d '{
+        "jsonrpc": "2.0",
+        "method": "tools/list",
+        "params": {},
+        "id": 1
+      }'
+    ```
+
+    # Risk Tiers
+
+    Each tool is annotated with a risk tier that indicates the type of operation:
+
+    | Tier | Description |
+    |---|---|
+    | `read` | Read-only operation, no side effects |
+    | `write` | Creates or modifies data |
+    | `destructive` | Permanently deletes data (cannot be undone) |
+
+    We recommend enabling human confirmation for `write` and `destructive` tools in your MCP client settings.
+
+    # Access Control
+
+    Tools are organized into domains. Access to each domain is determined by the user's license and feature flags:
+
+    | Domain | Access Requirement |
+    |---|---|
+    | Search, Research, User, Saved Searches, Lists | All users |
+    | Campaigns, Tasks | Requires Connect access |
+    | Templates, Email Accounts, Email, Calls, Activity, Connect Config | Requires Connect access |
+
+    # Resources
+
+    In addition to tools, the MCP server exposes read-only **resources** that provide reference data. Resources are accessed via URI and return JSON.
+
+    | Resource | URI | Description | Access |
+    |---|---|---|---|
+    | user-info | `seamless://me` | Authenticated user profile, About Me context, organization company profile, and feature flags | All users |
+    | credits | `seamless://credits` | Current credit balance and usage | All users |
+    | campaign-details | `seamless://campaigns/{campaignId}` | Detailed campaign information including steps, schedule, and status | Requires Connect access |
+    | templates | `seamless://templates` | Email templates available to the authenticated user | Requires Connect access |
+    | template-variables | `seamless://templates/variables` | Available template variables (merge tags) for personalizing email templates | Requires Connect access |
+    | email-accounts | `seamless://email-accounts` | Connected email accounts for the authenticated user | Requires Connect access |
+    | connect-config | `seamless://connect/config` | Connect/Engagement configuration: contact statuses, engagement statuses, and connect settings | Requires Connect access |
+
+    # Tools
+
+    The server exposes the following MCP tools. Your MCP client automatically discovers available tools when it connects — you do not need to configure them manually.
+
+    ## Search
+
+    Search the Seamless.AI database for contacts and companies. Does not consume credits.
+
+    | Tool | Description | Risk |
+    |---|---|---|
+    | `search_contacts` | Search for contacts by company, title, seniority, location, industry, and more. Returns a paginated table. | `read` |
+    | `search_companies` | Search for companies by name, domain, industry, size, revenue, and more. Returns a paginated table. | `read` |
+
+    ## Research
+
+    Enrich contacts and companies with verified data. **Consumes credits.** Research is async — use the poll tools to check for results.
+
+    | Tool | Description | Risk |
+    |---|---|---|
+    | `research_contacts` | Submit contacts for enrichment to get verified emails and phone numbers. Pass `searchResultIds` from a search or a `contacts` array. Set `waitForResults: true` to auto-poll. | `write` |
+    | `poll_contact_research` | Poll for contact research results using `requestIds` from `research_contacts`. | `read` |
+    | `research_companies` | Submit companies for enrichment to get verified details like revenue, size, and technologies. | `write` |
+    | `poll_company_research` | Poll for company research results using `requestIds` from `research_companies`. | `read` |
+
+    ## User
+
+    Retrieve authenticated user data including credits, saved contacts, and saved companies.
+
+    | Tool | Description | Risk |
+    |---|---|---|
+    | `get_credits` | Get current credit balance and usage. | `read` |
+    | `get_my_contacts` | Retrieve previously saved/researched contacts within a date range (max 30 days). | `read` |
+    | `get_my_companies` | Retrieve previously saved/researched companies within a date range (max 30 days). | `read` |
+
+    ## Saved Searches
+
+    Create, list, update, and delete saved search configurations.
+
+    | Tool | Description | Risk |
+    |---|---|---|
+    | `list_saved_searches` | List all saved searches, or get a specific one by ID. | `read` |
+    | `create_saved_search` | Save a set of search filters as a named saved search. | `write` |
+    | `update_saved_search` | Update an existing saved search name, filters, or sort options. | `write` |
+    | `delete_saved_search` | Permanently delete a saved search. | `destructive` |
+
+    ## Lists
+
+    Manage contact lists for organizing saved contacts.
+
+    | Tool | Description | Risk |
+    |---|---|---|
+    | `get_lists` | List all contact lists, or get a specific list by ID. | `read` |
+    | `create_list` | Create a new contact list. | `write` |
+    | `update_list` | Rename an existing contact list. | `write` |
+    | `delete_list` | Permanently delete a contact list (does not delete the contacts). | `destructive` |
+
+    ## Campaigns
+
+    Manage outreach campaigns including steps, contacts, and lifecycle actions. Requires Connect access.
+
+    | Tool | Description | Risk |
+    |---|---|---|
+    | `list_campaigns` | List campaigns, or get a specific campaign by ID. | `read` |
+    | `create_campaign` | Create a new campaign. | `write` |
+    | `update_campaign` | Update campaign name, visibility, or linked email accounts. | `write` |
+    | `delete_campaign` | Permanently delete a campaign and all its steps/tasks. | `destructive` |
+    | `clone_campaign` | Create a copy of an existing campaign (copies steps, not contacts). | `write` |
+    | `add_contacts_to_campaign` | Add saved contacts to a campaign. | `write` |
+    | `remove_contacts_from_campaign` | Remove contacts from a campaign. | `write` |
+    | `list_campaign_contacts` | List contacts in a campaign with engagement status. | `read` |
+    | `list_campaign_steps` | List all steps in a campaign with type, status, and delay. | `read` |
+    | `create_campaign_step` | Add a new step (email, call, task) to a campaign. | `write` |
+    | `update_campaign_step` | Update a campaign step's name, delay, content, or position. | `write` |
+    | `delete_campaign_step` | Delete a step from a campaign. | `destructive` |
+    | `execute_campaign_action` | Execute a lifecycle action: start, pause, resume, complete, archive, unarchive, or delete. | `write` |
+    | `execute_campaign_step_action` | Pause, resume, or skip an individual campaign step. | `write` |
+    | `get_campaign_metrics` | Get per-step engagement metrics (sent, opened, bounced, replied). | `read` |
+
+    ## Templates
+
+    Manage email and messaging templates. Requires Connect access.
+
+    | Tool | Description | Risk |
+    |---|---|---|
+    | `list_templates` | List email templates, or get a specific one by ID. | `read` |
+    | `create_template` | Create a new email template with subject and body. | `write` |
+    | `update_template` | Update a template's name, subject, or body. | `write` |
+    | `delete_template` | Permanently delete a template. | `destructive` |
+
+    ## Email Accounts
+
+    List connected email accounts for sending. Requires Connect access.
+
+    | Tool | Description | Risk |
+    |---|---|---|
+    | `list_email_accounts` | List connected email accounts (sender addresses). | `read` |
+
+    ## Email
+
+    Send emails, manage drafts, and send bulk email. Requires Connect access.
+
+    | Tool | Description | Risk |
+    |---|---|---|
+    | `create_email_draft` | Create an email draft for a contact (saved but not sent). | `write` |
+    | `get_email_draft` | Retrieve a previously created email draft. | `read` |
+    | `update_email_draft` | Update draft content before sending. | `write` |
+    | `send_email_draft` | Send a previously created email draft. | `write` |
+    | `send_email` | Send an email directly to a contact in one step. | `write` |
+    | `send_bulk_email` | Send emails to multiple contacts matching filter criteria. | `write` |
+
+    ## Calls
+
+    Log calls and retrieve call disposition/sentiment options. Requires Connect access.
+
+    | Tool | Description | Risk |
+    |---|---|---|
+    | `log_call` | Log a call outcome for a contact (not a click-to-call feature). | `write` |
+    | `list_call_dispositions` | List available call disposition options (e.g. "Left Voicemail"). | `read` |
+    | `list_call_sentiments` | List available call sentiment options (e.g. "Positive"). | `read` |
+
+    ## Tasks
+
+    Manage tasks for contacts and campaigns. Requires Connect access.
+
+    | Tool | Description | Risk |
+    |---|---|---|
+    | `list_tasks` | List tasks, or get a specific task by ID. | `read` |
+    | `create_task` | Create a new task (email, call, or custom action) for a contact. | `write` |
+    | `update_task` | Update a task's name, due date, description, priority, or status. | `write` |
+    | `delete_task` | Permanently delete a task. | `destructive` |
+    | `execute_task_action` | Execute an action: pause, reschedule, unpause, cancel, start, delete, skip, complete, or schedule. | `write` |
+
+    ## Activity
+
+    View engagement activity feed. Requires Connect access.
+
+    | Tool | Description | Risk |
+    |---|---|---|
+    | `get_activity_feed` | Get the engagement activity feed (opens, replies, bounces, calls). | `read` |
+
+    ## Connect Config
+
+    Access Connect configuration. Requires Connect access.
+
+    | Tool | Description | Risk |
+    |---|---|---|
+    | `list_email_footers` | List email footers available for campaigns and templates. | `read` |
+    | `send_email_preview` | Send a preview email to yourself for review before launching. | `write` |
+
+servers:
+  - url: https://mcp.seamless.ai
+    description: Production
+
+components:
+  securitySchemes:
+    OAuth2:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://mcp.seamless.ai/mcp/authorize
+          tokenUrl: https://mcp.seamless.ai/mcp/token
+          scopes:
+            mcp.all: Full MCP access
+    ApiKey:
+      type: apiKey
+      name: Token
+      in: header
+      description: API key passed via the `Token` header.
+
+security:
+  - OAuth2:
+      - mcp.all
+  - ApiKey: []
+
+paths:
+  /mcp:
+    post:
+      operationId: mcp_transport
+      summary: MCP Transport
+      description: |
+        The single transport endpoint for all MCP communication. All tool calls, resource reads, and protocol messages are sent here as JSON-RPC 2.0 requests.
+
+        This is a stateless endpoint — each request creates a fresh server instance scoped to the authenticated user.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [jsonrpc, method, id]
+              properties:
+                jsonrpc:
+                  type: string
+                  enum: ["2.0"]
+                  description: JSON-RPC version. Always "2.0".
+                method:
+                  type: string
+                  description: 'MCP method to invoke (e.g. "tools/list", "tools/call", "resources/read").'
+                  example: tools/call
+                params:
+                  type: object
+                  description: Method-specific parameters. For `tools/call`, includes `name` (tool name) and `arguments` (tool input).
+                  properties:
+                    name:
+                      type: string
+                      description: Tool name (for tools/call).
+                      example: search_contacts
+                    arguments:
+                      type: object
+                      description: Tool input arguments (for tools/call).
+                      additionalProperties: true
+                id:
+                  oneOf:
+                    - type: string
+                    - type: integer
+                  description: Request ID for correlating responses.
+            examples:
+              listTools:
+                summary: List available tools
+                value:
+                  jsonrpc: "2.0"
+                  method: tools/list
+                  params: {}
+                  id: 1
+              callTool:
+                summary: Call a tool
+                value:
+                  jsonrpc: "2.0"
+                  method: tools/call
+                  params:
+                    name: search_contacts
+                    arguments:
+                      companyName: ["Acme Corp"]
+                      seniority: ["VP", "Director"]
+                      limit: 10
+                  id: 2
+              readResource:
+                summary: Read a resource
+                value:
+                  jsonrpc: "2.0"
+                  method: resources/read
+                  params:
+                    uri: "seamless://credits"
+                  id: 3
+      responses:
+        "200":
+          description: JSON-RPC 2.0 response with the result or error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  jsonrpc:
+                    type: string
+                    example: "2.0"
+                  result:
+                    type: object
+                    description: Method-specific result payload.
+                  error:
+                    type: object
+                    description: Error object if the request failed.
+                    properties:
+                      code:
+                        type: integer
+                      message:
+                        type: string
+                  id:
+                    oneOf:
+                      - type: string
+                      - type: integer
+              examples:
+                toolResult:
+                  summary: Successful tool call
+                  value:
+                    jsonrpc: "2.0"
+                    result:
+                      content:
+                        - type: text
+                          text: "Found 15 contacts matching your search..."
+                    id: 2
+                errorResult:
+                  summary: Error response
+                  value:
+                    jsonrpc: "2.0"
+                    error:
+                      code: -32602
+                      message: "Invalid params: companyName must be an array"
+                    id: 2
+        "401":
+          description: Missing or invalid authentication.
+        "405":
+          description: Method not allowed (e.g. DELETE request).

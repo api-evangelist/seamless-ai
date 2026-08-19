@@ -1,0 +1,66 @@
+generated: '2026-08-14'
+method: probed
+source: https://docs.seamless.ai/.well-known/agent-card.json
+discovery:
+  path: /.well-known/agent-card.json
+  canonical: true
+  host: docs.seamless.ai
+  note: >-
+    Found on the documentation host, not the marketing host. seamless.ai/.well-known/agent-card.json
+    returns HTTP 404, api.seamless.ai returns 403, and mcp.seamless.ai returns 404 — docs.seamless.ai
+    is the only Seamless.AI host serving a card. That host also 404s every other /.well-known/* path
+    we probed, so this is a deliberately served document and not an SPA catch-all answering 200 for
+    everything.
+conformance:
+  spec: A2A 1.0.0
+  grade: near-conformant
+  protocol_version: '0.3'
+  preferred_transport: HTTP+JSON
+  hard_checks:
+    capabilities_is_object: true
+    protocol_version_present: true
+    skills_is_array: true
+  optional_fields:
+    preferred_transport: true
+    default_input_modes: true
+    default_output_modes: true
+  deviations:
+    - id: supported-interfaces-not-additional-interfaces
+      detail: >-
+        The card uses `supportedInterfaces` where A2A 1.0.0 specifies `additionalInterfaces`.
+        No hard check fails, so this is not graded `flavored`, but a strict 1.0.0 client will not
+        read the interface list.
+    - id: agent-url-is-the-docs-site
+      detail: >-
+        `url` and every `supportedInterfaces[].url` point at https://docs.seamless.ai/ — the human
+        documentation site, not an A2A JSON-RPC endpoint. The card is a discovery/description
+        artifact rather than a callable A2A agent. Seamless.AI's actual agent surface is the MCP
+        server at https://mcp.seamless.ai/mcp (see mcp/seamless-ai-mcp.yml).
+card:
+  name: Seamless
+  description: API & MCP for B2B Sales Automation
+  url: https://docs.seamless.ai/
+  version: 1.0.0
+  provider_organization: Seamless
+  documentation_url: https://docs.seamless.ai/
+  capabilities:
+    streaming: false
+    push_notifications: false
+  default_input_modes: [text/plain]
+  default_output_modes: [text/plain]
+  skills: 1
+  skill_ids: [seamless]
+  file: seamless-ai-agent-card.json
+linked_skill:
+  id: seamless
+  url: https://docs.seamless.ai/.well-known/agent-skills/seamless/skill.md
+  status: 200
+  saved_to: ../skills/seamless-ai-provider-published-skill.md
+  note: The skill URL advertised by the card resolves to a real provider-authored Agent Skill,
+    saved verbatim.
+x-evidence:
+  fetched: '2026-08-14'
+  url: https://docs.seamless.ai/.well-known/agent-card.json
+  http_status: 200
+  content_type: application/json
+  bytes: 936

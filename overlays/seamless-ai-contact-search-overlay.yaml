@@ -1,0 +1,45 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for Seamless.AI Contact Search API
+  version: 1.0.0
+extends: openapi/seamless-ai-contact-search-api-openapi.yml
+x-generated: '2026-08-14'
+x-method: generated
+x-note: Captures API Evangelist annotations only. The harvested provider spec in openapi/_original/ is never mutated.
+actions:
+- target: $.info
+  description: Stamp API Evangelist provenance and rating context onto the harvested spec.
+  update:
+    x-apievangelist-provider: seamless-ai
+    x-apievangelist-source: https://docs.seamless.ai/openapi.json
+    x-apievangelist-harvested: '2026-08-14'
+    x-apievangelist-artifacts:
+    - authentication/seamless-ai-authentication.yml
+    - scopes/seamless-ai-scopes.yml
+    - conventions/seamless-ai-conventions.yml
+    - errors/seamless-ai-problem-types.yml
+    - rate-limits/seamless-ai-rate-limits.yml
+    - data-model/seamless-ai-data-model.yml
+    - mcp/seamless-ai-mcp.yml
+- target: $.components
+  description: Record that the provider spec declares no reusable named schemas; every request and response type
+    is inline.
+  update:
+    x-apievangelist-note: components.schemas is empty in the provider spec. Contact (101 fields) and Company (51
+      fields) are re-declared inline per operation. Extracted standalone schemas live in json-schema/.
+- target: $.paths['/search/contacts'].post
+  description: Annotate searchContacts with runtime semantics captured from the Seamless.AI docs.
+  update:
+    x-apievangelist-consumes-credits: false
+    x-apievangelist-rate-limit: 60 requests per minute, per endpoint, per organization
+    x-apievangelist-rate-limit-headers:
+    - X-RateLimit-Limit
+    - X-RateLimit-Remaining
+    - X-RateLimit-Reset
+    x-apievangelist-credit-header: X-PublicAPI-Credits
+    x-apievangelist-idempotent: false
+    x-apievangelist-undocumented-responses:
+    - '400'
+    - '403'
+    - '404'
+    - '429'

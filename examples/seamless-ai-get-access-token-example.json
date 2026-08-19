@@ -1,0 +1,24 @@
+{
+  "generated": "2026-08-14",
+  "method": "derived",
+  "source": "openapi/_original/seamless-ai-public-api-openapi-original.json",
+  "provenance": "Assembled from example values published in the provider's own OpenAPI (https://docs.seamless.ai/openapi.json). No values invented; the API key is a fake placeholder.",
+  "operationId": "getAccessToken",
+  "summary": "Get an access token",
+  "request": {
+    "method": "POST",
+    "url": "https://api.seamless.ai/api/client/v1/oauth/accessToken",
+    "headers": {
+      "Token": "REDACTED_SEAMLESS_API_KEY",
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "grant_type": "authorization_code"
+    }
+  },
+  "response": {
+    "status": 200,
+    "description": "The access token",
+    "body": null
+  }
+}

@@ -1,0 +1,158 @@
+generated: '2026-08-14'
+method: derived
+source: >-
+  openapi/_original/seamless-ai-public-api-openapi-original.json,
+  well-known/seamless-ai-well-known.yml, a2a/seamless-ai-a2a.yml, mcp/seamless-ai-mcp.yml,
+  plus the Seamless.AI documentation site
+note: >-
+  Cross-cutting standards conformance, asserted only where there is evidence in a harvested
+  artifact or a provider-published page. `conforms: false` is a real measurement, not an omission.
+
+standards:
+  - id: openapi-3.0
+    conforms: true
+    evidence: >-
+      Provider publishes OpenAPI 3.0.0 at https://docs.seamless.ai/openapi.json — 9 operations,
+      unique operationIds, summaries and descriptions on every operation, tags on every operation,
+      inline response examples throughout.
+  - id: openapi-3.1
+    conforms: false
+    evidence: 'Document declares `openapi: 3.0.0`.'
+  - id: oauth2
+    conforms: true
+    evidence: >-
+      OpenAPI declares an oauth2 securityScheme with the authorizationCode flow
+      (authorizationUrl https://login.seamless.ai/oauth/authorize, tokenUrl
+      https://api.seamless.ai/api/client/v1/oauth/accessToken) and the docs publish the full
+      authorization-code exchange plus refresh.
+  - id: oauth2-pkce
+    conforms: true
+    scope: mcp-only
+    evidence: >-
+      https://mcp.seamless.ai/.well-known/oauth-authorization-server advertises
+      code_challenge_methods_supported ["S256"]. The REST OAuth flow does not document PKCE and
+      uses a client_secret.
+  - id: rfc8414-oauth-authorization-server-metadata
+    conforms: true
+    scope: mcp-only
+    evidence: 200 at https://mcp.seamless.ai/.well-known/oauth-authorization-server
+  - id: rfc9728-oauth-protected-resource-metadata
+    conforms: true
+    scope: mcp-only
+    evidence: >-
+      200 at https://mcp.seamless.ai/.well-known/oauth-protected-resource, and the 401 from
+      the MCP endpoint returns a WWW-Authenticate challenge carrying resource_metadata — the
+      full RFC 9728 discovery loop.
+  - id: rfc7591-dynamic-client-registration
+    conforms: true
+    scope: mcp-only
+    evidence: registration_endpoint https://mcp.seamless.ai/mcp/register advertised in the AS metadata.
+  - id: openid-connect
+    conforms: false
+    evidence: >-
+      A document IS served at https://mcp.seamless.ai/.well-known/openid-configuration, but it is
+      byte-identical to the OAuth 2.1 authorization-server metadata: no jwks_uri, no
+      userinfo_endpoint, no id_token_signing_alg_values_supported, and `openid` is not among the
+      supported scopes. This is OAuth metadata at the OIDC path, not an OpenID Provider.
+  - id: mcp
+    conforms: true
+    evidence: >-
+      Hosted server at https://mcp.seamless.ai/mcp, 54 tools across 11 domains, read-only
+      resources under seamless:// URIs, MCP SDK hints (readOnlyHint / destructiveHint /
+      openWorldHint) derived from published risk tiers, and an OpenAPI describing the transport
+      at https://docs.seamless.ai/mcp-openapi.yaml. Verified live: anonymous tools/list returns
+      401 with an RFC 9728 challenge.
+  - id: a2a
+    conforms: partial
+    grade: near-conformant
+    evidence: >-
+      Agent card served at https://docs.seamless.ai/.well-known/agent-card.json (protocolVersion
+      0.3, capabilities object, skills array). Uses `supportedInterfaces` where A2A 1.0.0
+      specifies `additionalInterfaces`, and every interface URL points at the docs site rather
+      than a callable A2A endpoint. See a2a/seamless-ai-a2a.yml.
+  - id: agent-skills
+    conforms: true
+    evidence: >-
+      Provider-authored Agent Skill served at
+      https://docs.seamless.ai/.well-known/agent-skills/seamless/skill.md and referenced from the
+      agent card. Saved verbatim to skills/seamless-ai-provider-published-skill.md.
+  - id: llms-txt
+    conforms: true
+    evidence: 200 at https://docs.seamless.ai/llms.txt (72 indexed pages) and llms-full.txt.
+  - id: rfc9457-problem-details
+    conforms: false
+    evidence: >-
+      Errors use a proprietary {code, msg} envelope over application/json. No type URI, title or
+      instance; no application/problem+json anywhere in the spec or docs.
+  - id: rfc9116-security-txt
+    conforms: false
+    evidence: /.well-known/security.txt returns 404 or 403 on all five Seamless.AI hosts probed.
+  - id: rfc8594-sunset-header
+    conforms: false
+    evidence: No Sunset or Deprecation header and no deprecation policy published.
+  - id: rfc6585-rate-limit-headers
+    conforms: partial
+    evidence: >-
+      Publishes X-RateLimit-Limit / -Remaining / -Reset (the de-facto convention) but not the
+      IETF draft `RateLimit-*` fields, and sends no Retry-After on 429 — the documented recovery
+      is to read X-RateLimit-Reset instead.
+  - id: idempotency-key
+    conforms: false
+    evidence: >-
+      No idempotency-key header or parameter in the spec or the docs. `skipDeduplicationCheck`
+      and the `duplicate` poll status are credit de-duplication, not request idempotency.
+  - id: cursor-pagination
+    conforms: partial
+    evidence: >-
+      Search endpoints use cursor pagination (nextToken/limit); org-data endpoints use offset
+      pagination (page/limit) with a required startDate/endDate window. Two styles on one API.
+  - id: webhooks-signed
+    conforms: false
+    evidence: >-
+      Webhook verification is a plain shared-secret header (x-seamless-webhook-secret) with no
+      HMAC over the body, no timestamp and no replay window.
+  - id: asyncapi
+    conforms: false
+    evidence: >-
+      No AsyncAPI document. /asyncapi.yaml and /asyncapi.json return 404 on docs and api hosts;
+      the GitHub org publishes no event spec. A real webhook catalog exists — see
+      asyncapi/seamless-ai-webhooks.yml.
+  - id: json-schema
+    conforms: partial
+    evidence: >-
+      Request and response schemas are declared inline in the OpenAPI with descriptions and
+      examples, but components.schemas is EMPTY — zero reusable named schemas across 9
+      operations, so identical Contact and Company shapes are re-declared per operation.
+  - id: fhir-r4
+    conforms: false
+  - id: scim2
+    conforms: false
+  - id: odata
+    conforms: false
+  - id: jsonapi
+    conforms: false
+  - id: fapi
+    conforms: false
+  - id: graphql
+    conforms: false
+    evidence: No /graphql surface found on any Seamless.AI host.
+  - id: grpc
+    conforms: false
+    evidence: No .proto published in the GitHub org, on buf.build, or in the docs.
+
+compliance_program:
+  published: true
+  trust_center: https://trust.seamless.ai/
+  certifications_machine_readable: false
+  see_also: security/seamless-ai-trust-center.yml
+  note: >-
+    A Vanta-hosted trust center is served at trust.seamless.ai (verified HTTP 200, with /controls,
+    /faq and /resources also 200). The certification list itself renders client-side and could not
+    be read by probe, so no individual certification is asserted here.
+
+summary:
+  conforms: 11
+  partial: 4
+  does_not_conform: 14
+  strongest: [mcp, rfc9728-oauth-protected-resource-metadata, openapi-3.0, agent-skills]
+  weakest: [rfc9457-problem-details, rfc9116-security-txt, idempotency-key, webhooks-signed, rfc8594-sunset-header]

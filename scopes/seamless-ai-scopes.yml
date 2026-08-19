@@ -1,0 +1,90 @@
+generated: '2026-08-14'
+method: searched
+source: openapi/_original/seamless-ai-public-api-openapi-original.json
+docs: https://docs.seamless.ai/authentication/oauth
+sources:
+  - https://docs.seamless.ai/authentication/oauth
+  - https://docs.seamless.ai/api-http-status-codes
+  - https://mcp.seamless.ai/.well-known/oauth-protected-resource
+  - openapi/_original/seamless-ai-public-api-openapi-original.json
+note: >-
+  The derived pass found the oauth2 scheme but ZERO scopes, because the published OpenAPI declares
+  `scopes: {}` on its authorizationCode flow — the scope vocabulary is absent from the machine-
+  readable contract. Both real scopes below were recovered from the documentation and from the MCP
+  authorization-server metadata, so this file is upgraded to `searched`. Seamless.AI operates two
+  separate OAuth surfaces with two separate authorization servers and two disjoint scope
+  vocabularies; they are not interchangeable.
+
+scope_count: 2
+granularity: coarse
+granularity_note: >-
+  Both surfaces expose exactly ONE all-or-nothing scope. There is no read/write split, no
+  per-resource scope, and no way to grant an agent search access without also granting enrichment
+  (which spends credits) or, on MCP, campaign and bulk-email send. Least-privilege delegation is
+  not expressible against this API today.
+
+surfaces:
+  - name: REST Public API v1
+    authorization_server: https://login.seamless.ai
+    authorization_url: https://login.seamless.ai/oauth/authorize
+    token_url: https://api.seamless.ai/api/client/v1/oauth/accessToken
+    flow: authorizationCode
+    client_authentication: client_secret
+    pkce: false
+    dynamic_client_registration: false
+    scopes_in_spec: 0
+    registration: Settings -> Public API -> OAuth Connections, at https://login.seamless.ai/settings/public-api
+  - name: MCP server
+    authorization_server: https://mcp.seamless.ai
+    authorization_url: https://mcp.seamless.ai/mcp/authorize
+    token_url: https://mcp.seamless.ai/mcp/token
+    registration_endpoint: https://mcp.seamless.ai/mcp/register
+    revocation_endpoint: https://mcp.seamless.ai/mcp/revoke
+    flow: authorizationCode
+    client_authentication: none
+    pkce: [S256]
+    dynamic_client_registration: true
+
+schemes:
+  - name: OAuth2
+    source: openapi/_original/seamless-ai-public-api-openapi-original.json
+    flows:
+      - flow: authorizationCode
+        authorizationUrl: https://login.seamless.ai/oauth/authorize
+        tokenUrl: https://api.seamless.ai/api/client/v1/oauth/accessToken
+        scopes_declared: 0
+
+scopes:
+  - scope: publicAPI.v1.all
+    surface: rest
+    description: >-
+      Full access to the Seamless.AI Public API v1 — search, research, polling and org-data reads.
+      The only REST scope published.
+    flows: [authorizationCode]
+    sources: [https://docs.seamless.ai/authentication/oauth]
+    in_spec: false
+    enforcement: >-
+      A connection lacking it receives HTTP 403 with `code: insufficientScope`. The documented
+      remedy is to re-authorize with this scope.
+  - scope: mcp.all
+    surface: mcp
+    description: Full MCP access — all 54 tools and all seamless:// resources the org is licensed for.
+    flows: [authorizationCode]
+    sources:
+      - https://mcp.seamless.ai/.well-known/oauth-protected-resource
+      - https://mcp.seamless.ai/.well-known/oauth-authorization-server
+    in_spec: true
+    in_spec_source: https://docs.seamless.ai/mcp-openapi.yaml
+    enforcement: >-
+      Advertised as the required scope in the WWW-Authenticate challenge returned by an
+      unauthenticated POST to https://mcp.seamless.ai/mcp (HTTP 401, verified 2026-08-14).
+
+secondary_authorization:
+  mechanism: license entitlement
+  note: >-
+    Scope is not the only gate. Tool visibility on MCP is filtered per request by the org's
+    license — "Connect" for templates/email/calls/activity, "Connect (full)" for campaigns and
+    tasks — and the REST API requires an active Public API license or returns HTTP 422
+    `missingLicense`. An access token carrying mcp.all still sees a smaller tool list on an
+    unlicensed org, so a client must not assume a fixed tool set.
+  see_also: mcp/seamless-ai-mcp.yml

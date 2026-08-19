@@ -1,0 +1,161 @@
+generated: '2026-08-14'
+method: derived
+source: openapi/_original/seamless-ai-public-api-openapi-original.json
+note: >-
+  Entity-relationship graph derived from the provider-published OpenAPI. The spec declares every
+  schema INLINE — components.schemas is empty across all 9 operations — so there are no named
+  types to walk; the graph below was reconstructed from response shapes and from the identifier
+  fields that thread one operation's output into the next operation's input.
+
+identifier_chain:
+  description: >-
+    The whole API is one three-hop pipeline held together by three identifiers. Confusing them is
+    the failure mode the provider's own troubleshooting page leads with.
+  hops:
+    - produced_by: searchContacts / searchCompanies
+      identifier: searchResultId
+      consumed_by: researchContacts / researchCompanies
+    - produced_by: researchContacts / researchCompanies
+      identifier: requestId
+      consumed_by: pollContactsResearchResults / pollCompanyResearchResults
+    - carried_on: webhook payload
+      identifier: apiResearchId
+      equals: requestId
+      note: The webhook payload renames requestId to apiResearchId. Same value, different field name.
+
+entities:
+  - name: ContactSearchResult
+    description: A lightweight match returned by contact search. Not enriched; no verified email or phone.
+    key: searchResultId
+    field_count: 41
+    source_operation: searchContacts
+    representative_fields: [searchResultId, name, firstName, lastName, company, title, department, seniority, domain, city, state, country, liUrl, industries, companyRevenue, employeeSizeRange]
+    note: Cheap and free — search does not spend credits.
+  - name: CompanySearchResult
+    description: A lightweight company match returned by company search.
+    key: searchResultId
+    source_operation: searchCompanies
+  - name: Contact
+    description: >-
+      Full contact record returned by the research engine. The heavy entity of the API — 101
+      fields covering identity, employment, multi-channel contact data with per-field AI
+      confidence scores, social profiles, job history and company firmographics denormalized onto
+      the contact.
+    key: contactId
+    field_count: 101
+    source_operations: [getContacts, pollContactsResearchResults]
+    schema: json-schema/seamless-ai-contact-schema.json
+    structure: json-structure/seamless-ai-contact-structure.json
+    nested:
+      - {field: contactLocation, type: object}
+      - {field: companyLocation, type: object}
+      - {field: jobHistory, type: array}
+      - {field: newsAndEvents, type: array}
+      - {field: companyLatestFundingClassifications, type: array}
+    confidence_fields:
+      pattern: '<field>TotalAI'
+      example: contactPhone1TotalAI
+      example_value: '98%'
+      note: >-
+        Confidence is expressed as a PERCENTAGE STRING ("98%"), not a number. Consumers must
+        parse it. This is the API's most distinctive modelling choice and worth knowing before
+        writing a scoring rule against it.
+    denormalization_note: >-
+      Company firmographics (companyName, companyLocation, companyRevenue, companyLinkedInId,
+      funding, news) are copied onto every Contact record rather than referenced. There is no
+      companyId foreign key on a Contact — the join back to a Company is by domain or name.
+  - name: Company
+    description: Full company record returned by the research engine — firmographics, revenue,
+      headcount, technologies, funding, news.
+    key: linkedInId
+    field_count: 51
+    source_operations: [getCompanies, pollCompanyResearchResults]
+    schema: json-schema/seamless-ai-company-schema.json
+    structure: json-structure/seamless-ai-company-structure.json
+    nested:
+      - {field: location, type: object}
+      - {field: newsAndEvents, type: array}
+      - {field: latestFundingClassifications, type: array}
+    note: >-
+      There is no first-party opaque company identifier in the response. The stable-looking key is
+      linkedInId, a third-party identifier. Join by domain where LinkedIn coverage is absent.
+  - name: ResearchRequest
+    description: An enrichment job. Created with 202 Accepted; collected by poll or webhook.
+    key: requestId
+    source_operations: [researchContacts, researchCompanies]
+    lifecycle_states: [researching, done, missing, error, duplicate]
+    note: >-
+      The only WRITE entity in the API, and it is the only thing that spends credits. Its terminal
+      state arrives in a 200 body, never as an HTTP status.
+  - name: AccessToken
+    description: OAuth access/refresh token pair.
+    source_operation: getAccessToken
+    fields: [access_token, refresh_token, expires_at]
+
+relationships:
+  - from: ContactSearchResult
+    to: ResearchRequest
+    type: has_many
+    via: searchResultId
+    note: One search result can be submitted for research; one research call accepts an array.
+  - from: CompanySearchResult
+    to: ResearchRequest
+    type: has_many
+    via: searchResultId
+  - from: ResearchRequest
+    to: Contact
+    type: has_one
+    via: requestId
+    note: The poll response nests the enriched record under `contact`.
+  - from: ResearchRequest
+    to: Company
+    type: has_one
+    via: requestId
+  - from: Contact
+    to: ResearchRequest
+    type: belongs_to
+    via: apiResearchId
+  - from: Company
+    to: ResearchRequest
+    type: belongs_to
+    via: apiResearchId
+  - from: Contact
+    to: Company
+    type: belongs_to
+    via: companyName / domain
+    binding: weak
+    note: >-
+      No foreign key. Company attributes are denormalized onto the Contact and the join is by
+      name or domain string. An integrator building a normalized warehouse must resolve this
+      themselves.
+  - from: Contact
+    to: JobHistoryEntry
+    type: has_many
+    via: jobHistory
+  - from: Contact
+    to: NewsEvent
+    type: has_many
+    via: newsAndEvents
+  - from: Company
+    to: NewsEvent
+    type: has_many
+    via: newsAndEvents
+
+envelopes:
+  search: '{data: [...], supplementalData: {...}}'
+  org_data: '{data: [...]}'
+  research: '{success: bool, requestIds: [...]}'
+  poll: '{success: bool, data: [{requestId, searchResultId, status, message, contact|company, additionalData}]}'
+  note: >-
+    The envelope is not consistent across the API. Search and org-data return `{data}`, research
+    and poll add a `success` boolean. A generic client cannot assume one wrapper.
+
+observations:
+  - >-
+    components.schemas is empty. The identical 101-field Contact shape is re-declared inline in
+    every operation that returns it, so any generated client produces duplicate anonymous types
+    and any change must be made in several places at once.
+  - >-
+    There is no DELETE, PATCH or PUT anywhere in the public API. The only mutation is submitting
+    an enrichment job. Everything else — lists, saved searches, campaigns, tasks — exists only on
+    the MCP surface.

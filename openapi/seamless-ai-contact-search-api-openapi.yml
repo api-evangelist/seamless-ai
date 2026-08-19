@@ -1,0 +1,1025 @@
+openapi: 3.0.0
+info:
+  title: Seamless.AI Contact Search API
+  description: The Contact Search surface of the Seamless.AI Public API. Operations carried verbatim from the provider-published
+    OpenAPI at https://docs.seamless.ai/openapi.json; only the tag split and the title are API Evangelist additions.
+  version: 1.0.0
+  termsOfService: https://seamless.ai/policies/terms-of-use
+  contact:
+    url: https://docs.seamless.ai/
+servers:
+- url: https://api.seamless.ai/api/client/v1
+  description: Seamless API
+security:
+- OAuth2: []
+- ApiKeyAuth: []
+tags:
+- name: Contact Search
+paths:
+  /search/contacts:
+    post:
+      summary: Search contacts
+      operationId: searchContacts
+      tags:
+      - Contact Search
+      security:
+      - OAuth2: []
+      - ApiKeyAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                nextToken: null
+                limit: 50
+                contactCountry:
+                - United States
+                contactZipCode:
+                - '10001'
+                locationType: bothOR
+                department:
+                - IT
+                - Engineering
+                industry:
+                - Software Development
+                jobTitle:
+                - Chief Technology Officer
+                seniority:
+                - C-Level
+                - VP
+                companyFoundedOn:
+                - Last 4-10 Years
+                companySize:
+                - 201 - 500
+                companyRevenue:
+                - $5M - $20M
+                technologies:
+                - Salesforce
+                technologiesIsOr: true
+                lastModifiedAfter: '2025-09-01T11:00:00Z'
+              properties:
+                nextToken:
+                  description: An opaque cursor token for retrieving the next page of results. Returned as `supplementalData.nextToken`
+                    in the previous response.
+                  type: string
+                  default: null
+                  nullable: true
+                limit:
+                  description: The maximum number of contacts to return per page. Must be a positive integer.
+                  type: integer
+                  default: 50
+                  example: 50
+                companyName:
+                  description: Filter contacts by their company name. Accepts up to 100 company names.
+                  type: array
+                  items:
+                    type: string
+                  maxItems: 100
+                  example:
+                  - Seamless.AI
+                companyNameSearchType:
+                  description: 'Controls how `companyName` values are matched. `default` matches the provided name using standard
+                    relevance matching. `related` broadens the search to include known subsidiaries, parent companies, and
+                    brand aliases. `exact` restricts results to only companies whose name is an exact match.
+
+                    '
+                  type: string
+                  enum:
+                  - default
+                  - related
+                  - exact
+                  default: default
+                  example: default
+                companyDomain:
+                  description: Filter contacts by their company's website domain. Accepts up to 100 domains.
+                  type: array
+                  items:
+                    type: string
+                  maxItems: 100
+                  example:
+                  - seamless.ai
+                contactState:
+                  description: Filter by the contact's or company's state or region. Behavior depends on the `locationType`
+                    parameter. Sample enum values shown for documentation only; actual values are not exhaustive and come
+                    from the API or typeahead.
+                  type: array
+                  items:
+                    type: string
+                    enum:
+                    - NY
+                    - Texas
+                    - Florida
+                    - VA
+                    - CA
+                  maxItems: 10
+                  example:
+                  - California
+                  - New York
+                contactCountry:
+                  description: Filter by the contact's or company's country. Behavior depends on the `locationType` parameter.
+                    Sample enum values shown for documentation only; actual values are not exhaustive and come from the API
+                    or typeahead.
+                  type: array
+                  items:
+                    type: string
+                    enum:
+                    - United States
+                    - Canada
+                    - United Kingdom
+                    - Germany
+                    - Australia
+                  maxItems: 10
+                  example:
+                  - United States
+                contactZipCode:
+                  description: Filter by the contact's or company's zip/postal code. Behavior depends on the `locationType`
+                    parameter. Sample enum values shown for documentation only; actual values are not exhaustive and come
+                    from the API or typeahead.
+                  type: array
+                  items:
+                    type: string
+                    enum:
+                    - '10001'
+                    - '30301'
+                    - '33101'
+                    - '60601'
+                    - '94105'
+                  maxItems: 10
+                  example:
+                  - '10001'
+                locationType:
+                  description: 'Determines how location filters (`contactState`, `contactCountry`, `contactZipCode`) are applied.
+                    `contact` matches the contact''s personal location only. `company` matches the company''s headquarters
+                    location only. `bothOR` matches if either the contact or the company location matches (default). `bothAND`
+                    matches only when both the contact and the company location match.
+
+                    '
+                  type: string
+                  enum:
+                  - bothOR
+                  - bothAND
+                  - company
+                  - contact
+                  default: bothOR
+                  example: bothOR
+                department:
+                  description: Filter contacts by organizational department. Up to 5 departments can be specified.
+                  type: array
+                  items:
+                    type: string
+                    enum:
+                    - Sales
+                    - Marketing
+                    - Engineering
+                    - Human Resources
+                    - Finance
+                    - IT
+                    - Operations
+                    - Support
+                    - Legal
+                    - Project Management
+                    - Other
+                  maxItems: 5
+                  example:
+                  - IT
+                  - Engineering
+                industry:
+                  description: Filter contacts by their company's industry classification. Up to 5 industries can be specified.
+                    Values are organized into parent categories (e.g., "Software & Information Technology") and specific sub-industries
+                    (e.g., "Computer Software").
+                  type: array
+                  items:
+                    type: string
+                    enum:
+                    - Aerospace & Defense
+                    - Airlines & Aviation
+                    - Aviation & Aerospace
+                    - Defense & Space
+                    - Military
+                    - Agriculture
+                    - Farming
+                    - Horticulture
+                    - Ranching
+                    - Tobacco
+                    - Apparel & Fashion
+                    - Textiles
+                    - Automotive
+                    - Chemicals & Materials
+                    - Chemicals
+                    - Plastics
+                    - Consumer Goods & Retail
+                    - Consumer Goods
+                    - Luxury Goods & Jewelry
+                    - Retail
+                    - Sporting Goods
+                    - Education & Training
+                    - E-Learning
+                    - Education Management
+                    - Higher Education
+                    - Libraries
+                    - Primary/Secondary Education
+                    - Electronics & Hardware
+                    - Computer Hardware
+                    - Consumer Electronics
+                    - Electrical & Electronic Manufacturing
+                    - Semiconductors
+                    - Energy & Utilities
+                    - Oil & Energy
+                    - Utilities
+                    - Entertainment
+                    - Animation
+                    - Arts & Crafts
+                    - Computer Games
+                    - Fine Art
+                    - Gambling & Casinos
+                    - Mobile Games
+                    - Motion Pictures & Film
+                    - Music
+                    - Performing Arts
+                    - Photography
+                    - Recreational Facilities & Services
+                    - Sports
+                    - Environmental
+                    - Environmental Services
+                    - Renewables & Environment
+                    - Finance & Banking
+                    - Banking
+                    - Capital Markets
+                    - Financial Services
+                    - Investment Banking
+                    - Investment Management
+                    - Venture Capital & Private Equity
+                    - Food & Beverage
+                    - Dairy
+                    - Fishery
+                    - Food & Beverages
+                    - Food Production
+                    - Restaurants
+                    - Supermarkets
+                    - Wine & Spirits
+                    - Government & Public Policy
+                    - Executive Office
+                    - Government Administration
+                    - Government Relations
+                    - Judiciary
+                    - Law Enforcement
+                    - Legislative Office
+                    - Political Organization
+                    - Public Policy
+                    - Public Safety
+                    - Health & Wellness
+                    - Alternative Medicine
+                    - Health, Wellness and Fitness
+                    - Hospital & Health Care
+                    - Medical Practice
+                    - Mental Health Care
+                    - Veterinary
+                    - Hospitality & Tourism
+                    - Events Services
+                    - Hospitality
+                    - Leisure, Travel & Tourism
+                    - Museums & Institutions
+                    - Household, Personal, & Beauty
+                    - Consumer Services
+                    - Cosmetics
+                    - Furniture
+                    - Individual & Family Services
+                    - Insurance
+                    - Internet & E-Commerce
+                    - Internet
+                    - Manufacturing & Engineering
+                    - Civil Engineering
+                    - Industrial Automation
+                    - Machinery
+                    - Mechanical or Industrial Engineering
+                    - Railroad Manufacture
+                    - Shipbuilding
+                    - Marketing & Media
+                    - Broadcast Media
+                    - Graphic Design
+                    - Marketing & Advertising
+                    - Media Production
+                    - Newspapers
+                    - Online Media
+                    - Printing
+                    - Public Relations & Communications
+                    - Publishing
+                    - Writing & Editing
+                    - Metals, Mining & Materials
+                    - Building Materials
+                    - Glass, Ceramics & Concrete
+                    - Mining & Metals
+                    - Paper & Forest Products
+                    - Non-Profit
+                    - Fund-Raising
+                    - Non-Profit Organization Management
+                    - Philanthropy
+                    - Religious Institutions
+                    - Pharmaceuticals & Medical Devices
+                    - Biotechnology
+                    - Medical Devices
+                    - Nanotechnology
+                    - Pharmaceuticals
+                    - Professional Services & Consulting
+                    - Accounting
+                    - Alternative Dispute Resolution
+                    - Civic & Social Organization
+                    - Design
+                    - Human Resources
+                    - International Affairs
+                    - International Trade & Development
+                    - Law Practice
+                    - Legal Services
+                    - Management Consulting
+                    - Market Research
+                    - Outsourcing/Offshoring
+                    - Professional Training & Coaching
+                    - Program Development
+                    - Research
+                    - Security & Investigations
+                    - Staffing & Recruiting
+                    - Think Tanks
+                    - Real Estate & Construction
+                    - Architecture & Planning
+                    - Commercial Real Estate
+                    - Construction
+                    - Facilities Services
+                    - Real Estate
+                    - Software & Information Technology
+                    - Computer & Network Security
+                    - Computer Software
+                    - Information Services
+                    - Information Technology & Services
+                    - Software Development
+                    - Telecommunications & Networking
+                    - Computer Networking
+                    - Telecommunications
+                    - Wireless
+                    - Transportation & Logistics
+                    - Logistics & Supply Chain
+                    - Maritime
+                    - Package/Freight Delivery
+                    - Packaging & Containers
+                    - Translation & Localization
+                    - Transportation/Trucking/Railroad
+                    - Wholesale & Distribution
+                    - Business Supplies & Equipment
+                    - Import & Export
+                    - Warehousing
+                    - Wholesale
+                  maxItems: 5
+                  example:
+                  - Software Development
+                fullName:
+                  description: Filter contacts by full name. Useful for finding specific individuals. Up to 10 names can be
+                    specified.
+                  type: array
+                  items:
+                    type: string
+                  maxItems: 10
+                  example:
+                  - John Smith
+                contactKeyword:
+                  description: Filter contacts by keyword matches against their profile (e.g., skills, bio, specialties).
+                    Up to 10 keywords can be specified.
+                  type: array
+                  items:
+                    type: string
+                  maxItems: 10
+                  example:
+                  - sales enablement
+                jobTitle:
+                  description: Filter contacts by job title. Matches are based on relevance to the provided title strings.
+                    Up to 10 titles can be specified.
+                  type: array
+                  items:
+                    type: string
+                  maxItems: 10
+                  example:
+                  - Chief Technology Officer
+                seniority:
+                  description: Filter contacts by seniority level within their organization. Up to 5 values can be specified.
+                  type: array
+                  items:
+                    type: string
+                    enum:
+                    - C-Level
+                    - VP
+                    - Director
+                    - Manager
+                    - Senior
+                    - Entry Level
+                    - Mid-Level
+                    - Other
+                  maxItems: 5
+                  example:
+                  - C-Level
+                  - VP
+                companyFoundedOn:
+                  description: Filter contacts by how recently their company was founded. Up to 4 ranges can be specified.
+                  type: array
+                  items:
+                    type: string
+                    enum:
+                    - Less than 1 Year
+                    - Last 1-3 Years
+                    - Last 4-10 Years
+                    - 10+ Years
+                  maxItems: 4
+                  example:
+                  - Less than 1 Year
+                  - Last 1-3 Years
+                companySize:
+                  description: Filter contacts by their company's employee count range. Up to 10 ranges can be specified.
+                  type: array
+                  items:
+                    type: string
+                    enum:
+                    - 0 - 1 (Self-employed)
+                    - 2 - 10
+                    - 11 - 50
+                    - 51 - 200
+                    - 201 - 500
+                    - 501 - 1,000
+                    - 1,001 - 5,000
+                    - 5,001 - 10,000
+                    - 10,001+
+                  maxItems: 10
+                  example:
+                  - 201 - 500
+                companyRevenue:
+                  description: Filter contacts by their company's estimated annual revenue range. Up to 10 ranges can be specified.
+                  type: array
+                  items:
+                    type: string
+                    enum:
+                    - $0 - $100K
+                    - $100K - $1M
+                    - $1M - $5M
+                    - $5M - $20M
+                    - $20M - $50M
+                    - $50M - $100M
+                    - $100M - $500M
+                    - $500M - $1B
+                    - $1B+
+                  maxItems: 10
+                  example:
+                  - $5M - $20M
+                technologies:
+                  description: Filter contacts by technologies used at their company. Up to 10 technologies can be specified.
+                    Sample enum values shown for documentation only; actual values are not exhaustive and come from the API
+                    or typeahead.
+                  type: array
+                  items:
+                    type: string
+                    enum:
+                    - Salesforce
+                    - HubSpot
+                    - Marketo
+                    - Outreach
+                    - Apollo
+                  maxItems: 10
+                  example:
+                  - Salesforce
+                technologiesIsOr:
+                  description: Controls how multiple `technologies` values are combined. When `true` (default), returns contacts
+                    whose company uses any of the specified technologies (OR logic). When `false`, returns only contacts whose
+                    company uses all of the specified technologies (AND logic).
+                  type: boolean
+                  default: true
+                  example: true
+                jobChanges:
+                  type: object
+                  description: 'Filter contacts by job change activity.
+
+                    '
+                  nullable: true
+                  default: null
+                  properties:
+                    changeType:
+                      type: string
+                      description: 'Filters the job change by it''s classification. Job Change classifications are  made by
+                        `changeType` and can differ based on optionally provided `dayRange`. `New Hire` = contacts who joined
+                        a new company. `New Promotion` = contacts who received a new title at the same company. `New Hire
+                        or New Promotion` = either.
+
+                        '
+                      enum:
+                      - New Hire
+                      - New Promotion
+                      - New Hire or New Promotion
+                      nullable: true
+                      default: null
+                      example: New Hire
+                    dayRange:
+                      type: string
+                      description: Rolling lookback window for the job change.
+                      enum:
+                      - Last 60 Days
+                      - Last 90 Days
+                      - Last 180 Days
+                      - Last 365 Days
+                      nullable: true
+                      default: null
+                      example: Last 90 Days
+                pastCompany:
+                  type: object
+                  nullable: true
+                  description: Filter contacts by past employer. When provided, `names` must be non-empty.
+                  default: null
+                  required:
+                  - names
+                  properties:
+                    names:
+                      type: array
+                      items:
+                        type: string
+                      minItems: 1
+                      maxItems: 100
+                      description: One or more company names to match against the contact's employment history.
+                      example:
+                      - Acme Inc
+                    onlyMostRecentDeparture:
+                      type: boolean
+                      default: false
+                      description: 'When `true`, only matches contacts whose most recent departure was from one of the specified
+                        companies. When `false` (default), matches any contact who has ever worked at any of the specified
+                        companies (searches full job history).
+
+                        '
+                companyType:
+                  type: string
+                  description: 'Filter by company type. `Public` = companies with a known stock ticker/exchange, `Private`
+                    = all others.
+
+                    '
+                  enum:
+                  - Public
+                  - Private
+                  default: null
+                  nullable: true
+                  example: Public
+                lastModifiedAfter:
+                  description: Return only contacts whose core data (name, title, company, phone, or email) was last updated
+                    on or after this date. Use ISO 8601 format.
+                  type: string
+                  format: date-time
+                  example: '2025-09-01T11:00:00Z'
+                lastModifiedBefore:
+                  description: Return only contacts whose core data (name, title, company, phone, or email) was last updated
+                    on or before this date. Use ISO 8601 format. Combine with `lastModifiedAfter` to define a date range.
+                  type: string
+                  format: date-time
+                  example: '2025-09-07T11:00:00Z'
+                newsTypes:
+                  description: Filter contacts by recent news or events at their company. Returns contacts whose company has
+                    been associated with the specified event types. Up to 8 types can be specified.
+                  type: array
+                  items:
+                    type: string
+                    enum:
+                    - Acquisition
+                    - Corporate Challenges
+                    - Cost Cutting
+                    - Expansion
+                    - Investment
+                    - Leadership
+                    - Partnership
+                    - Recognition
+                  maxItems: 8
+                  example:
+                  - Acquisition
+                  - Expansion
+                newsTypeDates:
+                  description: Restrict `newsTypes` results to a rolling window of recent days. Accepts a single value representing
+                    the number of days to look back. Only the first value is used if multiple are provided.
+                  type: array
+                  items:
+                    type: string
+                    enum:
+                    - '60'
+                    - '90'
+                    - '180'
+                    - '365'
+                  maxItems: 1
+                  example:
+                  - '60'
+                companyLatestFundingDates:
+                  type: array
+                  items:
+                    type: string
+                    enum:
+                    - '90'
+                    - '180'
+                    - '365'
+                    - '1095'
+                  description: Filter companies based on the date of their latest funding round (90, 180, 365 days or 3 years).
+                  example:
+                  - '90'
+                  maxItems: 1
+                companyLatestFundingClassifications:
+                  type: array
+                  items:
+                    type: string
+                    enum:
+                    - Angel
+                    - Pre-Seed
+                    - Seed
+                    - Series A
+                    - Series B
+                    - Series C
+                    - Series D
+                    - Series E
+                    - Series F
+                    - Series G
+                    - Series H
+                    - Series I
+                    - Series J
+                    - Other
+                  description: Filter companies based on the classifications of their latest funding round.
+                  example:
+                  - Series A
+                  - Seed
+                  maxItems: 14
+                companyLatestFundingTotals:
+                  type: array
+                  items:
+                    type: string
+                    enum:
+                    - $0 - $100K
+                    - $100K - $1M
+                    - $1M - $5M
+                    - $5M - $20M
+                    - $20M - $50M
+                    - $50M - $100M
+                    - $100M - $500M
+                    - $500M - $1B
+                    - $1B+
+                  description: Filter companies based on the total funding amount they have raised.
+                  example:
+                  - $0 - $100K
+                  - $100K - $1M
+                  maxItems: 9
+      responses:
+        '200':
+          description: Contact Search Results
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    description: A list of contacts
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        searchResultId:
+                          description: Unique identifier for this search result. Use this ID when submitting contacts for
+                            research via the research endpoint.
+                          type: string
+                          example: 708dbb34-3849-3c06-abd1-238b9a0295b3
+                        name:
+                          description: The contact's full name.
+                          type: string
+                          example: Taylor Gonsalves
+                        company:
+                          description: The name of the company where the contact is currently employed.
+                          type: string
+                          example: Seamless
+                        title:
+                          description: The contact's current job title.
+                          type: string
+                          example: Customer Success Manager, Mid Market Accounts
+                        department:
+                          description: The organizational department the contact belongs to.
+                          type: string
+                          example: Sales
+                        seniority:
+                          description: The contact's seniority level within their organization.
+                          type: string
+                          example: Manager
+                        domain:
+                          description: The primary website domain of the contact's company.
+                          type: string
+                          example: seamless.ai
+                        city:
+                          description: The city where the contact is located.
+                          type: string
+                          example: Jacksonville
+                        state:
+                          description: The state or region where the contact is located.
+                          type: string
+                          example: Florida
+                        country:
+                          description: The country where the contact is located.
+                          type: string
+                          example: United States
+                        companyCity:
+                          description: The city where the contact's company headquarters is located.
+                          type: string
+                          example: Columbus
+                        companyState:
+                          description: The state or region where the contact's company headquarters is located.
+                          type: string
+                          example: Ohio
+                        companyCountry:
+                          description: The country where the contact's company headquarters is located.
+                          type: string
+                          example: United States
+                        liUrl:
+                          description: The contact's LinkedIn profile URL.
+                          type: string
+                          format: uri
+                          example: https://www.linkedin.com/in/taylor-gonsalves-b9b18b196
+                        companyLIProfileUrl:
+                          description: The LinkedIn company page URL for the contact's employer.
+                          type: string
+                          format: uri
+                          example: https://linkedin.com/company/seamlessai
+                        sicCode:
+                          description: The Standard Industrial Classification (SIC) code for the contact's company.
+                          type: string
+                          example: '7389'
+                        industries:
+                          description: A list of industries associated with the contact's company.
+                          type: array
+                          items:
+                            type: string
+                          example:
+                          - Software Development
+                          - Computer Software
+                        startedAtCurrentCompany:
+                          description: The date the contact started working at their current company (ISO 8601 date format).
+                          type: string
+                          format: date
+                          example: '2024-04-01'
+                        titleStartedAt:
+                          description: The date the contact started their current job title (ISO 8601 date format).
+                          type: string
+                          format: date
+                          example: '2024-04-01'
+                        timeAtRole:
+                          description: Human-readable tenure in the contact's current role, derived from `titleStartedAt`
+                            (e.g. "1 Yr 2 Mo", "3 Mo").
+                          type: string
+                          example: 1 Yr 2 Mo
+                        timeAtCompany:
+                          description: Human-readable tenure at the contact's current company, derived from `startedAtCurrentCompany`
+                            (e.g. "1 Yr 2 Mo", "3 Mo").
+                          type: string
+                          example: 1 Yr 2 Mo
+                        companyFoundedOn:
+                          description: The date the contact's company was founded (ISO 8601 date format).
+                          type: string
+                          format: date
+                          example: '2018-01-01'
+                        lastModifiedAt:
+                          description: Timestamp of the last time the contact's core data (name, title, company, phone, or
+                            email) was updated.
+                          type: string
+                          format: date-time
+                          example: '2026-03-03 12:34:07'
+                        companyRevenue:
+                          description: The estimated annual revenue range of the contact's company. Returned when the contact
+                            has been enriched.
+                          type: string
+                          example: $5M - $20M
+                        employeeSizeRange:
+                          description: The estimated employee count range of the contact's company.
+                          type: string
+                          example: 201 - 500
+                        timezone:
+                          description: The contact's local timezone.
+                          type: string
+                          example: Eastern (EST)
+                        firstName:
+                          description: The contact's first name. Returned when the contact has been enriched.
+                          type: string
+                          example: Taylor
+                        middleName:
+                          description: The contact's middle name, if available. Returned when the contact has been enriched.
+                          type: string
+                          example: James
+                        lastName:
+                          description: The contact's last name. Returned when the contact has been enriched.
+                          type: string
+                          example: Gonsalves
+                        companyDomainAlias:
+                          description: An alternative domain alias for the contact's company, if one exists. Returned when
+                            the contact has been enriched.
+                          type: string
+                          example: seamless.com
+                        contactLIRecruiterUrl:
+                          description: The contact's LinkedIn Recruiter profile URL. Returned when the contact has been enriched.
+                          type: string
+                          format: uri
+                          example: https://www.linkedin.com/talent/search/profile/AEMAAC3xxOcBgZ5bzU1FB2g9fsiZ04QNuvnv51k
+                        contactLISalesNavUrl:
+                          description: The contact's LinkedIn Sales Navigator profile URL. Returned when the contact has been
+                            enriched.
+                          type: string
+                          format: uri
+                          example: https://www.linkedin.com/sales/lead/ACoAAC3xxOcB-G4e6iCxOPRDtiJ5RKGoeWMqfFI,NAME_SEARCH
+                        contactXUrl:
+                          description: The contact's X (Twitter) profile URL. Returned when the contact has been enriched.
+                          type: string
+                          format: uri
+                          example: https://twitter.com/taylorgonsalves
+                        companyGRURL:
+                          description: A Google search URL for the contact's name combined with their company name. Returned
+                            when the contact has been enriched.
+                          type: string
+                          format: uri
+                          example: https://www.google.com/search?q=Taylor%20Gonsalves%20Seamless
+                        contactCurrentCompanyYears:
+                          description: The number of years the contact has been at their current company. Returned when the
+                            contact has been enriched.
+                          type: string
+                          example: '2'
+                        contactFBUrl:
+                          description: A Facebook people-search URL for the contact's name. Returned when the contact has
+                            been enriched.
+                          type: string
+                          format: uri
+                          example: https://www.facebook.com/public/Taylor+Gonsalves
+                        contactGURL:
+                          description: A Google search URL for the contact's name. Returned when the contact has been enriched.
+                          type: string
+                          format: uri
+                          example: https://www.google.com/search?q=Taylor+Gonsalves
+                        companyXUrl:
+                          description: An X (Twitter) search URL for the contact's company name. Returned when the contact
+                            has been enriched.
+                          type: string
+                          format: uri
+                          example: https://twitter.com/search?q=Seamless
+                        companyFBUrl:
+                          description: A Facebook search URL for the contact's company name. Returned when the contact has
+                            been enriched.
+                          type: string
+                          format: uri
+                          example: https://www.facebook.com/search/top/?q=Seamless
+                        newsAndEvents:
+                          type: array
+                          description: Recent news articles related to the company.
+                          items:
+                            type: object
+                            properties:
+                              title:
+                                description: The headline of the news article.
+                                type: string
+                              url:
+                                description: The URL to the full news article.
+                                type: string
+                              date:
+                                description: The date the news article was published.
+                                type: string
+                                format: date-time
+                              type:
+                                description: The type of news article (e.g., "Acquisition").
+                                type: string
+                        companyFundingTotal:
+                          type: string
+                          description: Most recent total funding amount for the company.
+                          example: '135000000'
+                        companyLatestFundingDate:
+                          type: string
+                          description: The date of the most recent funding round for the company.
+                          format: date
+                          example: '2018-01-01'
+                        companyLatestFundingClassifications:
+                          type: array
+                          description: The classifications of the latest funding round for the company (e.g., "Series A",
+                            "Pre-Seed", etc.).
+                          example:
+                          - Series D
+                          items:
+                            type: string
+                        jobChangeAlert:
+                          type: string
+                          description: 'Type of job change detected given provided or default job change date range. When
+                            detected; ''New Hire'' = joined a new company, ''New Promotion'' = new role at the same company.
+
+                            '
+                          enum:
+                          - New Hire
+                          - New Promotion
+                          nullable: true
+                        formerCompany:
+                          type: string
+                          nullable: true
+                          description: Name of the contact's most recent previous employer.
+                        formerTitle:
+                          type: string
+                          nullable: true
+                          description: Job title at the contact's most recent previous employer.
+                        formerStartedAt:
+                          type: string
+                          format: date
+                          nullable: true
+                          description: Date the contact started at their former company (YYYY-MM-DD).
+                        formerEndedAt:
+                          type: string
+                          format: date
+                          nullable: true
+                          description: Date the contact left their former company (YYYY-MM-DD).
+                        companyType:
+                          type: string
+                          nullable: true
+                          description: Company type — "Public" or "Private" when determined.
+                          enum:
+                          - Public
+                          - Private
+                          example: Public
+                        stockTicker:
+                          type: string
+                          nullable: true
+                          description: Stock ticker symbol of the company, if publicly traded.
+                          example: AAPL
+                  supplementalData:
+                    type: object
+                    description: Pagination metadata for the current search result set.
+                    properties:
+                      isMore:
+                        description: Indicates whether additional pages of results are available beyond the current page.
+                        type: boolean
+                        example: true
+                      total:
+                        description: The total number of contacts matching the search criteria.
+                        type: integer
+                        example: 150
+                      perPage:
+                        description: The number of results returned per page for this search request.
+                        type: integer
+                        example: 5
+                      nextToken:
+                        description: An opaque pagination token. Pass this value in the `nextToken` field of your next request
+                          body to retrieve the next page of results. Null or absent when no more pages are available.
+                        type: string
+                        nullable: true
+                        example: eyJwYWdlIjoyLCJzZWFyY2hJZCI6ImFiYzEyMyJ9
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - message
+                properties:
+                  message:
+                    description: A human readable error message
+                    type: string
+        '422':
+          description: Insufficient credits or missing license
+          content:
+            application/json:
+              schema:
+                description: Insufficient credits or missing license
+                type: object
+                properties:
+                  msg:
+                    type: string
+                  code:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      productCategory:
+                        type: string
+                      additionalCreditsNeeded:
+                        type: integer
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - message
+                properties:
+                  message:
+                    description: A human readable error message
+                    type: string
+components:
+  securitySchemes:
+    OAuth2:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://login.seamless.ai/oauth/authorize
+          tokenUrl: https://api.seamless.ai/api/client/v1/oauth/accessToken
+          scopes: {}
+    ApiKeyAuth:
+      type: apiKey
+      name: Token
+      in: header
+      description: API key passed via the Token header.
+    webhookSecret:
+      type: apiKey
+      description: Webhook secret that you can use to validate the request is originated by Seamless
+      name: x-seamless-webhook-secret
+      in: header

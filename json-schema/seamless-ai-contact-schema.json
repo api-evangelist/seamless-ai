@@ -2,82 +2,724 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://raw.githubusercontent.com/api-evangelist/seamless-ai/refs/heads/main/json-schema/seamless-ai-contact-schema.json",
   "title": "Seamless.AI Contact",
-  "description": "A B2B contact record in the Seamless.AI platform including identity, employment, contact data, and job history.",
+  "description": "Full contact record returned by the Seamless.AI research engine.",
+  "x-generated": "2026-08-14",
+  "x-method": "derived",
+  "x-source": "openapi/_original/seamless-ai-public-api-openapi-original.json#/paths/~1contacts/get/responses/200",
+  "x-provenance": "Derived from the provider-published OpenAPI at https://docs.seamless.ai/openapi.json (harvested 2026-08-14); field names, descriptions and examples are carried verbatim from that spec.",
   "type": "object",
   "properties": {
-    "id": {
+    "contactId": {
       "type": "string",
-      "description": "Unique Seamless.AI contact identifier"
+      "description": "Unique identifier for this contact record.",
+      "example": "699447129"
     },
-    "name": {
+    "username": {
       "type": "string",
-      "description": "Full name of the contact"
+      "description": "Email address of the Seamless.AI user who researched this contact.",
+      "example": "user@example.com"
+    },
+    "createdAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Timestamp when this contact record was created.",
+      "example": "2026-01-15T10:30:00.000Z"
+    },
+    "updatedAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Timestamp when this contact record was last updated.",
+      "example": "2026-01-15T10:30:00.000Z"
     },
     "firstName": {
       "type": "string",
-      "description": "First name"
+      "description": "Contact's first name.",
+      "example": "Jane"
+    },
+    "middleName": {
+      "type": "string",
+      "description": "Contact's middle name, if available.",
+      "example": ""
     },
     "lastName": {
       "type": "string",
-      "description": "Last name"
+      "description": "Contact's last name.",
+      "example": "Smith"
     },
-    "title": {
+    "fullName": {
       "type": "string",
-      "description": "Current job title"
+      "description": "Contact's full display name (first + middle + last).",
+      "example": "Jane Smith"
+    },
+    "name": {
+      "type": "string",
+      "description": "Contact's display name.",
+      "example": "Jane Smith"
+    },
+    "nameOriginal": {
+      "type": "string",
+      "description": "Contact's name as originally sourced, before any normalization.",
+      "example": "Jane Smith"
+    },
+    "email": {
+      "type": "string",
+      "description": "Primary email address selected for this contact.",
+      "example": "jsmith@example.com"
+    },
+    "personalEmail": {
+      "type": "string",
+      "description": "Personal (non-work) email address, if available.",
+      "example": ""
+    },
+    "contactPhone1": {
+      "type": "string",
+      "description": "Primary direct phone number for the contact.",
+      "example": "415.555.0101"
+    },
+    "contactPhone1TotalAI": {
+      "type": "string",
+      "description": "Confidence score (percentage) for the primary contact phone number.",
+      "example": "98%"
+    },
+    "contactPhone1DataType": {
+      "type": "string",
+      "description": "Type classification of the primary contact phone (e.g., mobile, main).",
+      "example": "mobile"
+    },
+    "contactPhone2": {
+      "type": "string",
+      "description": "Secondary direct phone number for the contact.",
+      "example": "415.555.0102"
+    },
+    "contactPhone2DataType": {
+      "type": "string",
+      "description": "Type classification of the secondary contact phone.",
+      "example": "main"
+    },
+    "companyPhone1": {
+      "type": "string",
+      "description": "Primary phone number for the contact's company.",
+      "example": "650.555.0200"
+    },
+    "companyPhone1TotalAI": {
+      "type": "string",
+      "description": "Confidence score (percentage) for the primary company phone number.",
+      "example": "99%"
+    },
+    "companyPhone1DataType": {
+      "type": "string",
+      "description": "Type classification of the primary company phone.",
+      "example": "company"
+    },
+    "companyPhone2": {
+      "type": "string",
+      "description": "Secondary phone number for the contact's company.",
+      "example": "650.555.0201"
+    },
+    "companyPhone2TotalAI": {
+      "type": "string",
+      "description": "Confidence score (percentage) for the secondary company phone number.",
+      "example": "22%"
+    },
+    "companyPhone2DataType": {
+      "type": "string",
+      "description": "Type classification of the secondary company phone.",
+      "example": "company"
+    },
+    "companyPhone3": {
+      "type": "string",
+      "description": "Tertiary phone number for the contact's company.",
+      "example": "650.555.0202"
+    },
+    "companyPhone3TotalAI": {
+      "type": "string",
+      "description": "Confidence score (percentage) for the tertiary company phone number.",
+      "example": "4%"
+    },
+    "companyPhone3DataType": {
+      "type": "string",
+      "description": "Type classification of the tertiary company phone.",
+      "example": "company"
     },
     "company": {
       "type": "string",
-      "description": "Current employer name"
+      "description": "Current company name of the contact.",
+      "example": "Acme Corp"
     },
-    "emails": {
-      "type": "array",
-      "description": "Verified email addresses",
-      "items": {
-        "type": "object",
-        "properties": {
-          "email": { "type": "string", "format": "email" },
-          "type": { "type": "string", "enum": ["work", "personal"] },
-          "verified": { "type": "boolean" }
+    "companyOriginal": {
+      "type": "string",
+      "description": "Company name as originally sourced, before any normalization.",
+      "example": "Acme Corp"
+    },
+    "companyDescription": {
+      "type": "string",
+      "description": "Description or summary of the contact's company.",
+      "example": "Acme Corp is a leading provider of innovative business solutions."
+    },
+    "companyFounded": {
+      "type": "string",
+      "description": "Year the company was founded.",
+      "example": "2004"
+    },
+    "companyIndustry": {
+      "type": "string",
+      "description": "Industry classification of the contact's company.",
+      "example": "Computer Software"
+    },
+    "companyStaffCount": {
+      "type": "integer",
+      "description": "Approximate total number of employees at the company.",
+      "example": 10001
+    },
+    "companyStaffCountRange": {
+      "type": "string",
+      "description": "Human-readable employee count range.",
+      "example": "10,001+ employees"
+    },
+    "companyAnnualRevenue": {
+      "type": "string",
+      "description": "Estimated annual revenue in USD (numeric string).",
+      "example": "1000000001"
+    },
+    "companyDomain": {
+      "type": "string",
+      "description": "Primary website domain of the company.",
+      "example": "acmecorp.com"
+    },
+    "companyRevenueRange": {
+      "type": "string",
+      "description": "Human-readable revenue range.",
+      "example": "$1B+"
+    },
+    "companyLIProfileUrl": {
+      "type": "string",
+      "description": "LinkedIn company page URL.",
+      "example": "https://www.linkedin.com/company/acme-corp"
+    },
+    "companyLinkedInId": {
+      "type": "string",
+      "description": "LinkedIn numeric identifier for the company.",
+      "example": "10667"
+    },
+    "title": {
+      "type": "string",
+      "description": "Contact's current job title.",
+      "example": "Finance Director"
+    },
+    "department": {
+      "type": "string",
+      "description": "Department the contact works in.",
+      "example": "Finance"
+    },
+    "seniority": {
+      "type": "string",
+      "description": "Seniority level of the contact's role (e.g., C-Level, VP, Director, Manager, Senior, Entry Level).",
+      "example": "Director"
+    },
+    "lIProfileUrl": {
+      "type": "string",
+      "description": "Contact's LinkedIn public profile URL.",
+      "example": "https://www.linkedin.com/in/janesmith"
+    },
+    "lISalesNavUrl": {
+      "type": "string",
+      "description": "Contact's LinkedIn Sales Navigator profile URL.",
+      "example": "https://www.linkedin.com/sales/lead/ACoAAA..."
+    },
+    "lIRecruiterUrl": {
+      "type": "string",
+      "description": "Contact's LinkedIn Recruiter profile URL.",
+      "example": "https://www.linkedin.com/talent/search/profile/AEMAA..."
+    },
+    "contactLocation": {
+      "type": "object",
+      "description": "Geographic location of the contact.",
+      "properties": {
+        "city": {
+          "type": "string",
+          "description": "City where the contact is located.",
+          "example": "San Francisco"
+        },
+        "state": {
+          "type": "string",
+          "description": "Full state or province name.",
+          "example": "California"
+        },
+        "postCode": {
+          "type": "string",
+          "description": "Postal or ZIP code.",
+          "example": "94107"
+        },
+        "county": {
+          "type": "string",
+          "description": "County name, if available.",
+          "example": ""
+        },
+        "country": {
+          "type": "string",
+          "description": "Full country name.",
+          "example": "United States"
+        },
+        "stateAbbr": {
+          "type": "string",
+          "description": "Two-letter state or province abbreviation.",
+          "example": "CA"
+        },
+        "countryAbbr": {
+          "type": "string",
+          "description": "Two-letter country abbreviation (ISO 3166-1 alpha-2).",
+          "example": "US"
+        },
+        "countryAlpha2": {
+          "type": "string",
+          "description": "ISO 3166-1 alpha-2 country code.",
+          "example": "US"
+        },
+        "countryAlpha3": {
+          "type": "string",
+          "description": "ISO 3166-1 alpha-3 country code.",
+          "example": "USA"
+        },
+        "countryNumeric": {
+          "type": "integer",
+          "description": "ISO 3166-1 numeric country code.",
+          "example": 840
+        },
+        "fullString": {
+          "type": "string",
+          "description": "Fully formatted location string.",
+          "example": "San Francisco, CA 94107, United States"
+        },
+        "timezone": {
+          "type": "string",
+          "description": "Timezone name with abbreviation.",
+          "example": "Pacific (PDT)"
+        },
+        "timezoneRawOffset": {
+          "type": "string",
+          "description": "UTC offset of the timezone in hours.",
+          "example": "-8.00"
+        },
+        "timezoneAbbr": {
+          "type": "string",
+          "description": "Timezone abbreviation.",
+          "example": "PDT"
         }
       }
     },
-    "phones": {
-      "type": "array",
-      "description": "Phone numbers",
-      "items": {
-        "type": "object",
-        "properties": {
-          "number": { "type": "string" },
-          "type": { "type": "string", "enum": ["direct", "mobile", "office"] }
+    "companyLocation": {
+      "type": "object",
+      "description": "Headquarters or primary office address of the contact's company.",
+      "properties": {
+        "street1": {
+          "type": "string",
+          "description": "Primary street address line.",
+          "example": "1 Hacker Way"
+        },
+        "street2": {
+          "type": "string",
+          "description": "Secondary street address line (suite, floor, etc.).",
+          "example": ""
+        },
+        "street3": {
+          "type": "string",
+          "description": "Tertiary street address line.",
+          "example": ""
+        },
+        "city": {
+          "type": "string",
+          "description": "City name.",
+          "example": "Menlo Park"
+        },
+        "state": {
+          "type": "string",
+          "description": "Full state or province name.",
+          "example": "California"
+        },
+        "postCode": {
+          "type": "string",
+          "description": "Postal or ZIP code.",
+          "example": "94025"
+        },
+        "county": {
+          "type": "string",
+          "description": "County name, if available.",
+          "example": ""
+        },
+        "country": {
+          "type": "string",
+          "description": "Full country name.",
+          "example": "United States"
+        },
+        "stateAbbr": {
+          "type": "string",
+          "description": "Two-letter state or province abbreviation.",
+          "example": "CA"
+        },
+        "countryAbbr": {
+          "type": "string",
+          "description": "Two-letter country abbreviation (ISO 3166-1 alpha-2).",
+          "example": "US"
+        },
+        "countryAlpha2": {
+          "type": "string",
+          "description": "ISO 3166-1 alpha-2 country code.",
+          "example": "US"
+        },
+        "countryAlpha3": {
+          "type": "string",
+          "description": "ISO 3166-1 alpha-3 country code.",
+          "example": "USA"
+        },
+        "countryNumeric": {
+          "type": "integer",
+          "description": "ISO 3166-1 numeric country code.",
+          "example": 840
+        },
+        "fullString": {
+          "type": "string",
+          "description": "Fully formatted address string.",
+          "example": "1 Hacker Way, Menlo Park, CA 94025, United States"
         }
       }
     },
-    "location": {
+    "website": {
       "type": "string",
-      "description": "Geographic location"
+      "description": "Company website domain.",
+      "example": "acmecorp.com"
     },
-    "linkedinUrl": {
+    "emailDomain": {
       "type": "string",
-      "format": "uri",
-      "description": "LinkedIn profile URL"
+      "description": "Domain portion of the contact's email address, if available.",
+      "example": ""
     },
-    "industry": {
+    "image": {
       "type": "string",
-      "description": "Industry vertical"
+      "description": "URL to the contact's profile photo, if available.",
+      "example": ""
+    },
+    "email1": {
+      "type": "string",
+      "description": "First email address found for the contact (typically the primary/selected email).",
+      "example": "jsmith@example.com"
+    },
+    "email1Selected": {
+      "type": "boolean",
+      "description": "Whether this email was selected as the primary email for the contact.",
+      "example": true
+    },
+    "email1TotalAI": {
+      "type": "string",
+      "description": "Confidence score (percentage) for the first email address.",
+      "example": "97%"
+    },
+    "email1EmailAI": {
+      "type": "string",
+      "description": "Email validation status for the first email address (e.g., valid, invalid, risky).",
+      "example": "valid"
+    },
+    "email2": {
+      "type": "string",
+      "description": "Second email address found for the contact.",
+      "example": "jane.smith@example.com"
+    },
+    "email2TotalAI": {
+      "type": "string",
+      "description": "Confidence score (percentage) for the second email address.",
+      "example": "97%"
+    },
+    "email2EmailAI": {
+      "type": "string",
+      "description": "Email validation status for the second email address.",
+      "example": "valid"
+    },
+    "email3": {
+      "type": "string",
+      "description": "Third email address found for the contact.",
+      "example": "janes@example.com"
+    },
+    "email3TotalAI": {
+      "type": "string",
+      "description": "Confidence score (percentage) for the third email address.",
+      "example": "97%"
+    },
+    "email3EmailAI": {
+      "type": "string",
+      "description": "Email validation status for the third email address.",
+      "example": "valid"
+    },
+    "advertisingIntelligence": {
+      "type": "string",
+      "description": "URL to advertising intelligence data for the contact's company.",
+      "example": "http://www.moat.com/advertiser/AcmeCorp"
+    },
+    "alexaScore": {
+      "type": "string",
+      "description": "URL to Alexa site information for the company domain.",
+      "example": "http://www.alexa.com/siteinfo/acmecorp.com"
+    },
+    "companyNews": {
+      "type": "string",
+      "description": "URL to Google News search results for the company.",
+      "example": "https://www.google.com/search?q=Acme+Corp&tbm=nws"
+    },
+    "employeeReviews": {
+      "type": "string",
+      "description": "URL to Glassdoor employee reviews for the company.",
+      "example": "http://www.glassdoor.com/Reviews/Acme-Corp-reviews-SRCH_KE0,9.htm"
+    },
+    "googleFinance": {
+      "type": "string",
+      "description": "URL to Google Finance page for the company.",
+      "example": "http://www.google.com/finance?q=Acme+Corp"
+    },
+    "googleResearch": {
+      "type": "string",
+      "description": "URL to a Google search for the contact at their company.",
+      "example": "https://www.google.com/search?q=Jane+Smith+Acme+Corp"
+    },
+    "jobPostings": {
+      "type": "string",
+      "description": "URL to Glassdoor job postings for the company.",
+      "example": "http://www.glassdoor.com/Job/jobs.htm?suggestCount=0&suggestChosen=false&sc.keyword=Acme+Corp"
+    },
+    "localSportsTeams": {
+      "type": "string",
+      "description": "URL to a Google search for local sports teams near the company HQ.",
+      "example": "https://www.google.com/search?q=Menlo+Park+California+sports+teams"
+    },
+    "localWeather": {
+      "type": "string",
+      "description": "URL to a Google search for weather near the company HQ.",
+      "example": "https://www.google.com/search?q=Menlo+Park+California+weather"
+    },
+    "paidSearchIntelligence": {
+      "type": "string",
+      "description": "URL to SEMrush paid search data for the company domain.",
+      "example": "http://www.semrush.com/info/acmecorp.com"
+    },
+    "paidSearchKeywordsIntelligence": {
+      "type": "string",
+      "description": "URL to KeywordSpy keyword research for the company domain.",
+      "example": "http://www.keywordspy.com/research/search.aspx?q=acmecorp.com&tab=domain-overview"
+    },
+    "searchMarketingIntelligence": {
+      "type": "string",
+      "description": "URL to iSpionage search marketing data for the company domain.",
+      "example": "http://www.ispionage.com/research/US/acmecorp.com"
+    },
+    "secFilings": {
+      "type": "string",
+      "description": "URL to SEC EDGAR filings for the company.",
+      "example": "https://www.sec.gov/cgi-bin/browse-edgar?company=Acme+Corp&owner=exclude&action=getcompany"
+    },
+    "seoResearch": {
+      "type": "string",
+      "description": "URL to Ahrefs SEO data for the company domain.",
+      "example": "https://ahrefs.com/site-explorer/overview/subdomains?target=acmecorp.com"
+    },
+    "similarWebsites": {
+      "type": "string",
+      "description": "URL to find websites similar to the company domain.",
+      "example": "https://www.similarsitesearch.com/search/?URL=acmecorp.com"
+    },
+    "socialMediaMentions": {
+      "type": "string",
+      "description": "URL to social media mention tracking for the company domain.",
+      "example": "http://socialmention.com/search?q=acmecorp.com&t=all&btnG=Search"
+    },
+    "socialMediaPosts": {
+      "type": "string",
+      "description": "URL to social media post search for the company domain.",
+      "example": "http://www.social-searcher.com/social-buzz/?q5=acmecorp.com"
+    },
+    "socialPosts": {
+      "type": "string",
+      "description": "URL to blog/social post search for the contact.",
+      "example": "http://www.icerocket.com/search?q=Jane+Smith"
+    },
+    "websiteAudit": {
+      "type": "string",
+      "description": "URL to SimilarWeb traffic analysis for the company domain.",
+      "example": "http://www.similarweb.com/website/acmecorp.com"
+    },
+    "websiteAudit2": {
+      "type": "string",
+      "description": "URL to WooRank website audit for the company domain.",
+      "example": "https://www.woorank.com/en/www/acmecorp.com"
+    },
+    "websiteGrader": {
+      "type": "string",
+      "description": "URL to HubSpot Website Grader analysis for the company domain.",
+      "example": "https://website.grader.com/tests/acmecorp.com"
+    },
+    "webTechnologies": {
+      "type": "string",
+      "description": "URL to BuiltWith technology lookup for the company domain.",
+      "example": "https://builtwith.com/acmecorp.com"
+    },
+    "whois": {
+      "type": "string",
+      "description": "URL to WHOIS domain registration lookup for the company domain.",
+      "example": "http://www.whois.com/whois/acmecorp.com"
+    },
+    "wikipedia": {
+      "type": "string",
+      "description": "URL to the Wikipedia page for the company, if available.",
+      "example": "https://en.wikipedia.org/wiki/Acme_Corp"
+    },
+    "yahooFinance": {
+      "type": "string",
+      "description": "URL to Yahoo Finance page for the company.",
+      "example": "http://finance.yahoo.com/q?s=Acme+Corp"
+    },
+    "formerCompany": {
+      "type": "string",
+      "description": "Name of the contact's most recent previous employer.",
+      "example": "Previous Corp"
+    },
+    "formerTitle": {
+      "type": "string",
+      "description": "Job title at the contact's most recent previous employer.",
+      "example": "Finance Manager"
+    },
+    "formerStartedAt": {
+      "type": "string",
+      "format": "date",
+      "description": "Date the contact started at their former company (YYYY-MM-DD).",
+      "example": "2014-05-01"
+    },
+    "formerEndedAt": {
+      "type": "string",
+      "format": "date",
+      "description": "Date the contact left their former company (YYYY-MM-DD).",
+      "example": "2019-01-01"
+    },
+    "titleStartedAt": {
+      "type": "string",
+      "format": "date",
+      "description": "Date the contact started their current title (YYYY-MM-DD).",
+      "example": "2019-02-01"
+    },
+    "startedAtCurrentCompany": {
+      "type": "string",
+      "format": "date",
+      "description": "Date the contact started at their current company (YYYY-MM-DD).",
+      "example": "2014-05-01"
+    },
+    "timeAtRole": {
+      "type": "string",
+      "description": "Human-readable tenure in the contact's current role, derived from `titleStartedAt` (e.g. \"1 Yr 2 Mo\", \"3 Mo\").",
+      "example": "1 Yr 2 Mo"
+    },
+    "timeAtCompany": {
+      "type": "string",
+      "description": "Human-readable tenure at the contact's current company, derived from `startedAtCurrentCompany` (e.g. \"1 Yr 2 Mo\", \"3 Mo\").",
+      "example": "5 Yr"
     },
     "jobHistory": {
       "type": "array",
-      "description": "Employment history",
+      "description": "Contact's job history.",
       "items": {
         "type": "object",
         "properties": {
-          "company": { "type": "string" },
-          "title": { "type": "string" },
-          "startDate": { "type": "string" },
-          "endDate": { "type": "string" }
+          "companyName": {
+            "type": "string",
+            "description": "Company name for this job."
+          },
+          "title": {
+            "type": "string",
+            "description": "Job title/position."
+          },
+          "startedAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "When the contact started this job."
+          },
+          "endedAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "When the contact ended this job (null for current job)."
+          }
         }
       }
+    },
+    "jobChangeAlert": {
+      "type": "string",
+      "description": "Type of job change detected given provided or default job change date range. When detected; 'New Hire' = joined a new company, 'New Promotion' = new role at the same company.\n",
+      "enum": [
+        "New Hire",
+        "New Promotion"
+      ],
+      "nullable": true
+    },
+    "companyType": {
+      "type": "string",
+      "nullable": true,
+      "description": "Company type \u2014 \"Public\" or \"Private\" when determined.",
+      "enum": [
+        "Public",
+        "Private"
+      ],
+      "example": "Public"
+    },
+    "stockTicker": {
+      "type": "string",
+      "nullable": true,
+      "description": "Stock ticker symbol of the company, if publicly traded.",
+      "example": "AAPL"
+    },
+    "apiResearchId": {
+      "type": "string",
+      "description": "The request ID returned from the /contacts/research endpoint. Use this to correlate research requests with results.",
+      "example": "6Ei5iKuSHzJXvqjVPWiZ_"
+    },
+    "newsAndEvents": {
+      "type": "array",
+      "description": "Recent news articles related to the company.",
+      "items": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "description": "The headline of the news article.",
+            "type": "string"
+          },
+          "url": {
+            "description": "The URL to the full news article.",
+            "type": "string"
+          },
+          "date": {
+            "description": "The date the news article was published.",
+            "type": "string",
+            "format": "date-time"
+          },
+          "type": {
+            "description": "The type of news article (e.g., \"Acquisition\").",
+            "type": "string"
+          }
+        }
+      }
+    },
+    "companyFundingTotal": {
+      "type": "string",
+      "description": "The latest total funding amount for the company.",
+      "example": "100000"
+    },
+    "companyLatestFundingDate": {
+      "type": "string",
+      "format": "date",
+      "description": "The date of the latest funding round for the company (formatted as \"YYYY-MM-DD\").",
+      "example": "2023-08-12"
+    },
+    "companyLatestFundingClassifications": {
+      "type": "array",
+      "description": "The classifications of the latest funding round for the company (e.g., \"Series A\", \"Pre-Seed\", etc.).",
+      "example": [
+        "Series D"
+      ],
+      "items": {
+        "type": "string"
+      }
     }
-  },
-  "required": ["id", "name"]
+  }
 }

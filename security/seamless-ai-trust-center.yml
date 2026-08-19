@@ -1,0 +1,52 @@
+generated: '2026-08-14'
+method: probed
+probe: true
+url: https://trust.seamless.ai/
+platform: Vanta
+confirmed: true
+http_status: 200
+subpages:
+  - {path: /controls, status: 200}
+  - {path: /faq, status: 200}
+  - {path: /resources, status: 200}
+certifications: []
+certifications_readable: false
+note: >-
+  Seamless.AI publishes a Vanta-hosted trust center at trust.seamless.ai. The host, its /controls,
+  /faq and /resources routes all return HTTP 200 and the served HTML identifies Vanta as the
+  platform with `<link rel="canonical" href="https://trust.seamless.ai">` and the title "Seamless
+  Trust Center". The certification list, control set and document library render entirely
+  client-side from a JavaScript bundle, and Vanta exposes no anonymous JSON endpoint on this
+  host (every /api/* path returns the same SPA shell at 200). We therefore confirm the trust
+  center EXISTS but assert NO individual certification: `certifications` is deliberately empty
+  rather than filled in from third-party summaries. Access to the underlying reports is typically
+  request-gated behind an NDA on Vanta trust centers.
+recheck: >-
+  A future run should retry with a JS-capable fetch, or ask the provider for the Vanta trust
+  center's public share link, before recording SOC 2 / ISO 27001 / ISO 27701 as verified.
+security_txt: false
+security_txt_note: /.well-known/security.txt returns 404 or 403 on all five Seamless.AI hosts probed.
+vulnerability_disclosure_program: false
+vulnerability_disclosure_note: >-
+  No bug bounty (HackerOne / Bugcrowd / Intigriti), no responsible-disclosure page and no
+  security@ address were found. Probed seamless.ai/security, /trust, /responsible-disclosure,
+  /policies/security and /security-and-compliance — all 404. The only published contact addresses
+  are privacy@seamlessleads.com (privacy policy), sales@seamlessleads.com and
+  devs@seamlesscontacts.com. Because nothing was verified, no VulnerabilityDisclosure and no
+  Security pointer is emitted.
+privacy_posture:
+  privacy_policy: https://seamless.ai/policies/privacy-policy
+  terms_of_use: https://seamless.ai/policies/terms-of-use
+  gdpr: >-
+    The privacy policy states Seamless.AI transfers personal data using European Commission
+    standard contractual clauses for transfers outside the EU/EEA, Switzerland and the UK.
+  privacy_contact: privacy@seamlessleads.com
+  note: >-
+    Seamless.AI is a B2B contact-data broker. Data-protection posture is a first-order concern for
+    any integrator of this API, which is why the unreadable certification list is worth flagging
+    rather than glossing.
+evidence:
+  - {source: 'https://trust.seamless.ai/', http_status: 200, fetched: '2026-08-14', keywords: [trust center, vanta]}
+  - {source: 'https://trust.seamless.ai/controls', http_status: 200, fetched: '2026-08-14'}
+  - {source: 'https://seamless.ai/security', http_status: 404, fetched: '2026-08-14'}
+  - {source: 'https://seamless.ai/.well-known/security.txt', http_status: 404, fetched: '2026-08-14'}

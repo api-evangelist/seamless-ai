@@ -1,0 +1,86 @@
+generated: '2026-08-14'
+method: searched
+source: https://docs.seamless.ai/
+sources:
+  - https://docs.seamless.ai/introduction
+  - https://docs.seamless.ai/api-http-status-codes
+  - openapi/_original/seamless-ai-public-api-openapi-original.json
+
+versioning:
+  scheme: uri-path
+  current: v1
+  base: https://api.seamless.ai/api/client/v1
+  spec_version: 1.0.0
+  policy_url: null
+  policy_published: false
+  note: >-
+    The version lives in the path (`/api/client/v1`) and the OpenAPI carries info.version 1.0.0.
+    Seamless.AI publishes no written versioning policy — nothing states how a v2 would be
+    introduced, how long v1 is supported, or whether breaking changes can land inside v1.
+
+deprecation:
+  policy_url: null
+  policy_published: false
+  sunset_header: false
+  deprecation_header: false
+  rfc8594: false
+  note: >-
+    No deprecation policy, no Sunset or Deprecation response headers, and no advance-notice
+    commitment are published. Searched the docs site and llms.txt (72 indexed pages); no
+    deprecation, sunset, migration or end-of-life page exists.
+deprecated_operations: []
+deprecated_operations_note: 'No operation in the published OpenAPI carries `deprecated: true`.'
+
+changelog:
+  published: false
+  url: null
+  note: >-
+    docs.seamless.ai/changelog returns 404 and llms.txt indexes no changelog or release-notes
+    page. https://seamless.ai/news/releases/api is a single undated marketing announcement post
+    ("Introducing Seamless.AI API"), not a dated changelog, so no ChangeLog artifact is emitted.
+
+sla:
+  url: null
+  uptime_target: null
+  published: false
+  note: >-
+    No public SLA or uptime commitment. The pricing page lists support tiers (email, live chat,
+    priority queue, dedicated success manager) but no availability target.
+
+status_page:
+  host: https://status.seamless.ai/
+  confirmed: false
+  http_status: 403
+  probed: '2026-08-14'
+  dns: status.seamless.ai -> status.seamless.ai.cdn.cloudflare.net (104.18.22.73, 104.18.23.73)
+  note: >-
+    The subdomain resolves and is Cloudflare-fronted, but every request from our probe — the page
+    itself and the Statuspage-style /api/v2/status.json and /api/v2/summary.json endpoints —
+    returns a Cloudflare "Attention Required" 403 bot challenge. We never received a document, so
+    we cannot confirm a status page is served there and NO StatusPage pointer is emitted. This is
+    a blocked probe on our side, not evidence of absence; a browser may well see a live status
+    page. Recorded so a later run can re-check.
+
+support:
+  knowledge_base: https://seamless.ai/customers/education
+  sales: sales@seamlessleads.com
+  privacy: privacy@seamlessleads.com
+  developer_contact: devs@seamlesscontacts.com
+  developer_contact_source: package.json of @seamless-oss/n8n-nodes-seamless
+
+surface_maturity:
+  rest_operations: 9
+  mcp_tools: 54
+  note: >-
+    The agent surface is materially larger and newer than the REST surface. The MCP server (54
+    tools, OAuth 2.1, dynamic client registration, risk tiers) covers products — campaigns, email,
+    calls, tasks, templates, activity — that the REST v1 API does not expose at all. See
+    mcp/seamless-ai-tool-crosswalk.yml.
+
+x-evidence:
+  - url: https://status.seamless.ai/
+    http_status: 403
+    fetched: '2026-08-14'
+  - url: https://docs.seamless.ai/changelog
+    http_status: 404
+    fetched: '2026-08-14'
