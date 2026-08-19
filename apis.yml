@@ -2,7 +2,7 @@ aid: seamless-ai
 url: https://raw.githubusercontent.com/api-evangelist/seamless-ai/refs/heads/main/apis.yml
 name: Seamless.AI
 type: Index
-specificationVersion: '0.19'
+specificationVersion: '0.23'
 description: >-
   Seamless.AI is a B2B sales intelligence platform that provides real-time contact and company data
   to help sales teams find and connect with their ideal customers. The platform uses artificial
