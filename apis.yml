@@ -52,75 +52,53 @@ accessModel:
     without an active Public API license receives HTTP 422 missingLicense, and the paid tiers are
     quoted by sales rather than priced on the page.
 apis:
-  - aid: seamless-ai:seamless-ai-public-api
-    name: Seamless.AI Public API
-    description: >-
-      The Seamless.AI Public API v1 — nine operations covering contact and company search,
-      asynchronous enrichment (research), result polling, org-data retrieval and the OAuth token
-      exchange. Search and org-data reads are free; only the research operations spend credits.
-    humanURL: https://docs.seamless.ai/
-    baseURL: https://api.seamless.ai/api/client/v1
-    tags:
-      - Contacts
-      - Companies
-      - Search
-      - Enrichment
-      - Job Changes
-    properties:
-      - type: OpenAPI
-        url: openapi/_original/seamless-ai-public-api-openapi-original.json
-      - type: OpenAPI
-        name: Contact Search
-        url: openapi/seamless-ai-contact-search-api-openapi.yml
-      - type: OpenAPI
-        name: Company Search
-        url: openapi/seamless-ai-company-search-api-openapi.yml
-      - type: OpenAPI
-        name: Contact Research
-        url: openapi/seamless-ai-contact-research-api-openapi.yml
-      - type: OpenAPI
-        name: Company Research
-        url: openapi/seamless-ai-company-research-api-openapi.yml
-      - type: OpenAPI
-        name: Org Contacts
-        url: openapi/seamless-ai-org-contacts-api-openapi.yml
-      - type: OpenAPI
-        name: Org Companies
-        url: openapi/seamless-ai-org-companies-api-openapi.yml
-      - type: OpenAPI
-        name: OAuth
-        url: openapi/seamless-ai-oauth-api-openapi.yml
-      - type: Documentation
-        url: https://docs.seamless.ai/
-      - type: APIReference
-        url: https://docs.seamless.ai/searchcontacts
-      - type: GettingStarted
-        url: https://docs.seamless.ai/authenticate-and-make-your-first-request
-  - aid: seamless-ai:seamless-ai-mcp-server
-    name: Seamless.AI MCP Server
-    description: >-
-      Hosted Model Context Protocol server exposing 54 tools across 11 domains — search, research,
-      user, lists, saved searches, campaigns, templates, email, calls, tasks and activity — plus
-      seven read-only seamless:// resources. Secured with OAuth 2.1 (PKCE S256, dynamic client
-      registration, scope mcp.all). Covers Connect products the REST API does not expose at all.
-    humanURL: https://docs.seamless.ai/mcp-docs
-    baseURL: https://mcp.seamless.ai
-    tags:
-      - MCP
-      - Agents
-      - Sales Automation
-    properties:
-      - type: MCPServer
-        url: mcp/seamless-ai-mcp.yml
-      - type: ToolCrosswalk
-        url: mcp/seamless-ai-tool-crosswalk.yml
-      - type: OpenAPI
-        url: openapi/_original/seamless-ai-mcp-server-openapi-original.yaml
-      - type: Documentation
-        url: https://docs.seamless.ai/mcp-docs
-      - type: GettingStarted
-        url: https://docs.seamless.ai/mcp/quickstart
+- aid: seamless-ai:seamless-ai-public-api
+  name: Seamless.AI Public API
+  description: >-
+    The Seamless.AI Public API v1 — nine operations covering contact and company search, asynchronous
+    enrichment (research), result polling, org-data retrieval and the OAuth token exchange. Search and
+    org-data reads are free; only the research operations spend credits.
+  humanURL: https://docs.seamless.ai/
+  baseURL: https://api.seamless.ai/api/client/v1
+  tags:
+  - Contacts
+  - Companies
+  - Search
+  - Enrichment
+  - Job Changes
+  properties:
+  - type: OpenAPI
+    url: openapi/_original/seamless-ai-public-api-openapi-original.json
+  - type: OpenAPI
+    name: Contact Search
+    url: openapi/seamless-ai-contact-search-api-openapi.yml
+  - type: OpenAPI
+    name: Company Search
+    url: openapi/seamless-ai-company-search-api-openapi.yml
+  - type: OpenAPI
+    name: Contact Research
+    url: openapi/seamless-ai-contact-research-api-openapi.yml
+  - type: OpenAPI
+    name: Company Research
+    url: openapi/seamless-ai-company-research-api-openapi.yml
+  - type: OpenAPI
+    name: Org Contacts
+    url: openapi/seamless-ai-org-contacts-api-openapi.yml
+  - type: OpenAPI
+    name: Org Companies
+    url: openapi/seamless-ai-org-companies-api-openapi.yml
+  - type: OpenAPI
+    name: OAuth
+    url: openapi/seamless-ai-oauth-api-openapi.yml
+  - type: Documentation
+    url: https://docs.seamless.ai/
+  - type: APIReference
+    url: https://docs.seamless.ai/searchcontacts
+  - type: GettingStarted
+    url: https://docs.seamless.ai/authenticate-and-make-your-first-request
 common:
+  - type: MCPServer
+    url: mcp/seamless-ai-mcp.yml
   # --- identity + link properties ---
   - name: Website
     url: https://seamless.ai
