@@ -1,12 +1,13 @@
-openapi: 3.0.0
+openapi: 3.2.0
 info:
-  title: Seamless.AI Contact Research API
-  description: The Contact Research surface of the Seamless.AI Public API. Operations carried verbatim from the provider-published
-    OpenAPI at https://docs.seamless.ai/openapi.json; only the tag split and the title are API Evangelist additions.
+  title: Seamless Contact Research API
+  description: "[Privacy Policy](https://seamless.ai/policies/privacy-policy)\n        \nIn order to dramatically improve our offerings to customers, Seamless will be introducing a Public API\nwhich can be used to search Companies & Contacts, Enrich Lists, and offer integrations as an Endpoint for our\ncustomers.\n\nThe API is build using [RESTful](https://en.wikipedia.org/wiki/REST) principles and is secured using OAuth 2.0 with the implicit grant flow.\n\n# Authentication\n\n## API Key\n\n### 1. **Register Your Application**\nTo use the Seamless API, you need to register your application to obtain an API key.\nTo create a new API key, go to [Seamless.AI | Settings](https://login.seamless.ai/settings/public-api) > API Key and click the *Create New Connection* button.\nNote: The Public API Connections menu will only appear if your account has access to the Public API.\n\n### 2. **Use the Access Token**\nFor all authenticated API requests, include the API key in the header:\n\n```\nToken: API_KEY\n```\n\n## OAuth 2.0\n\n### 1. **Register Your Application**\n\nBefore integrating, you have to setup your client credentials.\n\nTo create a new API client, go to [Seamless.AI | Settings](https://login.seamless.ai/settings/public-api) > OAuth Connections, and click the *Create New Connection* button.\n\nNote: The Public API Connections menu will only appear if your account has access to the Public API.\n\n- `client_id`\n- `client_secret`\n- `redirect_uri`\n\nYou’ll use these to authenticate and obtain tokens.\n\n---\n\n### 2. **Obtain Authorization Code**\n\nRedirect the user to Seamless.AI's OAuth authorization endpoint:\n\n```\nGET https://login.seamless.ai/oauth/authorize\n```\n\n### Query Parameters:\n\n| Name | Description |\n| --- | --- |\n| `client_id` | Your client ID |\n| `redirect_uri` | The URL users are redirected to |\n| `state` | (Optional) CSRF protection string |\n\n**Example URL**:\n\n```\nGET https://login.seamless.ai/oauth/authorize?client_id=YOUR_CLIENT_ID&redirect_uri=https://yourapp.com/callback\n```\n\nOnce the user authenticates, they will be redirected to your `redirect_uri` with a `code` parameter. \nIf your `redirect_uri` contains any query parameters (such as `?foo=bar`), you must URL encode your `redirect_uri` for this step.\n\n---\n\n### 3. **Exchange Code for Access Token**\n\n```\nPOST https://api.seamless.ai/api/client/v1/oauth/accessToken\n```\n\n### Request Body (JSON):\n\n```json\n{\n  \"client_id\": \"YOUR_CLIENT_ID\",\n  \"client_secret\": \"YOUR_CLIENT_SECRET\",\n  \"redirect_uri\": \"https://yourapp.com/callback\",\n  \"grant_type\": \"authorization_code\",\n  \"code\": \"AUTHORIZATION_CODE_FROM_STEP_2\"\n}\n```\n\n### Response:\n\n```json\n{\n  \"access_token\": \"ACCESS_TOKEN\",\n  \"refresh_token\": \"REFRESH_TOKEN\",\n  \"expires_at\": 1712000000\n}\n```\n\n---\n\n### 4. **Use the Access Token**\n\nFor all authenticated API requests, include the token in the header:\n\n```\nAuthorization: Bearer ACCESS_TOKEN\n```\n\n---\n\n### 5. **Refreshing the Token**\n\nTo refresh the access token:\n\n```\nPOST https://api.seamless.ai/api/client/v1/oauth/accessToken\n```\n\n### Request Body:\n\n```json\n{\n  \"client_id\": \"YOUR_CLIENT_ID\",\n  \"client_secret\": \"YOUR_CLIENT_SECRET\",\n  \"redirect_uri\": \"https://yourapp.com/callback\",\n  \"grant_type\": \"refresh_token\",\n  \"refresh_token\": \"YOUR_REFRESH_TOKEN\"\n}\n```\n\n# Rate Limiting\n\nRate limits are enforced at the **organization** level. All API usage for your Seamless organization counts against the same quota for each endpoint—limits are not applied separately per API key or per user.\n\nThe default limit is **60 requests per minute** per endpoint. If you exceed the limit, the API responds with **429 Too Many Requests** and a JSON error body.\n\nSome endpoints may use different limits (for example, OAuth routes). Your organization may also have custom limits. The `X-RateLimit-Limit` header on each response always reflects the maximum number of requests allowed for that endpoint in the current rate limit window.\n\nRate limit and remaining credits information will be returned in the response header of each request. The parameters are:\n\n| Name | Example | Description |\n| --- | --- | --- |\n| `X-RateLimit-Limit` | 60 | The maximum number of requests you're permitted to make in the current rate limit window for this endpoint. |\n| `X-RateLimit-Remaining` | 42 | The number of requests remaining in the current rate limit window. |\n| `X-RateLimit-Reset` | 1745587198 | The time at which the current rate limit window resets in epoch seconds. |\n| `X-PublicAPI-Credits` | 1000 | The number of credits remaining that can be used in requests. |"
   version: 1.0.0
+  x-logo:
+    url: https://s3.amazonaws.com/seamless.ai-public/logos/logo-full-dark.svg
+    altText: Seamless logo
+    href: https://login.seamless.ai
   termsOfService: https://seamless.ai/policies/terms-of-use
-  contact:
-    url: https://docs.seamless.ai/
 servers:
 - url: https://api.seamless.ai/api/client/v1
   description: Seamless API
@@ -58,8 +59,7 @@ paths:
               properties:
                 searchResultIds:
                   type: array
-                  description: Array of search result IDs obtained from a prior /search/contacts call. Each ID triggers a
-                    contact research request that consumes one credit. Mutually exclusive with the contacts property.
+                  description: Array of search result IDs obtained from a prior /search/contacts call. Each ID triggers a contact research request that consumes one credit. Mutually exclusive with the contacts property.
                   maxItems: 100
                   items:
                     type: string
@@ -68,14 +68,12 @@ paths:
                   - 22bd8b2d-0b74-41f1-b2ef-de0ab877916db
                 isJobChange:
                   type: boolean
-                  description: When set to true, triggers a job change research for the provided contacts. Must be used together
-                    with the contacts array; cannot be used with searchResultIds.
+                  description: When set to true, triggers a job change research for the provided contacts. Must be used together with the contacts array; cannot be used with searchResultIds.
                   default: false
                   example: false
                 contacts:
                   type: array
-                  description: 'Contact enrich request. Provide an array of contacts to research by identity. Each item must
-                    include one of the following combinations:
+                  description: 'Contact enrich request. Provide an array of contacts to research by identity. Each item must include one of the following combinations:
 
                     - contactName and companyName (optionally include title when using isJobChange)
 
@@ -107,8 +105,7 @@ paths:
                         example: Acme Corp
                       title:
                         type: string
-                        description: Job title of the contact. Used alongside contactName and companyName when isJobChange
-                          is true to match the correct job change record.
+                        description: Job title of the contact. Used alongside contactName and companyName when isJobChange is true to match the correct job change record.
                         example: Software Engineer
                       domain:
                         type: string
@@ -116,8 +113,7 @@ paths:
                         example: acme.com
                       email:
                         type: string
-                        description: Email address of the contact. Can be used as a standalone identifier without contactName
-                          or companyName.
+                        description: Email address of the contact. Can be used as a standalone identifier without contactName or companyName.
                         example: john.doe@acme.com
                       liProfileUrl:
                         type: string
@@ -133,8 +129,7 @@ paths:
                         example: https://www.linkedin.com/talent/search/profile/AEMAA...
                 skipDeduplicationCheck:
                   type: boolean
-                  description: When true, research will not check for duplicate records that you already researched recently,
-                    and perform a research (which can result in credit usage)
+                  description: When true, research will not check for duplicate records that you already researched recently, and perform a research (which can result in credit usage)
                   default: false
       responses:
         '202':
@@ -150,8 +145,7 @@ paths:
                     example: true
                   requestIds:
                     type: array
-                    description: Array of request IDs corresponding to each contact research request. Use these IDs to poll
-                      for results via /contacts/research/poll.
+                    description: Array of request IDs corresponding to each contact research request. Use these IDs to poll for results via /contacts/research/poll.
                     maxItems: 100
                     items:
                       type: string
@@ -250,9 +244,7 @@ paths:
                           example: 11ad7a1c-9a63-30e0-a1de-cd9a766805ca
                         status:
                           type: string
-                          description: Current status of the research request. Common values include `queued`, `researching`,
-                            `done`, `error`, `missing`, `duplicate`, `not found`, `contact-already-researched`, and `No license
-                            or credits available`. Additional values may be returned over time.
+                          description: Current status of the research request. Common values include `queued`, `researching`, `done`, `error`, `missing`, `duplicate`, `not found`, `contact-already-researched`, and `No license or credits available`. Additional values may be returned over time.
                           example: done
                         message:
                           type: string
@@ -426,8 +418,7 @@ paths:
                               example: Finance
                             seniority:
                               type: string
-                              description: Seniority level of the contact's role (e.g., C-Level, VP, Director, Manager, Senior,
-                                Entry Level).
+                              description: Seniority level of the contact's role (e.g., C-Level, VP, Director, Manager, Senior, Entry Level).
                               example: Director
                             lIProfileUrl:
                               type: string
@@ -743,13 +734,11 @@ paths:
                               example: '2014-05-01'
                             timeAtRole:
                               type: string
-                              description: Human-readable tenure in the contact's current role, derived from `titleStartedAt`
-                                (e.g. "1 Yr 2 Mo", "3 Mo").
+                              description: Human-readable tenure in the contact's current role, derived from `titleStartedAt` (e.g. "1 Yr 2 Mo", "3 Mo").
                               example: 1 Yr 2 Mo
                             timeAtCompany:
                               type: string
-                              description: Human-readable tenure at the contact's current company, derived from `startedAtCurrentCompany`
-                                (e.g. "1 Yr 2 Mo", "3 Mo").
+                              description: Human-readable tenure at the contact's current company, derived from `startedAtCurrentCompany` (e.g. "1 Yr 2 Mo", "3 Mo").
                               example: 5 Yr
                             jobHistory:
                               type: array
@@ -772,32 +761,33 @@ paths:
                                     format: date-time
                                     description: When the contact ended this job (null for current job).
                             jobChangeAlert:
-                              type: string
-                              description: 'Type of job change detected given provided or default job change date range. When
-                                detected; ''New Hire'' = joined a new company, ''New Promotion'' = new role at the same company.
+                              type:
+                              - string
+                              - 'null'
+                              description: 'Type of job change detected given provided or default job change date range. When detected; ''New Hire'' = joined a new company, ''New Promotion'' = new role at the same company.
 
                                 '
                               enum:
                               - New Hire
                               - New Promotion
-                              nullable: true
                             companyType:
-                              type: string
-                              nullable: true
+                              type:
+                              - string
+                              - 'null'
                               description: Company type — "Public" or "Private" when determined.
                               enum:
                               - Public
                               - Private
                               example: Public
                             stockTicker:
-                              type: string
-                              nullable: true
+                              type:
+                              - string
+                              - 'null'
                               description: Stock ticker symbol of the company, if publicly traded.
                               example: AAPL
                             apiResearchId:
                               type: string
-                              description: The request ID returned from the /contacts/research endpoint. Use this to correlate
-                                research requests with results.
+                              description: The request ID returned from the /contacts/research endpoint. Use this to correlate research requests with results.
                               example: 6Ei5iKuSHzJXvqjVPWiZ_
                             newsAndEvents:
                               type: array
@@ -829,8 +819,7 @@ paths:
                               example: '2023-08-12'
                             companyLatestFundingClassifications:
                               type: array
-                              description: The classifications of the latest funding round for the company (e.g., "Series
-                                A", "Pre-Seed", etc.).
+                              description: The classifications of the latest funding round for the company (e.g., "Series A", "Pre-Seed", etc.).
                               example:
                               - Series D
                               items:
@@ -882,6 +871,599 @@ paths:
                   message:
                     description: A human readable error message
                     type: string
+webhooks:
+  contact-researched:
+    post:
+      summary: Researched Contact Webhook
+      security:
+      - webhookSecret: []
+      description: 'Pushes the results of a company research request.
+
+        To create a webhook, go to [Seamless.AI | Settings](https://login.seamless.ai/settings) > Webhooks and click the Create New Webhook button and select Contact Research as the type.
+
+        '
+      tags:
+      - Contact Research
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              description: Full contact record returned by the Seamless.AI research engine.
+              properties:
+                contactId:
+                  type: string
+                  description: Unique identifier for this contact record.
+                  example: '699447129'
+                username:
+                  type: string
+                  description: Email address of the Seamless.AI user who researched this contact.
+                  example: user@example.com
+                createdAt:
+                  type: string
+                  format: date-time
+                  description: Timestamp when this contact record was created.
+                  example: '2026-01-15T10:30:00.000Z'
+                updatedAt:
+                  type: string
+                  format: date-time
+                  description: Timestamp when this contact record was last updated.
+                  example: '2026-01-15T10:30:00.000Z'
+                firstName:
+                  type: string
+                  description: Contact's first name.
+                  example: Jane
+                middleName:
+                  type: string
+                  description: Contact's middle name, if available.
+                  example: ''
+                lastName:
+                  type: string
+                  description: Contact's last name.
+                  example: Smith
+                fullName:
+                  type: string
+                  description: Contact's full display name (first + middle + last).
+                  example: Jane Smith
+                name:
+                  type: string
+                  description: Contact's display name.
+                  example: Jane Smith
+                nameOriginal:
+                  type: string
+                  description: Contact's name as originally sourced, before any normalization.
+                  example: Jane Smith
+                email:
+                  type: string
+                  description: Primary email address selected for this contact.
+                  example: jsmith@example.com
+                personalEmail:
+                  type: string
+                  description: Personal (non-work) email address, if available.
+                  example: ''
+                contactPhone1:
+                  type: string
+                  description: Primary direct phone number for the contact.
+                  example: 415.555.0101
+                contactPhone1TotalAI:
+                  type: string
+                  description: Confidence score (percentage) for the primary contact phone number.
+                  example: 98%
+                contactPhone1DataType:
+                  type: string
+                  description: Type classification of the primary contact phone (e.g., mobile, main).
+                  example: mobile
+                contactPhone2:
+                  type: string
+                  description: Secondary direct phone number for the contact.
+                  example: 415.555.0102
+                contactPhone2DataType:
+                  type: string
+                  description: Type classification of the secondary contact phone.
+                  example: main
+                companyPhone1:
+                  type: string
+                  description: Primary phone number for the contact's company.
+                  example: 650.555.0200
+                companyPhone1TotalAI:
+                  type: string
+                  description: Confidence score (percentage) for the primary company phone number.
+                  example: 99%
+                companyPhone1DataType:
+                  type: string
+                  description: Type classification of the primary company phone.
+                  example: company
+                companyPhone2:
+                  type: string
+                  description: Secondary phone number for the contact's company.
+                  example: 650.555.0201
+                companyPhone2TotalAI:
+                  type: string
+                  description: Confidence score (percentage) for the secondary company phone number.
+                  example: 22%
+                companyPhone2DataType:
+                  type: string
+                  description: Type classification of the secondary company phone.
+                  example: company
+                companyPhone3:
+                  type: string
+                  description: Tertiary phone number for the contact's company.
+                  example: 650.555.0202
+                companyPhone3TotalAI:
+                  type: string
+                  description: Confidence score (percentage) for the tertiary company phone number.
+                  example: 4%
+                companyPhone3DataType:
+                  type: string
+                  description: Type classification of the tertiary company phone.
+                  example: company
+                company:
+                  type: string
+                  description: Current company name of the contact.
+                  example: Acme Corp
+                companyOriginal:
+                  type: string
+                  description: Company name as originally sourced, before any normalization.
+                  example: Acme Corp
+                companyDescription:
+                  type: string
+                  description: Description or summary of the contact's company.
+                  example: Acme Corp is a leading provider of innovative business solutions.
+                companyFounded:
+                  type: string
+                  description: Year the company was founded.
+                  example: '2004'
+                companyIndustry:
+                  type: string
+                  description: Industry classification of the contact's company.
+                  example: Computer Software
+                companyStaffCount:
+                  type: integer
+                  description: Approximate total number of employees at the company.
+                  example: 10001
+                companyStaffCountRange:
+                  type: string
+                  description: Human-readable employee count range.
+                  example: 10,001+ employees
+                companyAnnualRevenue:
+                  type: string
+                  description: Estimated annual revenue in USD (numeric string).
+                  example: '1000000001'
+                companyDomain:
+                  type: string
+                  description: Primary website domain of the company.
+                  example: acmecorp.com
+                companyRevenueRange:
+                  type: string
+                  description: Human-readable revenue range.
+                  example: $1B+
+                companyLIProfileUrl:
+                  type: string
+                  description: LinkedIn company page URL.
+                  example: https://www.linkedin.com/company/acme-corp
+                companyLinkedInId:
+                  type: string
+                  description: LinkedIn numeric identifier for the company.
+                  example: '10667'
+                title:
+                  type: string
+                  description: Contact's current job title.
+                  example: Finance Director
+                department:
+                  type: string
+                  description: Department the contact works in.
+                  example: Finance
+                seniority:
+                  type: string
+                  description: Seniority level of the contact's role (e.g., C-Level, VP, Director, Manager, Senior, Entry Level).
+                  example: Director
+                lIProfileUrl:
+                  type: string
+                  description: Contact's LinkedIn public profile URL.
+                  example: https://www.linkedin.com/in/janesmith
+                lISalesNavUrl:
+                  type: string
+                  description: Contact's LinkedIn Sales Navigator profile URL.
+                  example: https://www.linkedin.com/sales/lead/ACoAAA...
+                lIRecruiterUrl:
+                  type: string
+                  description: Contact's LinkedIn Recruiter profile URL.
+                  example: https://www.linkedin.com/talent/search/profile/AEMAA...
+                contactLocation:
+                  type: object
+                  description: Geographic location of the contact.
+                  properties:
+                    city:
+                      type: string
+                      description: City where the contact is located.
+                      example: San Francisco
+                    state:
+                      type: string
+                      description: Full state or province name.
+                      example: California
+                    postCode:
+                      type: string
+                      description: Postal or ZIP code.
+                      example: '94107'
+                    county:
+                      type: string
+                      description: County name, if available.
+                      example: ''
+                    country:
+                      type: string
+                      description: Full country name.
+                      example: United States
+                    stateAbbr:
+                      type: string
+                      description: Two-letter state or province abbreviation.
+                      example: CA
+                    countryAbbr:
+                      type: string
+                      description: Two-letter country abbreviation (ISO 3166-1 alpha-2).
+                      example: US
+                    countryAlpha2:
+                      type: string
+                      description: ISO 3166-1 alpha-2 country code.
+                      example: US
+                    countryAlpha3:
+                      type: string
+                      description: ISO 3166-1 alpha-3 country code.
+                      example: USA
+                    countryNumeric:
+                      type: integer
+                      description: ISO 3166-1 numeric country code.
+                      example: 840
+                    fullString:
+                      type: string
+                      description: Fully formatted location string.
+                      example: San Francisco, CA 94107, United States
+                    timezone:
+                      type: string
+                      description: Timezone name with abbreviation.
+                      example: Pacific (PDT)
+                    timezoneRawOffset:
+                      type: string
+                      description: UTC offset of the timezone in hours.
+                      example: '-8.00'
+                    timezoneAbbr:
+                      type: string
+                      description: Timezone abbreviation.
+                      example: PDT
+                companyLocation:
+                  type: object
+                  description: Headquarters or primary office address of the contact's company.
+                  properties:
+                    street1:
+                      type: string
+                      description: Primary street address line.
+                      example: 1 Hacker Way
+                    street2:
+                      type: string
+                      description: Secondary street address line (suite, floor, etc.).
+                      example: ''
+                    street3:
+                      type: string
+                      description: Tertiary street address line.
+                      example: ''
+                    city:
+                      type: string
+                      description: City name.
+                      example: Menlo Park
+                    state:
+                      type: string
+                      description: Full state or province name.
+                      example: California
+                    postCode:
+                      type: string
+                      description: Postal or ZIP code.
+                      example: '94025'
+                    county:
+                      type: string
+                      description: County name, if available.
+                      example: ''
+                    country:
+                      type: string
+                      description: Full country name.
+                      example: United States
+                    stateAbbr:
+                      type: string
+                      description: Two-letter state or province abbreviation.
+                      example: CA
+                    countryAbbr:
+                      type: string
+                      description: Two-letter country abbreviation (ISO 3166-1 alpha-2).
+                      example: US
+                    countryAlpha2:
+                      type: string
+                      description: ISO 3166-1 alpha-2 country code.
+                      example: US
+                    countryAlpha3:
+                      type: string
+                      description: ISO 3166-1 alpha-3 country code.
+                      example: USA
+                    countryNumeric:
+                      type: integer
+                      description: ISO 3166-1 numeric country code.
+                      example: 840
+                    fullString:
+                      type: string
+                      description: Fully formatted address string.
+                      example: 1 Hacker Way, Menlo Park, CA 94025, United States
+                website:
+                  type: string
+                  description: Company website domain.
+                  example: acmecorp.com
+                emailDomain:
+                  type: string
+                  description: Domain portion of the contact's email address, if available.
+                  example: ''
+                image:
+                  type: string
+                  description: URL to the contact's profile photo, if available.
+                  example: ''
+                email1:
+                  type: string
+                  description: First email address found for the contact (typically the primary/selected email).
+                  example: jsmith@example.com
+                email1Selected:
+                  type: boolean
+                  description: Whether this email was selected as the primary email for the contact.
+                  example: true
+                email1TotalAI:
+                  type: string
+                  description: Confidence score (percentage) for the first email address.
+                  example: 97%
+                email1EmailAI:
+                  type: string
+                  description: Email validation status for the first email address (e.g., valid, invalid, risky).
+                  example: valid
+                email2:
+                  type: string
+                  description: Second email address found for the contact.
+                  example: jane.smith@example.com
+                email2TotalAI:
+                  type: string
+                  description: Confidence score (percentage) for the second email address.
+                  example: 97%
+                email2EmailAI:
+                  type: string
+                  description: Email validation status for the second email address.
+                  example: valid
+                email3:
+                  type: string
+                  description: Third email address found for the contact.
+                  example: janes@example.com
+                email3TotalAI:
+                  type: string
+                  description: Confidence score (percentage) for the third email address.
+                  example: 97%
+                email3EmailAI:
+                  type: string
+                  description: Email validation status for the third email address.
+                  example: valid
+                advertisingIntelligence:
+                  type: string
+                  description: URL to advertising intelligence data for the contact's company.
+                  example: http://www.moat.com/advertiser/AcmeCorp
+                alexaScore:
+                  type: string
+                  description: URL to Alexa site information for the company domain.
+                  example: http://www.alexa.com/siteinfo/acmecorp.com
+                companyNews:
+                  type: string
+                  description: URL to Google News search results for the company.
+                  example: https://www.google.com/search?q=Acme+Corp&tbm=nws
+                employeeReviews:
+                  type: string
+                  description: URL to Glassdoor employee reviews for the company.
+                  example: http://www.glassdoor.com/Reviews/Acme-Corp-reviews-SRCH_KE0,9.htm
+                googleFinance:
+                  type: string
+                  description: URL to Google Finance page for the company.
+                  example: http://www.google.com/finance?q=Acme+Corp
+                googleResearch:
+                  type: string
+                  description: URL to a Google search for the contact at their company.
+                  example: https://www.google.com/search?q=Jane+Smith+Acme+Corp
+                jobPostings:
+                  type: string
+                  description: URL to Glassdoor job postings for the company.
+                  example: http://www.glassdoor.com/Job/jobs.htm?suggestCount=0&suggestChosen=false&sc.keyword=Acme+Corp
+                localSportsTeams:
+                  type: string
+                  description: URL to a Google search for local sports teams near the company HQ.
+                  example: https://www.google.com/search?q=Menlo+Park+California+sports+teams
+                localWeather:
+                  type: string
+                  description: URL to a Google search for weather near the company HQ.
+                  example: https://www.google.com/search?q=Menlo+Park+California+weather
+                paidSearchIntelligence:
+                  type: string
+                  description: URL to SEMrush paid search data for the company domain.
+                  example: http://www.semrush.com/info/acmecorp.com
+                paidSearchKeywordsIntelligence:
+                  type: string
+                  description: URL to KeywordSpy keyword research for the company domain.
+                  example: http://www.keywordspy.com/research/search.aspx?q=acmecorp.com&tab=domain-overview
+                searchMarketingIntelligence:
+                  type: string
+                  description: URL to iSpionage search marketing data for the company domain.
+                  example: http://www.ispionage.com/research/US/acmecorp.com
+                secFilings:
+                  type: string
+                  description: URL to SEC EDGAR filings for the company.
+                  example: https://www.sec.gov/cgi-bin/browse-edgar?company=Acme+Corp&owner=exclude&action=getcompany
+                seoResearch:
+                  type: string
+                  description: URL to Ahrefs SEO data for the company domain.
+                  example: https://ahrefs.com/site-explorer/overview/subdomains?target=acmecorp.com
+                similarWebsites:
+                  type: string
+                  description: URL to find websites similar to the company domain.
+                  example: https://www.similarsitesearch.com/search/?URL=acmecorp.com
+                socialMediaMentions:
+                  type: string
+                  description: URL to social media mention tracking for the company domain.
+                  example: http://socialmention.com/search?q=acmecorp.com&t=all&btnG=Search
+                socialMediaPosts:
+                  type: string
+                  description: URL to social media post search for the company domain.
+                  example: http://www.social-searcher.com/social-buzz/?q5=acmecorp.com
+                socialPosts:
+                  type: string
+                  description: URL to blog/social post search for the contact.
+                  example: http://www.icerocket.com/search?q=Jane+Smith
+                websiteAudit:
+                  type: string
+                  description: URL to SimilarWeb traffic analysis for the company domain.
+                  example: http://www.similarweb.com/website/acmecorp.com
+                websiteAudit2:
+                  type: string
+                  description: URL to WooRank website audit for the company domain.
+                  example: https://www.woorank.com/en/www/acmecorp.com
+                websiteGrader:
+                  type: string
+                  description: URL to HubSpot Website Grader analysis for the company domain.
+                  example: https://website.grader.com/tests/acmecorp.com
+                webTechnologies:
+                  type: string
+                  description: URL to BuiltWith technology lookup for the company domain.
+                  example: https://builtwith.com/acmecorp.com
+                whois:
+                  type: string
+                  description: URL to WHOIS domain registration lookup for the company domain.
+                  example: http://www.whois.com/whois/acmecorp.com
+                wikipedia:
+                  type: string
+                  description: URL to the Wikipedia page for the company, if available.
+                  example: https://en.wikipedia.org/wiki/Acme_Corp
+                yahooFinance:
+                  type: string
+                  description: URL to Yahoo Finance page for the company.
+                  example: http://finance.yahoo.com/q?s=Acme+Corp
+                formerCompany:
+                  type: string
+                  description: Name of the contact's most recent previous employer.
+                  example: Previous Corp
+                formerTitle:
+                  type: string
+                  description: Job title at the contact's most recent previous employer.
+                  example: Finance Manager
+                formerStartedAt:
+                  type: string
+                  format: date
+                  description: Date the contact started at their former company (YYYY-MM-DD).
+                  example: '2014-05-01'
+                formerEndedAt:
+                  type: string
+                  format: date
+                  description: Date the contact left their former company (YYYY-MM-DD).
+                  example: '2019-01-01'
+                titleStartedAt:
+                  type: string
+                  format: date
+                  description: Date the contact started their current title (YYYY-MM-DD).
+                  example: '2019-02-01'
+                startedAtCurrentCompany:
+                  type: string
+                  format: date
+                  description: Date the contact started at their current company (YYYY-MM-DD).
+                  example: '2014-05-01'
+                timeAtRole:
+                  type: string
+                  description: Human-readable tenure in the contact's current role, derived from `titleStartedAt` (e.g. "1 Yr 2 Mo", "3 Mo").
+                  example: 1 Yr 2 Mo
+                timeAtCompany:
+                  type: string
+                  description: Human-readable tenure at the contact's current company, derived from `startedAtCurrentCompany` (e.g. "1 Yr 2 Mo", "3 Mo").
+                  example: 5 Yr
+                jobHistory:
+                  type: array
+                  description: Contact's job history.
+                  items:
+                    type: object
+                    properties:
+                      companyName:
+                        type: string
+                        description: Company name for this job.
+                      title:
+                        type: string
+                        description: Job title/position.
+                      startedAt:
+                        type: string
+                        format: date-time
+                        description: When the contact started this job.
+                      endedAt:
+                        type: string
+                        format: date-time
+                        description: When the contact ended this job (null for current job).
+                jobChangeAlert:
+                  type:
+                  - string
+                  - 'null'
+                  description: 'Type of job change detected given provided or default job change date range. When detected; ''New Hire'' = joined a new company, ''New Promotion'' = new role at the same company.
+
+                    '
+                  enum:
+                  - New Hire
+                  - New Promotion
+                companyType:
+                  type:
+                  - string
+                  - 'null'
+                  description: Company type — "Public" or "Private" when determined.
+                  enum:
+                  - Public
+                  - Private
+                  example: Public
+                stockTicker:
+                  type:
+                  - string
+                  - 'null'
+                  description: Stock ticker symbol of the company, if publicly traded.
+                  example: AAPL
+                apiResearchId:
+                  type: string
+                  description: The request ID returned from the /contacts/research endpoint. Use this to correlate research requests with results.
+                  example: 6Ei5iKuSHzJXvqjVPWiZ_
+                newsAndEvents:
+                  type: array
+                  description: Recent news articles related to the company.
+                  items:
+                    type: object
+                    properties:
+                      title:
+                        description: The headline of the news article.
+                        type: string
+                      url:
+                        description: The URL to the full news article.
+                        type: string
+                      date:
+                        description: The date the news article was published.
+                        type: string
+                        format: date-time
+                      type:
+                        description: The type of news article (e.g., "Acquisition").
+                        type: string
+                companyFundingTotal:
+                  type: string
+                  description: The latest total funding amount for the company.
+                  example: '100000'
+                companyLatestFundingDate:
+                  type: string
+                  format: date
+                  description: The date of the latest funding round for the company (formatted as "YYYY-MM-DD").
+                  example: '2023-08-12'
+                companyLatestFundingClassifications:
+                  type: array
+                  description: The classifications of the latest funding round for the company (e.g., "Series A", "Pre-Seed", etc.).
+                  example:
+                  - Series D
+                  items:
+                    type: string
+      responses:
+        2XX:
+          description: Return a 2XX status to indicate that the data was received successfully
 components:
   securitySchemes:
     OAuth2:
@@ -901,3 +1483,19 @@ components:
       description: Webhook secret that you can use to validate the request is originated by Seamless
       name: x-seamless-webhook-secret
       in: header
+x-tagGroups:
+- name: OAuth
+  tags:
+  - OAuth
+- name: Search
+  tags:
+  - Contact Search
+  - Company Search
+- name: Research
+  tags:
+  - Contact Research
+  - Company Research
+- name: Org Contacts/Companies
+  tags:
+  - Org Contacts
+  - Org Companies

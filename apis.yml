@@ -108,6 +108,16 @@ apis:
     url: https://docs.seamless.ai/searchcontacts
   - type: GettingStarted
     url: https://docs.seamless.ai/authenticate-and-make-your-first-request
+- aid: seamless-ai:seamless-ai-mcp-api
+  name: Seamless.AI MCP API
+  description: The Mcp API from Seamless.AI — 1 operation(s) for mcp.
+  humanURL: https://docs.seamless.ai/
+  baseURL: https://api.seamless.ai/api/client/v1
+  tags:
+  - Mcp
+  properties:
+  - type: OpenAPI
+    url: openapi/seamless-ai-mcp-api-openapi.yml
 common:
   - type: MCPServer
     url: mcp/seamless-ai-mcp.yml

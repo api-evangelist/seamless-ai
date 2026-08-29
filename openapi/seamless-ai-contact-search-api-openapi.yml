@@ -1,12 +1,13 @@
-openapi: 3.0.0
+openapi: 3.2.0
 info:
-  title: Seamless.AI Contact Search API
-  description: The Contact Search surface of the Seamless.AI Public API. Operations carried verbatim from the provider-published
-    OpenAPI at https://docs.seamless.ai/openapi.json; only the tag split and the title are API Evangelist additions.
+  title: Seamless Contact Search API
+  description: "[Privacy Policy](https://seamless.ai/policies/privacy-policy)\n        \nIn order to dramatically improve our offerings to customers, Seamless will be introducing a Public API\nwhich can be used to search Companies & Contacts, Enrich Lists, and offer integrations as an Endpoint for our\ncustomers.\n\nThe API is build using [RESTful](https://en.wikipedia.org/wiki/REST) principles and is secured using OAuth 2.0 with the implicit grant flow.\n\n# Authentication\n\n## API Key\n\n### 1. **Register Your Application**\nTo use the Seamless API, you need to register your application to obtain an API key.\nTo create a new API key, go to [Seamless.AI | Settings](https://login.seamless.ai/settings/public-api) > API Key and click the *Create New Connection* button.\nNote: The Public API Connections menu will only appear if your account has access to the Public API.\n\n### 2. **Use the Access Token**\nFor all authenticated API requests, include the API key in the header:\n\n```\nToken: API_KEY\n```\n\n## OAuth 2.0\n\n### 1. **Register Your Application**\n\nBefore integrating, you have to setup your client credentials.\n\nTo create a new API client, go to [Seamless.AI | Settings](https://login.seamless.ai/settings/public-api) > OAuth Connections, and click the *Create New Connection* button.\n\nNote: The Public API Connections menu will only appear if your account has access to the Public API.\n\n- `client_id`\n- `client_secret`\n- `redirect_uri`\n\nYou’ll use these to authenticate and obtain tokens.\n\n---\n\n### 2. **Obtain Authorization Code**\n\nRedirect the user to Seamless.AI's OAuth authorization endpoint:\n\n```\nGET https://login.seamless.ai/oauth/authorize\n```\n\n### Query Parameters:\n\n| Name | Description |\n| --- | --- |\n| `client_id` | Your client ID |\n| `redirect_uri` | The URL users are redirected to |\n| `state` | (Optional) CSRF protection string |\n\n**Example URL**:\n\n```\nGET https://login.seamless.ai/oauth/authorize?client_id=YOUR_CLIENT_ID&redirect_uri=https://yourapp.com/callback\n```\n\nOnce the user authenticates, they will be redirected to your `redirect_uri` with a `code` parameter. \nIf your `redirect_uri` contains any query parameters (such as `?foo=bar`), you must URL encode your `redirect_uri` for this step.\n\n---\n\n### 3. **Exchange Code for Access Token**\n\n```\nPOST https://api.seamless.ai/api/client/v1/oauth/accessToken\n```\n\n### Request Body (JSON):\n\n```json\n{\n  \"client_id\": \"YOUR_CLIENT_ID\",\n  \"client_secret\": \"YOUR_CLIENT_SECRET\",\n  \"redirect_uri\": \"https://yourapp.com/callback\",\n  \"grant_type\": \"authorization_code\",\n  \"code\": \"AUTHORIZATION_CODE_FROM_STEP_2\"\n}\n```\n\n### Response:\n\n```json\n{\n  \"access_token\": \"ACCESS_TOKEN\",\n  \"refresh_token\": \"REFRESH_TOKEN\",\n  \"expires_at\": 1712000000\n}\n```\n\n---\n\n### 4. **Use the Access Token**\n\nFor all authenticated API requests, include the token in the header:\n\n```\nAuthorization: Bearer ACCESS_TOKEN\n```\n\n---\n\n### 5. **Refreshing the Token**\n\nTo refresh the access token:\n\n```\nPOST https://api.seamless.ai/api/client/v1/oauth/accessToken\n```\n\n### Request Body:\n\n```json\n{\n  \"client_id\": \"YOUR_CLIENT_ID\",\n  \"client_secret\": \"YOUR_CLIENT_SECRET\",\n  \"redirect_uri\": \"https://yourapp.com/callback\",\n  \"grant_type\": \"refresh_token\",\n  \"refresh_token\": \"YOUR_REFRESH_TOKEN\"\n}\n```\n\n# Rate Limiting\n\nRate limits are enforced at the **organization** level. All API usage for your Seamless organization counts against the same quota for each endpoint—limits are not applied separately per API key or per user.\n\nThe default limit is **60 requests per minute** per endpoint. If you exceed the limit, the API responds with **429 Too Many Requests** and a JSON error body.\n\nSome endpoints may use different limits (for example, OAuth routes). Your organization may also have custom limits. The `X-RateLimit-Limit` header on each response always reflects the maximum number of requests allowed for that endpoint in the current rate limit window.\n\nRate limit and remaining credits information will be returned in the response header of each request. The parameters are:\n\n| Name | Example | Description |\n| --- | --- | --- |\n| `X-RateLimit-Limit` | 60 | The maximum number of requests you're permitted to make in the current rate limit window for this endpoint. |\n| `X-RateLimit-Remaining` | 42 | The number of requests remaining in the current rate limit window. |\n| `X-RateLimit-Reset` | 1745587198 | The time at which the current rate limit window resets in epoch seconds. |\n| `X-PublicAPI-Credits` | 1000 | The number of credits remaining that can be used in requests. |"
   version: 1.0.0
+  x-logo:
+    url: https://s3.amazonaws.com/seamless.ai-public/logos/logo-full-dark.svg
+    altText: Seamless logo
+    href: https://login.seamless.ai
   termsOfService: https://seamless.ai/policies/terms-of-use
-  contact:
-    url: https://docs.seamless.ai/
 servers:
 - url: https://api.seamless.ai/api/client/v1
   description: Seamless API
@@ -61,11 +62,11 @@ paths:
                 lastModifiedAfter: '2025-09-01T11:00:00Z'
               properties:
                 nextToken:
-                  description: An opaque cursor token for retrieving the next page of results. Returned as `supplementalData.nextToken`
-                    in the previous response.
-                  type: string
+                  description: An opaque cursor token for retrieving the next page of results. Returned as `supplementalData.nextToken` in the previous response.
+                  type:
+                  - string
+                  - 'null'
                   default: null
-                  nullable: true
                 limit:
                   description: The maximum number of contacts to return per page. Must be a positive integer.
                   type: integer
@@ -80,9 +81,7 @@ paths:
                   example:
                   - Seamless.AI
                 companyNameSearchType:
-                  description: 'Controls how `companyName` values are matched. `default` matches the provided name using standard
-                    relevance matching. `related` broadens the search to include known subsidiaries, parent companies, and
-                    brand aliases. `exact` restricts results to only companies whose name is an exact match.
+                  description: 'Controls how `companyName` values are matched. `default` matches the provided name using standard relevance matching. `related` broadens the search to include known subsidiaries, parent companies, and brand aliases. `exact` restricts results to only companies whose name is an exact match.
 
                     '
                   type: string
@@ -101,9 +100,7 @@ paths:
                   example:
                   - seamless.ai
                 contactState:
-                  description: Filter by the contact's or company's state or region. Behavior depends on the `locationType`
-                    parameter. Sample enum values shown for documentation only; actual values are not exhaustive and come
-                    from the API or typeahead.
+                  description: Filter by the contact's or company's state or region. Behavior depends on the `locationType` parameter. Sample enum values shown for documentation only; actual values are not exhaustive and come from the API or typeahead.
                   type: array
                   items:
                     type: string
@@ -118,9 +115,7 @@ paths:
                   - California
                   - New York
                 contactCountry:
-                  description: Filter by the contact's or company's country. Behavior depends on the `locationType` parameter.
-                    Sample enum values shown for documentation only; actual values are not exhaustive and come from the API
-                    or typeahead.
+                  description: Filter by the contact's or company's country. Behavior depends on the `locationType` parameter. Sample enum values shown for documentation only; actual values are not exhaustive and come from the API or typeahead.
                   type: array
                   items:
                     type: string
@@ -134,9 +129,7 @@ paths:
                   example:
                   - United States
                 contactZipCode:
-                  description: Filter by the contact's or company's zip/postal code. Behavior depends on the `locationType`
-                    parameter. Sample enum values shown for documentation only; actual values are not exhaustive and come
-                    from the API or typeahead.
+                  description: Filter by the contact's or company's zip/postal code. Behavior depends on the `locationType` parameter. Sample enum values shown for documentation only; actual values are not exhaustive and come from the API or typeahead.
                   type: array
                   items:
                     type: string
@@ -150,10 +143,7 @@ paths:
                   example:
                   - '10001'
                 locationType:
-                  description: 'Determines how location filters (`contactState`, `contactCountry`, `contactZipCode`) are applied.
-                    `contact` matches the contact''s personal location only. `company` matches the company''s headquarters
-                    location only. `bothOR` matches if either the contact or the company location matches (default). `bothAND`
-                    matches only when both the contact and the company location match.
+                  description: 'Determines how location filters (`contactState`, `contactCountry`, `contactZipCode`) are applied. `contact` matches the contact''s personal location only. `company` matches the company''s headquarters location only. `bothOR` matches if either the contact or the company location matches (default). `bothAND` matches only when both the contact and the company location match.
 
                     '
                   type: string
@@ -186,9 +176,7 @@ paths:
                   - IT
                   - Engineering
                 industry:
-                  description: Filter contacts by their company's industry classification. Up to 5 industries can be specified.
-                    Values are organized into parent categories (e.g., "Software & Information Technology") and specific sub-industries
-                    (e.g., "Computer Software").
+                  description: Filter contacts by their company's industry classification. Up to 5 industries can be specified. Values are organized into parent categories (e.g., "Software & Information Technology") and specific sub-industries (e.g., "Computer Software").
                   type: array
                   items:
                     type: string
@@ -373,8 +361,7 @@ paths:
                   example:
                   - Software Development
                 fullName:
-                  description: Filter contacts by full name. Useful for finding specific individuals. Up to 10 names can be
-                    specified.
+                  description: Filter contacts by full name. Useful for finding specific individuals. Up to 10 names can be specified.
                   type: array
                   items:
                     type: string
@@ -382,8 +369,7 @@ paths:
                   example:
                   - John Smith
                 contactKeyword:
-                  description: Filter contacts by keyword matches against their profile (e.g., skills, bio, specialties).
-                    Up to 10 keywords can be specified.
+                  description: Filter contacts by keyword matches against their profile (e.g., skills, bio, specialties). Up to 10 keywords can be specified.
                   type: array
                   items:
                     type: string
@@ -391,8 +377,7 @@ paths:
                   example:
                   - sales enablement
                 jobTitle:
-                  description: Filter contacts by job title. Matches are based on relevance to the provided title strings.
-                    Up to 10 titles can be specified.
+                  description: Filter contacts by job title. Matches are based on relevance to the provided title strings. Up to 10 titles can be specified.
                   type: array
                   items:
                     type: string
@@ -468,9 +453,7 @@ paths:
                   example:
                   - $5M - $20M
                 technologies:
-                  description: Filter contacts by technologies used at their company. Up to 10 technologies can be specified.
-                    Sample enum values shown for documentation only; actual values are not exhaustive and come from the API
-                    or typeahead.
+                  description: Filter contacts by technologies used at their company. Up to 10 technologies can be specified. Sample enum values shown for documentation only; actual values are not exhaustive and come from the API or typeahead.
                   type: array
                   items:
                     type: string
@@ -484,49 +467,48 @@ paths:
                   example:
                   - Salesforce
                 technologiesIsOr:
-                  description: Controls how multiple `technologies` values are combined. When `true` (default), returns contacts
-                    whose company uses any of the specified technologies (OR logic). When `false`, returns only contacts whose
-                    company uses all of the specified technologies (AND logic).
+                  description: Controls how multiple `technologies` values are combined. When `true` (default), returns contacts whose company uses any of the specified technologies (OR logic). When `false`, returns only contacts whose company uses all of the specified technologies (AND logic).
                   type: boolean
                   default: true
                   example: true
                 jobChanges:
-                  type: object
+                  type:
+                  - object
+                  - 'null'
                   description: 'Filter contacts by job change activity.
 
                     '
-                  nullable: true
                   default: null
                   properties:
                     changeType:
-                      type: string
-                      description: 'Filters the job change by it''s classification. Job Change classifications are  made by
-                        `changeType` and can differ based on optionally provided `dayRange`. `New Hire` = contacts who joined
-                        a new company. `New Promotion` = contacts who received a new title at the same company. `New Hire
-                        or New Promotion` = either.
+                      type:
+                      - string
+                      - 'null'
+                      description: 'Filters the job change by it''s classification. Job Change classifications are  made by `changeType` and can differ based on optionally provided `dayRange`. `New Hire` = contacts who joined a new company. `New Promotion` = contacts who received a new title at the same company. `New Hire or New Promotion` = either.
 
                         '
                       enum:
                       - New Hire
                       - New Promotion
                       - New Hire or New Promotion
-                      nullable: true
                       default: null
                       example: New Hire
                     dayRange:
-                      type: string
+                      type:
+                      - string
+                      - 'null'
                       description: Rolling lookback window for the job change.
                       enum:
                       - Last 60 Days
                       - Last 90 Days
                       - Last 180 Days
                       - Last 365 Days
-                      nullable: true
                       default: null
                       example: Last 90 Days
                 pastCompany:
-                  type: object
-                  nullable: true
+                  type:
+                  - object
+                  - 'null'
                   description: Filter contacts by past employer. When provided, `names` must be non-empty.
                   default: null
                   required:
@@ -544,38 +526,33 @@ paths:
                     onlyMostRecentDeparture:
                       type: boolean
                       default: false
-                      description: 'When `true`, only matches contacts whose most recent departure was from one of the specified
-                        companies. When `false` (default), matches any contact who has ever worked at any of the specified
-                        companies (searches full job history).
+                      description: 'When `true`, only matches contacts whose most recent departure was from one of the specified companies. When `false` (default), matches any contact who has ever worked at any of the specified companies (searches full job history).
 
                         '
                 companyType:
-                  type: string
-                  description: 'Filter by company type. `Public` = companies with a known stock ticker/exchange, `Private`
-                    = all others.
+                  type:
+                  - string
+                  - 'null'
+                  description: 'Filter by company type. `Public` = companies with a known stock ticker/exchange, `Private` = all others.
 
                     '
                   enum:
                   - Public
                   - Private
                   default: null
-                  nullable: true
                   example: Public
                 lastModifiedAfter:
-                  description: Return only contacts whose core data (name, title, company, phone, or email) was last updated
-                    on or after this date. Use ISO 8601 format.
+                  description: Return only contacts whose core data (name, title, company, phone, or email) was last updated on or after this date. Use ISO 8601 format.
                   type: string
                   format: date-time
                   example: '2025-09-01T11:00:00Z'
                 lastModifiedBefore:
-                  description: Return only contacts whose core data (name, title, company, phone, or email) was last updated
-                    on or before this date. Use ISO 8601 format. Combine with `lastModifiedAfter` to define a date range.
+                  description: Return only contacts whose core data (name, title, company, phone, or email) was last updated on or before this date. Use ISO 8601 format. Combine with `lastModifiedAfter` to define a date range.
                   type: string
                   format: date-time
                   example: '2025-09-07T11:00:00Z'
                 newsTypes:
-                  description: Filter contacts by recent news or events at their company. Returns contacts whose company has
-                    been associated with the specified event types. Up to 8 types can be specified.
+                  description: Filter contacts by recent news or events at their company. Returns contacts whose company has been associated with the specified event types. Up to 8 types can be specified.
                   type: array
                   items:
                     type: string
@@ -593,8 +570,7 @@ paths:
                   - Acquisition
                   - Expansion
                 newsTypeDates:
-                  description: Restrict `newsTypes` results to a rolling window of recent days. Accepts a single value representing
-                    the number of days to look back. Only the first value is used if multiple are provided.
+                  description: Restrict `newsTypes` results to a rolling window of recent days. Accepts a single value representing the number of days to look back. Only the first value is used if multiple are provided.
                   type: array
                   items:
                     type: string
@@ -677,8 +653,7 @@ paths:
                       type: object
                       properties:
                         searchResultId:
-                          description: Unique identifier for this search result. Use this ID when submitting contacts for
-                            research via the research endpoint.
+                          description: Unique identifier for this search result. Use this ID when submitting contacts for research via the research endpoint.
                           type: string
                           example: 708dbb34-3849-3c06-abd1-238b9a0295b3
                         name:
@@ -762,13 +737,11 @@ paths:
                           format: date
                           example: '2024-04-01'
                         timeAtRole:
-                          description: Human-readable tenure in the contact's current role, derived from `titleStartedAt`
-                            (e.g. "1 Yr 2 Mo", "3 Mo").
+                          description: Human-readable tenure in the contact's current role, derived from `titleStartedAt` (e.g. "1 Yr 2 Mo", "3 Mo").
                           type: string
                           example: 1 Yr 2 Mo
                         timeAtCompany:
-                          description: Human-readable tenure at the contact's current company, derived from `startedAtCurrentCompany`
-                            (e.g. "1 Yr 2 Mo", "3 Mo").
+                          description: Human-readable tenure at the contact's current company, derived from `startedAtCurrentCompany` (e.g. "1 Yr 2 Mo", "3 Mo").
                           type: string
                           example: 1 Yr 2 Mo
                         companyFoundedOn:
@@ -777,14 +750,12 @@ paths:
                           format: date
                           example: '2018-01-01'
                         lastModifiedAt:
-                          description: Timestamp of the last time the contact's core data (name, title, company, phone, or
-                            email) was updated.
+                          description: Timestamp of the last time the contact's core data (name, title, company, phone, or email) was updated.
                           type: string
                           format: date-time
                           example: '2026-03-03 12:34:07'
                         companyRevenue:
-                          description: The estimated annual revenue range of the contact's company. Returned when the contact
-                            has been enriched.
+                          description: The estimated annual revenue range of the contact's company. Returned when the contact has been enriched.
                           type: string
                           example: $5M - $20M
                         employeeSizeRange:
@@ -808,8 +779,7 @@ paths:
                           type: string
                           example: Gonsalves
                         companyDomainAlias:
-                          description: An alternative domain alias for the contact's company, if one exists. Returned when
-                            the contact has been enriched.
+                          description: An alternative domain alias for the contact's company, if one exists. Returned when the contact has been enriched.
                           type: string
                           example: seamless.com
                         contactLIRecruiterUrl:
@@ -818,8 +788,7 @@ paths:
                           format: uri
                           example: https://www.linkedin.com/talent/search/profile/AEMAAC3xxOcBgZ5bzU1FB2g9fsiZ04QNuvnv51k
                         contactLISalesNavUrl:
-                          description: The contact's LinkedIn Sales Navigator profile URL. Returned when the contact has been
-                            enriched.
+                          description: The contact's LinkedIn Sales Navigator profile URL. Returned when the contact has been enriched.
                           type: string
                           format: uri
                           example: https://www.linkedin.com/sales/lead/ACoAAC3xxOcB-G4e6iCxOPRDtiJ5RKGoeWMqfFI,NAME_SEARCH
@@ -829,19 +798,16 @@ paths:
                           format: uri
                           example: https://twitter.com/taylorgonsalves
                         companyGRURL:
-                          description: A Google search URL for the contact's name combined with their company name. Returned
-                            when the contact has been enriched.
+                          description: A Google search URL for the contact's name combined with their company name. Returned when the contact has been enriched.
                           type: string
                           format: uri
                           example: https://www.google.com/search?q=Taylor%20Gonsalves%20Seamless
                         contactCurrentCompanyYears:
-                          description: The number of years the contact has been at their current company. Returned when the
-                            contact has been enriched.
+                          description: The number of years the contact has been at their current company. Returned when the contact has been enriched.
                           type: string
                           example: '2'
                         contactFBUrl:
-                          description: A Facebook people-search URL for the contact's name. Returned when the contact has
-                            been enriched.
+                          description: A Facebook people-search URL for the contact's name. Returned when the contact has been enriched.
                           type: string
                           format: uri
                           example: https://www.facebook.com/public/Taylor+Gonsalves
@@ -851,14 +817,12 @@ paths:
                           format: uri
                           example: https://www.google.com/search?q=Taylor+Gonsalves
                         companyXUrl:
-                          description: An X (Twitter) search URL for the contact's company name. Returned when the contact
-                            has been enriched.
+                          description: An X (Twitter) search URL for the contact's company name. Returned when the contact has been enriched.
                           type: string
                           format: uri
                           example: https://twitter.com/search?q=Seamless
                         companyFBUrl:
-                          description: A Facebook search URL for the contact's company name. Returned when the contact has
-                            been enriched.
+                          description: A Facebook search URL for the contact's company name. Returned when the contact has been enriched.
                           type: string
                           format: uri
                           example: https://www.facebook.com/search/top/?q=Seamless
@@ -892,51 +856,56 @@ paths:
                           example: '2018-01-01'
                         companyLatestFundingClassifications:
                           type: array
-                          description: The classifications of the latest funding round for the company (e.g., "Series A",
-                            "Pre-Seed", etc.).
+                          description: The classifications of the latest funding round for the company (e.g., "Series A", "Pre-Seed", etc.).
                           example:
                           - Series D
                           items:
                             type: string
                         jobChangeAlert:
-                          type: string
-                          description: 'Type of job change detected given provided or default job change date range. When
-                            detected; ''New Hire'' = joined a new company, ''New Promotion'' = new role at the same company.
+                          type:
+                          - string
+                          - 'null'
+                          description: 'Type of job change detected given provided or default job change date range. When detected; ''New Hire'' = joined a new company, ''New Promotion'' = new role at the same company.
 
                             '
                           enum:
                           - New Hire
                           - New Promotion
-                          nullable: true
                         formerCompany:
-                          type: string
-                          nullable: true
+                          type:
+                          - string
+                          - 'null'
                           description: Name of the contact's most recent previous employer.
                         formerTitle:
-                          type: string
-                          nullable: true
+                          type:
+                          - string
+                          - 'null'
                           description: Job title at the contact's most recent previous employer.
                         formerStartedAt:
-                          type: string
+                          type:
+                          - string
+                          - 'null'
                           format: date
-                          nullable: true
                           description: Date the contact started at their former company (YYYY-MM-DD).
                         formerEndedAt:
-                          type: string
+                          type:
+                          - string
+                          - 'null'
                           format: date
-                          nullable: true
                           description: Date the contact left their former company (YYYY-MM-DD).
                         companyType:
-                          type: string
-                          nullable: true
+                          type:
+                          - string
+                          - 'null'
                           description: Company type — "Public" or "Private" when determined.
                           enum:
                           - Public
                           - Private
                           example: Public
                         stockTicker:
-                          type: string
-                          nullable: true
+                          type:
+                          - string
+                          - 'null'
                           description: Stock ticker symbol of the company, if publicly traded.
                           example: AAPL
                   supplementalData:
@@ -956,10 +925,10 @@ paths:
                         type: integer
                         example: 5
                       nextToken:
-                        description: An opaque pagination token. Pass this value in the `nextToken` field of your next request
-                          body to retrieve the next page of results. Null or absent when no more pages are available.
-                        type: string
-                        nullable: true
+                        description: An opaque pagination token. Pass this value in the `nextToken` field of your next request body to retrieve the next page of results. Null or absent when no more pages are available.
+                        type:
+                        - string
+                        - 'null'
                         example: eyJwYWdlIjoyLCJzZWFyY2hJZCI6ImFiYzEyMyJ9
         '401':
           description: Unauthorized
@@ -1023,3 +992,19 @@ components:
       description: Webhook secret that you can use to validate the request is originated by Seamless
       name: x-seamless-webhook-secret
       in: header
+x-tagGroups:
+- name: OAuth
+  tags:
+  - OAuth
+- name: Search
+  tags:
+  - Contact Search
+  - Company Search
+- name: Research
+  tags:
+  - Contact Research
+  - Company Research
+- name: Org Contacts/Companies
+  tags:
+  - Org Contacts
+  - Org Companies

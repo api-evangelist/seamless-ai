@@ -1,0 +1,43 @@
+{
+  "provider": "seamless-ai",
+  "sources": [
+    "_original/seamless-ai-mcp-server-openapi-original.yaml",
+    "_original/seamless-ai-public-api-openapi-original.json"
+  ],
+  "outputs": [
+    "seamless-ai-mcp-api-openapi.yml",
+    "seamless-ai-company-research-api-openapi.yml",
+    "seamless-ai-company-search-api-openapi.yml",
+    "seamless-ai-contact-research-api-openapi.yml",
+    "seamless-ai-contact-search-api-openapi.yml",
+    "seamless-ai-oauth-api-openapi.yml",
+    "seamless-ai-org-companies-api-openapi.yml",
+    "seamless-ai-org-contacts-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [
+    "sourced from openapi/_original/ (2 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "seamless-ai-mcp-server-openapi-original.yaml: upgraded openapi 3.0.3 -> OpenAPI 3.2.0",
+    "seamless-ai-mcp-server-openapi-original.yaml: tagged paths POST /mcp -> Mcp",
+    "seamless-ai-mcp-server-openapi-original.yaml: declared missing tag: Mcp",
+    "seamless-ai-public-api-openapi-original.json: upgraded openapi 3.0.0 -> OpenAPI 3.2.0; promoted x-webhooks (2) to the standard `webhooks` key",
+    "seamless-ai-public-api-openapi-original.json: declared missing tag: Company Research",
+    "seamless-ai-public-api-openapi-original.json: declared missing tag: Company Search",
+    "seamless-ai-public-api-openapi-original.json: declared missing tag: Contact Research",
+    "seamless-ai-public-api-openapi-original.json: declared missing tag: Contact Search",
+    "seamless-ai-public-api-openapi-original.json: declared missing tag: OAuth",
+    "seamless-ai-public-api-openapi-original.json: declared missing tag: Org Companies",
+    "seamless-ai-public-api-openapi-original.json: declared missing tag: Org Contacts"
+  ],
+  "skipped": [
+    "seamless-ai-company-research-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "seamless-ai-company-search-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "seamless-ai-contact-research-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "seamless-ai-contact-search-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "seamless-ai-oauth-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "seamless-ai-org-companies-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "seamless-ai-org-contacts-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
+}
