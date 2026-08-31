@@ -114,6 +114,8 @@ apis:
   humanURL: https://docs.seamless.ai/
   baseURL: https://api.seamless.ai/api/client/v1
   tags:
+  - MCP
+  tags_raw:
   - Mcp
   properties:
   - type: OpenAPI
