@@ -2,23 +2,21 @@
   "repo": "seamless-ai",
   "feeds": [
     {
-      "source": "https://seamless.ai/news/releases/api",
-      "feed_url": "https://seamless.ai/news/releases/api",
-      "title": "",
-      "saved": 0,
-      "method": "none",
-      "nature": "vendor-blog",
-      "nature_basis": "path_blog"
-    },
-    {
       "source": "https://seamless.ai/customers/blog",
       "feed_url": "https://seamless.ai/customers/blog",
       "title": "",
       "saved": 0,
       "method": "none"
+    },
+    {
+      "source": "https://seamless.ai/news/releases/api",
+      "feed_url": "https://seamless.ai/news/releases/api",
+      "title": "",
+      "saved": 0,
+      "method": "none"
     }
   ],
-  "fetched": "2026-08-30T22:33:40Z",
+  "fetched": "2026-09-06T19:17:18Z",
   "post_count": 1,
   "note": "single static release page, no new content since last pull",
   "feed_nature": "vendor-blog",
