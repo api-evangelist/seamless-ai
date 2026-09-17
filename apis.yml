@@ -99,9 +99,6 @@ apis:
   - type: OpenAPI
     name: Org Companies
     url: openapi/seamless-ai-org-companies-api-openapi.yml
-  - type: OpenAPI
-    name: OAuth
-    url: openapi/seamless-ai-oauth-api-openapi.yml
   - type: Documentation
     url: https://docs.seamless.ai/
   - type: APIReference
@@ -120,6 +117,16 @@ apis:
   properties:
   - type: OpenAPI
     url: openapi/seamless-ai-mcp-api-openapi.yml
+- aid: seamless-ai:seamless-ai-oauth-api
+  name: Seamless.AI O Auth API
+  description: The OAuth API from Seamless.AI — 1 operation(s) for oauth.
+  humanURL: https://docs.seamless.ai/
+  baseURL: https://api.seamless.ai/api/client/v1
+  tags:
+  - OAuth
+  properties:
+  - type: OpenAPI
+    url: openapi/seamless-ai-oauth-api-openapi.yml
 common:
   - type: MCPServer
     url: mcp/seamless-ai-mcp.yml
