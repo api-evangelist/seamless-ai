@@ -123,6 +123,8 @@ apis:
   humanURL: https://docs.seamless.ai/
   baseURL: https://api.seamless.ai/api/client/v1
   tags:
+  - Authentication
+  tags_raw:
   - OAuth
   properties:
   - type: OpenAPI
