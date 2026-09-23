@@ -2,7 +2,9 @@
   "provider": "seamless-ai",
   "sources": [
     "_original/seamless-ai-mcp-server-openapi-original.yaml",
-    "_original/seamless-ai-public-api-openapi-original.json"
+    "_original/seamless-ai-public-api-openapi-original.json",
+    "seamless-ai-company-research-api-openapi.yml",
+    "seamless-ai-contact-research-api-openapi.yml"
   ],
   "outputs": [
     "seamless-ai-mcp-api-openapi.yml",
@@ -14,9 +16,14 @@
     "seamless-ai-org-companies-api-openapi.yml",
     "seamless-ai-org-contacts-api-openapi.yml"
   ],
-  "archived": [],
+  "archived": [
+    "deleted 1 superseded output(s) from the previous generation"
+  ],
   "errors": [],
-  "warnings": [],
+  "warnings": [
+    "seamless-ai-company-research-api-openapi.yml: previously refined output kept for 1 operation(s) no archived document covers (e.g. webhook:company-researched post); its other 2 operation(s) came from the archive and were dropped from it. The archive is incomplete for this provider \u2014 re-harvest to restore _original/ as the full source of truth.",
+    "seamless-ai-contact-research-api-openapi.yml: previously refined output kept for 1 operation(s) no archived document covers (e.g. webhook:contact-researched post); its other 2 operation(s) came from the archive and were dropped from it. The archive is incomplete for this provider \u2014 re-harvest to restore _original/ as the full source of truth."
+  ],
   "notes": [
     "sourced from openapi/_original/ (2 archived document(s)); previously refined output at the top level was skipped rather than re-split",
     "seamless-ai-mcp-server-openapi-original.yaml: upgraded openapi 3.0.3 -> OpenAPI 3.2.0",
@@ -29,14 +36,17 @@
     "seamless-ai-public-api-openapi-original.json: declared missing tag: Contact Search",
     "seamless-ai-public-api-openapi-original.json: declared missing tag: OAuth",
     "seamless-ai-public-api-openapi-original.json: declared missing tag: Org Companies",
-    "seamless-ai-public-api-openapi-original.json: declared missing tag: Org Contacts"
+    "seamless-ai-public-api-openapi-original.json: declared missing tag: Org Contacts",
+    "tag 'Company Research' spans 2 source specs (seamless-ai-public-api-openapi-original.json, seamless-ai-company-research-api-openapi.yml): per-path servers applied",
+    "tag 'Contact Research' spans 2 source specs (seamless-ai-public-api-openapi-original.json, seamless-ai-contact-research-api-openapi.yml): per-path servers applied",
+    "superseded outputs removed: seamless-ai-o-auth-api-openapi.yml",
+    "apis.yml register: written (+1 apis, 3 total)"
   ],
   "skipped": [
-    "seamless-ai-company-research-api-openapi.yml: previously refined output, superseded by openapi/_original/",
     "seamless-ai-company-search-api-openapi.yml: previously refined output, superseded by openapi/_original/",
-    "seamless-ai-contact-research-api-openapi.yml: previously refined output, superseded by openapi/_original/",
     "seamless-ai-contact-search-api-openapi.yml: previously refined output, superseded by openapi/_original/",
-    "seamless-ai-oauth-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "seamless-ai-mcp-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "seamless-ai-o-auth-api-openapi.yml: previously refined output, superseded by openapi/_original/",
     "seamless-ai-org-companies-api-openapi.yml: previously refined output, superseded by openapi/_original/",
     "seamless-ai-org-contacts-api-openapi.yml: previously refined output, superseded by openapi/_original/"
   ]
