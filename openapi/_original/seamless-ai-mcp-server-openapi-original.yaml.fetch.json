@@ -1,0 +1,12 @@
+{
+ "url": "https://gist.githubusercontent.com/JustinAlia/6ff38a671f5f79895444b77c57f3afff/raw/mcp-openapi.yaml",
+ "requested_url": "https://gist.githubusercontent.com/JustinAlia/6ff38a671f5f79895444b77c57f3afff/raw/mcp-openapi.yaml",
+ "status": 200,
+ "content_type": "text/plain; charset=utf-8",
+ "bytes": 53565,
+ "sha256": "17909afd76d1c1e7311d649460c64bd4d53a26598267892816b3150cb0f3cfd1",
+ "fetched_at": "2026-10-04",
+ "fetched_by": "APIEvangelist-Harvest/1.0 (+https://apievangelist.com)",
+ "match": "equivalent",
+ "note": "Re-fetched from the provider by verify-openapi-sources.py; the provider's current document describes the same operations (Jaccard 1.0), but the bytes differ, so the archive is an earlier or reformatted copy."
+}
