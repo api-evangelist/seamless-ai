@@ -131,6 +131,8 @@ apis:
   - type: OpenAPI
     url: openapi/seamless-ai-oauth-api-openapi.yml
 common:
+  - type: FinOps
+    url: finops/seamless-ai-finops.yml
   - type: MCPServer
     url: mcp/seamless-ai-mcp.yml
   # --- identity + link properties ---
