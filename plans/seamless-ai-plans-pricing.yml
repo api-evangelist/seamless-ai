@@ -155,3 +155,37 @@ sales_contact:
 maintainers:
   - FN: Kin Lane
     email: kin@apievangelist.com
+x-canonical:
+  generated: '2026-10-08'
+  vocabulary: all/0-working/economics/plans-canonical.yml
+  models:
+  - free
+  units:
+  - credit
+  - seat
+  plans:
+  - name: Free
+    access: freemium
+    model: free
+    model_how: derived
+    units:
+    - credit
+    - seat
+    periods: []
+  - name: Pro
+    access: paid
+    model: free
+    model_how: derived
+    units:
+    - credit
+    - other
+    - seat
+    periods: []
+  - name: Enterprise
+    access: enterprise
+    model: free
+    model_how: derived
+    units:
+    - other
+    - seat
+    periods: []
