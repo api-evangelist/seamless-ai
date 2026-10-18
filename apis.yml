@@ -77,6 +77,12 @@ apis:
   - Contacts
   - Companies
   - Search
+  - Data Enrichment
+  - Job Changes
+  tags_raw:
+  - Contacts
+  - Companies
+  - Search
   - Enrichment
   - Job Changes
   properties:
