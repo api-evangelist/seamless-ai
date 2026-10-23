@@ -925,3 +925,9 @@ components:
 x-refined-from:
 - seamless-ai-public-api-openapi-original.json
 - seamless-ai-company-research-api-openapi.yml
+x-provenance:
+  method: harvested
+  publisher: Seamless.AI
+  source: https://docs.seamless.ai/openapi.json
+  note: split by refine-openapis from the provider's own published document, verified by fetch (openapi/_original/*.fetch.json);
+    stamped by stamp-openapi-provenance.py (roadmap#793)
