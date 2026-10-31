@@ -1,4 +1,4 @@
-# Seamless.AI (seamless-ai)
+# Seamless.AI
 
 <!-- API-EVANGELIST-PROVENANCE:BEGIN -->
 > ### About this repository
@@ -64,93 +64,209 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-Seamless.AI is a B2B sales intelligence platform that provides real-time contact and company data to help sales teams find and connect with their ideal customers. The platform uses artificial intelligence to continuously verify and update contact information including emails, direct dials, and mobile numbers. Seamless.AI offers a RESTful API secured with OAuth 2.0 and API key authentication, enabling developers to integrate contact search, company search, enrichment, and job-change intelligence directly into CRM systems, marketing platforms, and internal sales tools.
+Seamless.AI is a B2B sales intelligence platform that provides real-time contact and company data to help sales teams find and connect with their ideal customers. The platform uses artificial intelligence to continuously verify and update contact information including emails, direct dials and mobile numbers. Its Public API v1 is a three-hop enrichment pipeline — search, research, then collect by polling or webhook — secured with an API key in a Token header or OAuth 2.0, and metered in research credits rather than API calls. Alongside the nine-operation REST API, Seamless.AI operates a hosted Model Context Protocol server exposing 54 tools across search, research, lists, saved searches, campaigns, templates, email, calls, tasks and activity, secured with OAuth 2.1, dynamic client registration and published per-tool risk tiers.
 
-**APIs.json:** [https://raw.githubusercontent.com/api-evangelist/seamless-ai/refs/heads/main/apis.yml](https://raw.githubusercontent.com/api-evangelist/seamless-ai/refs/heads/main/apis.yml)
+**Areas:** B2B · Contact Data · Sales Intelligence · Prospecting · Lead Generation · CRM Enrichment · Data Enrichment · MCP · Agents · Sales Automation · A2A
 
-## Scope
+## Seamless.AI on APIs.io
 
-- **Type:** Index
-- **Position:** Consuming
-- **Access:** 3rd-Party
+Everything profiled for Seamless.AI is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/seamless-ai/](https://apis.io/providers/seamless-ai/)** — or go straight to one of the APIs or properties below.
 
-## Tags
+### APIs (3)
 
-- B2B
-- Contact Data
-- Sales Intelligence
-- Prospecting
-- Lead Generation
-- CRM Enrichment
+- [Seamless.AI Public API](https://apis.io/apis/seamless-ai/seamless-ai-public-api/) — The Seamless.AI Public API v1 — nine operations covering contact and company search, asynchronous enrichment (research), result polling, org-data retrieval…
+- [Seamless.AI MCP API](https://apis.io/apis/seamless-ai/seamless-ai-mcp-api/) — The Mcp API from Seamless.AI — 1 operation(s) for mcp.
+- [Seamless.AI O Auth API](https://apis.io/apis/seamless-ai/seamless-ai-oauth-api/) — The OAuth API from Seamless.AI — 1 operation(s) for oauth.
 
-## Timestamps
+### Published properties
 
-- **Created:** 2026-05-02
-- **Modified:** 2026-05-19
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
 
-## APIs
+#### AsyncAPI (1)
 
-### Seamless.AI Contacts API
+Event-driven and webhook contracts.
 
-The Seamless.AI Contacts API provides programmatic access to contact search, enrichment, and research capabilities. Search for B2B contacts by name, company, title, and location. Enrich existing contact records with emails, phone numbers, and job history. Access job-change intelligence to identify contacts that have recently changed roles.
+- [Seamless Ai Webhooks](https://apis.io/asyncapis/seamless-ai/seamless-ai-webhooks/)
 
-- **Human URL:** [https://docs.seamless.ai/](https://docs.seamless.ai/)
-- **Base URL:** `https://api.seamless.ai`
+#### MCP servers (1)
 
-#### Tags
+Model Context Protocol servers that expose the API to agents.
 
-- Contacts
-- Sales Intelligence
-- B2B
-- Prospecting
+- [seamless](https://apis.io/servers/seamless-ai/seamless/)
 
-#### Properties
+#### Agentic access (1)
 
-- [OpenAPI](openapi/seamless-ai-contacts-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/seamless-ai-contacts.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/seamless-ai-contacts.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Documentation](https://docs.seamless.ai/)
+Which operations an agent can call, which act, and which need a human in the loop.
 
-### Seamless.AI Companies API
+- [Seamless Ai Agentic Access](https://apis.io/agentic-access/seamless-ai/seamless-ai-agentic-access/)
 
-The Seamless.AI Companies API enables programmatic search and research of company data including firmographics, revenue, employee count, technology stack, and company intelligence. Use company search result IDs or direct identifiers such as domain or company name to retrieve comprehensive company profiles.
+#### JSON Schema (2)
 
-- **Human URL:** [https://docs.seamless.ai/](https://docs.seamless.ai/)
-- **Base URL:** `https://api.seamless.ai`
+The data models the API reads and writes.
 
-#### Tags
+- [Seamless.AI Company](https://apis.io/schemas/seamless-ai/seamless-ai-company/)
+- [Seamless.AI Contact](https://apis.io/schemas/seamless-ai/seamless-ai-contact/)
 
-- Companies
-- Firmographics
-- Sales Intelligence
-- B2B
+#### JSON Structure (2)
 
-#### Properties
+Data models expressed in JSON Structure.
 
-- [OpenAPI](openapi/seamless-ai-companies-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/seamless-ai-companies.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/seamless-ai-companies.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Documentation](https://docs.seamless.ai/)
+- [Seamless Ai Company Structure](https://apis.io/json-structure/seamless-ai/seamless-ai-company-structure/)
+- [Seamless Ai Contact Structure](https://apis.io/json-structure/seamless-ai/seamless-ai-contact-structure/)
 
-## Common Properties
+#### JSON-LD (1)
 
-- [LinkedIn](https://www.linkedin.com/company/seamlessai)
+Linked-data contexts for the provider's vocabulary.
+
+- [Seamless Ai Context](https://apis.io/jsonld/seamless-ai/seamless-ai-context/)
+
+#### Vocabulary (1)
+
+The provider's domain terms, defined.
+
+- [Seamless.AI Vocabulary](https://apis.io/vocabularies/seamless-ai/seamless-ai-vocabulary/)
+
+#### Examples (9)
+
+Example requests and responses.
+
+- [Seamless Ai Get Access Token Example](https://apis.io/examples/seamless-ai/seamless-ai-get-access-token-example/)
+- [Seamless Ai Get Companies Example](https://apis.io/examples/seamless-ai/seamless-ai-get-companies-example/)
+- [Seamless Ai Get Contacts Example](https://apis.io/examples/seamless-ai/seamless-ai-get-contacts-example/)
+- [Seamless Ai Poll Company Research Results Example](https://apis.io/examples/seamless-ai/seamless-ai-poll-company-research-results-example/)
+- [Seamless Ai Poll Contacts Research Results Example](https://apis.io/examples/seamless-ai/seamless-ai-poll-contacts-research-results-example/)
+- [Seamless Ai Research Companies Example](https://apis.io/examples/seamless-ai/seamless-ai-research-companies-example/)
+- [Seamless Ai Research Contacts Example](https://apis.io/examples/seamless-ai/seamless-ai-research-contacts-example/)
+- [Seamless Ai Search Companies Example](https://apis.io/examples/seamless-ai/seamless-ai-search-companies-example/)
+- [Seamless Ai Search Contacts Example](https://apis.io/examples/seamless-ai/seamless-ai-search-contacts-example/)
+
+#### Overlays (15)
+
+OpenAPI overlays, including conversational phrasing for each operation.
+
+- [Seamless Ai Company Research Api Phrasing Overlay](https://apis.io/overlays/seamless-ai/seamless-ai-company-research-api-phrasing-overlay/)
+- [Seamless Ai Company Research Overlay](https://apis.io/overlays/seamless-ai/seamless-ai-company-research-overlay/)
+- [Seamless Ai Company Search Api Phrasing Overlay](https://apis.io/overlays/seamless-ai/seamless-ai-company-search-api-phrasing-overlay/)
+- [Seamless Ai Company Search Overlay](https://apis.io/overlays/seamless-ai/seamless-ai-company-search-overlay/)
+- [Seamless Ai Contact Research Api Phrasing Overlay](https://apis.io/overlays/seamless-ai/seamless-ai-contact-research-api-phrasing-overlay/)
+- [Seamless Ai Contact Research Overlay](https://apis.io/overlays/seamless-ai/seamless-ai-contact-research-overlay/)
+- [Seamless Ai Contact Search Api Phrasing Overlay](https://apis.io/overlays/seamless-ai/seamless-ai-contact-search-api-phrasing-overlay/)
+- [Seamless Ai Contact Search Overlay](https://apis.io/overlays/seamless-ai/seamless-ai-contact-search-overlay/)
+- [Seamless Ai Mcp Api Phrasing Overlay](https://apis.io/overlays/seamless-ai/seamless-ai-mcp-api-phrasing-overlay/)
+- [Seamless Ai Oauth Api Phrasing Overlay](https://apis.io/overlays/seamless-ai/seamless-ai-oauth-api-phrasing-overlay/)
+- [Seamless Ai Oauth Overlay](https://apis.io/overlays/seamless-ai/seamless-ai-oauth-overlay/)
+- [Seamless Ai Org Companies Api Phrasing Overlay](https://apis.io/overlays/seamless-ai/seamless-ai-org-companies-api-phrasing-overlay/)
+- [Seamless Ai Org Companies Overlay](https://apis.io/overlays/seamless-ai/seamless-ai-org-companies-overlay/)
+- [Seamless Ai Org Contacts Api Phrasing Overlay](https://apis.io/overlays/seamless-ai/seamless-ai-org-contacts-api-phrasing-overlay/)
+- [Seamless Ai Org Contacts Overlay](https://apis.io/overlays/seamless-ai/seamless-ai-org-contacts-overlay/)
+
+#### Governance rules (2)
+
+Spectral rulesets for the provider's contracts.
+
+- [Seamless.AI — jsonschema rules](https://apis.io/rules/seamless-ai/seamless-ai-jsonschema-spectral-rules/)
+- [Seamless.AI API Rules](https://apis.io/rules/seamless-ai/seamless-ai-rules/)
+
+#### Security (3)
+
+Authentication, trust centre, and vulnerability disclosure.
+
+- [Seamless Ai Authentication](https://apis.io/security/seamless-ai/seamless-ai-authentication/)
+- [Seamless Ai Domain Security](https://apis.io/security/seamless-ai/seamless-ai-domain-security/)
+- [Seamless Ai Trust Center](https://apis.io/security/seamless-ai/seamless-ai-trust-center/)
+
+#### OAuth scopes (1)
+
+The permissions the API asks for.
+
+- [Seamless Ai Scopes](https://apis.io/scopes/seamless-ai/seamless-ai-scopes/)
+
+#### Plans and pricing (1)
+
+Published plans, tiers and prices.
+
+- [Seamless Ai Plans Pricing](https://apis.io/plans/seamless-ai/seamless-ai-plans-pricing/)
+
+#### Rate limits (1)
+
+Published request limits.
+
+- [Seamless Ai Rate Limits](https://apis.io/rate-limits/seamless-ai/seamless-ai-rate-limits/)
+
+#### FinOps (1)
+
+What the API costs to run, by operation.
+
+- [Seamless Ai Finops](https://apis.io/finops/seamless-ai/seamless-ai-finops/)
+
+## Where to find this API
+
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
+
 - [Website](https://seamless.ai)
 - [Documentation](https://docs.seamless.ai/)
-- [Overview](https://seamless.ai/products/api)
-- [Getting Started](https://seamless.ai/customers/education/articles/seamless-ai-api-overview)
-- [Glossary](https://seamless.ai/customers/education/articles/api-terms-glossary)
-- [Blog](https://seamless.ai/news/releases/api)
-- [JSON Schema](json-schema/seamless-ai-contact-schema.json) — [JSON Schema](https://json-schema.org/specification)
-- [JSON Schema](json-schema/seamless-ai-company-schema.json) — [JSON Schema](https://json-schema.org/specification)
-- [JSON Structure](json-structure/seamless-ai-contact-structure.json)
-- [J S O N L D Context](json-ld/seamless-ai-context.jsonld)
-- [Example](examples/seamless-ai-search-contacts-example.json)
-- [Spectral Ruleset](rules/seamless-ai-rules.yml)
-- [Vocabulary](vocabulary/seamless-ai-vocabulary.yml)
-- [L L Ms Txt](https://docs.seamless.ai/llms.txt)
+- [Getting started](https://docs.seamless.ai/authenticate-and-make-your-first-request)
+- [API reference](https://docs.seamless.ai/searchcontacts)
+- [Pricing](https://seamless.ai/pricing)
+- [Sign up](https://login.seamless.ai/register)
+- [Support](https://seamless.ai/customers/education)
+- [Blog](https://seamless.ai/customers/blog)
+- [Compliance](https://trust.seamless.ai/)
+- [Terms of service](https://seamless.ai/policies/terms-of-use)
+- [Privacy policy](https://seamless.ai/policies/privacy-policy)
+- [GitHub](https://github.com/SeamlessAI)
 
-## Maintainers
+## API Evangelist rating
 
-**FN:** Kin Lane
-**Email:** kin@apievangelist.com
+**Kin Score 65.5** — strong · rubric 0.25.0 · scored 2026-10-23
+
+| Facet | Score |
+|---|---|
+| Discoverability | 75.0 |
+| Contract quality | 61.4 |
+| Contract governance | 31.8 |
+| Operational transparency | 34.2 |
+| Developer ergonomics | 65.5 |
+| Access clarity | 92.1 |
+
+**Agent readiness 55.3** — agent-ready (gated down from agent-native)
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | yes |
+| Agentic Access | derived (partial credit) |
+| Reversibility Documented | — |
+| MCP Server | documented (partial credit) |
+| Auth Clarity | served (partial credit) |
+| Idempotency | — |
+| Error Semantics | documented (partial credit) |
+| OpenAPI Examples | verified |
+| Rate Limit Signal | documented (partial credit) |
+| Event Surface Described | yes |
+| Agent Skills | yes |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | served (partial credit) |
+| Protected Resource Metadata | verified |
+| Dynamic Client Registration | yes |
+| Agentic Commerce | — |
+| Pagination Ratio | na |
+| Operation Distinctiveness | na |
+
+**Regulatory alignment 39.2** — Horizontal (data, software, accessibility, platform)
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/seamless-ai/](https://apis.io/providers/seamless-ai/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for Seamless.AI: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/seamless-ai/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
