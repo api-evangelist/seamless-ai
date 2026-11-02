@@ -1,0 +1,191 @@
+specification: API Commons Plans
+specificationVersion: '0.1'
+schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/Plans
+provider: Seamless.AI
+providerId: seamless-ai
+generated: '2026-08-14'
+method: searched
+source: https://seamless.ai/pricing
+created: '2026-05-04'
+modified: '2026-08-14'
+note: >-
+  Replaces the 2026-05-04 bulk-sweep scaffold, which invented a free/professional/enterprise tier
+  set with request quotas (1,000/mo, 100,000/mo) and per-minute rates Seamless.AI has never
+  published. Seamless.AI publishes tier NAMES and included FEATURES but no prices and no API call
+  quotas; the paid tiers are "Contact sales". That is the finding, and it is recorded as such
+  rather than filled in.
+tags:
+  - B2B
+  - Contact Data
+  - Sales Intelligence
+  - Prospecting
+  - Lead Generation
+description: >-
+  Published plan structure for the Seamless.AI platform. The API is not sold as its own product
+  with its own tiers — it is a FEATURE of the platform plans, listed on the pricing page's feature
+  matrix alongside Connect and the Job Changes filter. API access and org credit pricing are
+  quoted by the sales team.
+
+plan_count: 3
+pricing_model: seat-and-credit
+prices_published: false
+currency: USD
+billing_period: annual
+prices_published_note: >-
+  No dollar figure appears anywhere on the pricing page for any tier. Free shows "1 User /
+  50 Credits"; Pro shows "Per User / Unlimited Exports / Annual Credit Packages / 1 Credit =
+  Phone + Email" with a "Contact sales" call to action; Enterprise shows "Unlimited Users /
+  Unlimited Exports" and is also sales-quoted.
+
+plans:
+  - id: seamless-ai-free
+    name: Free
+    type: freemium
+    price: '0.00'
+    currency: USD
+    description: Entry tier for an individual getting started with Seamless.AI.
+    entries:
+      - label: Users
+        name: users
+        type: quota
+        metric: seats
+        limit: 1
+      - label: Credits
+        name: credits
+        type: quota
+        metric: credits
+        limit: 50
+        note: A credit yields a phone number plus an email.
+    api_access: false
+    api_access_note: >-
+      The pricing feature matrix lists "API" as a row, but the page does not mark it as included
+      on Free. The API docs additionally require an active Public API license — an unlicensed
+      account gets HTTP 422 `missingLicense`.
+    elements:
+      - name: Email Addresses
+      - name: Cell Phones
+      - name: Real-time Search Engine
+      - name: Enterprise Security and Compliance
+      - name: Self-serve Knowledge Base
+  - id: seamless-ai-pro
+    name: Pro
+    type: paid
+    price: contact-sales
+    currency: USD
+    description: >-
+      Per-user tier with annual credit packages, unlimited exports and the premium product set.
+      Priced by the sales team.
+    entries:
+      - label: Users
+        name: users
+        type: quota
+        metric: seats
+        limit: null
+        note: Priced per user.
+      - label: Exports
+        name: exports
+        type: quota
+        metric: exports
+        limit: -1
+      - label: Credits
+        name: credits
+        type: quota
+        metric: credits
+        limit: null
+        note: Sold as annual credit packages; volume not published.
+    elements:
+      - name: Export Download
+      - name: Premium Integrations
+      - name: Pitch Intelligence
+      - name: Advanced Org Management
+      - name: Connect (Emailing, Phone Calls, and Tasks)
+      - name: Job Changes Filter
+      - name: API
+      - name: Email Support
+      - name: Live Training Webinar
+  - id: seamless-ai-enterprise
+    name: Enterprise
+    type: enterprise
+    price: contact-sales
+    currency: USD
+    description: >-
+      Unlimited users and exports with dedicated support. Priced by the sales team; special
+      pricing is advertised for bulk credits, Prospector, Job Changes, Buyer Intent and
+      enrichment.
+    entries:
+      - label: Users
+        name: users
+        type: quota
+        metric: seats
+        limit: -1
+      - label: Exports
+        name: exports
+        type: quota
+        metric: exports
+        limit: -1
+    elements:
+      - name: API
+      - name: Free Admin Seat
+      - name: Dedicated Success Manager
+      - name: Quarterly Business Reviews
+      - name: Phone Support
+      - name: Priority Support Queue
+      - name: Live Chat Support
+
+add_ons:
+  - name: AI Assistant
+  - name: Data Enrichment
+  - name: Autopilot
+  - name: Buyer Intent Data
+
+api_metering:
+  unit: research credit
+  charged_on: [researchCompanies, researchContacts]
+  free_operations: [searchCompanies, searchContacts, getCompanies, getContacts, pollCompanyResearchResults, pollContactsResearchResults, getAccessToken]
+  see_also: rate-limits/seamless-ai-rate-limits.yml
+  note: >-
+    The API's real unit of cost is the research credit, not the API call. Search and org-data
+    reads are free; only enrichment spends credits.
+
+sales_contact:
+  email: sales@seamlessleads.com
+  phone: '+1 (614) 665-0450'
+  source: https://seamless.ai/news/releases/api
+
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com
+x-canonical:
+  generated: '2026-11-01'
+  vocabulary: engine/economics/plans-canonical.yml
+  models:
+  - free
+  units:
+  - credit
+  - seat
+  plans:
+  - name: Free
+    access: freemium
+    model: free
+    model_how: derived
+    units:
+    - credit
+    - seat
+    periods: []
+  - name: Pro
+    access: paid
+    model: free
+    model_how: derived
+    units:
+    - credit
+    - other
+    - seat
+    periods: []
+  - name: Enterprise
+    access: enterprise
+    model: free
+    model_how: derived
+    units:
+    - other
+    - seat
+    periods: []
